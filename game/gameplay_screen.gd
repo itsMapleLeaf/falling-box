@@ -4,7 +4,7 @@ const LEVEL_BLOCK = preload("uid://dtvqbjemca8sx")
 const FALLING_BLOCK = preload("uid://bc6jrwvfpr8s5")
 
 @export var player_spawn_height := 500
-@export var falling_block_spawn_height := 300
+@export var falling_block_spawn_height := 1000
 
 var level_blocks: Array[LevelBlock] = []
 var level_bounds := Rect2i(0, 0, 0, 0)

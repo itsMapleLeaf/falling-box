@@ -22,7 +22,6 @@ Constants="*uid://8njwatk6fjjk"
 [display]
 
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
 
 [dotnet]
 

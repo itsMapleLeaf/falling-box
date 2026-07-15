@@ -7,11 +7,8 @@
 
 [node name="GameplayScreen" type="Node2D" unique_id=1834170711]
 script = ExtResource("1_etcqo")
-falling_block_spawn_height = 800
 
 [node name="Camera2D" parent="." unique_id=933668665 node_paths=PackedStringArray("target") instance=ExtResource("2_phy4t")]
-visible = true
-position = Vector2(100, -200)
 editor_draw_screen = true
 target = NodePath("../Player")
 
@@ -21,7 +18,6 @@ autostart = true
 
 [node name="Player" parent="." unique_id=1227805615 instance=ExtResource("3_etcqo")]
 unique_name_in_owner = true
-position = Vector2(100, -200)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1345430208]
 
