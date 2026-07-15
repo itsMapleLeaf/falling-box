@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://drrfhf8cuabel"]
+
+[ext_resource type="Script" uid="uid://d36n7urlvxoux" path="res://game/gameplay_debug_menu.gd" id="1_1vay1"]
+
+[node name="GameplayDebugMenu" type="Control" unique_id=907468527]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+focus_behavior_recursive = 1
+script = ExtResource("1_1vay1")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=608654281]
+layout_mode = 1
+offset_right = 208.0
+offset_bottom = 31.0
+
+[node name="ButtonList" type="HFlowContainer" parent="PanelContainer" unique_id=384402157]
+unique_name_in_owner = true
+layout_mode = 2

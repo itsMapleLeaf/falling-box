@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dtvqbjemca8sx"]
+
+[ext_resource type="Script" uid="uid://bnvt16f47wrc4" path="res://game/level_block.gd" id="1_amfyk"]
+
+[node name="LevelBlock" type="StaticBody2D" unique_id=1391337092]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_amfyk")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=936482134]
+unique_name_in_owner = true
+offset_right = 50.0
+offset_bottom = 50.0
+
+[node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1582181713]
+unique_name_in_owner = true
+position = Vector2(25, 25)

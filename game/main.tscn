@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bxh2pxa717jhx"]
+
+[ext_resource type="Script" uid="uid://miiu3o74lqo6" path="res://game/main.gd" id="1_5un7r"]
+[ext_resource type="PackedScene" uid="uid://bhljs2y0to2fx" path="res://game/gameplay_screen.tscn" id="2_xtpaf"]
+
+[node name="Main" type="Node2D" unique_id=226391195]
+script = ExtResource("1_5un7r")
+metadata/_edit_vertical_guides_ = [-576.0, 576.0]
+metadata/_edit_horizontal_guides_ = [-832.0, -832.0]
+
+[node name="GameplayScreen" parent="." unique_id=1834170711 instance=ExtResource("2_xtpaf")]
