@@ -1,14 +1,16 @@
 extends Node2D
 
 const LEVEL_BLOCK = preload("uid://dtvqbjemca8sx")
+const FALLING_BLOCK = preload("uid://bc6jrwvfpr8s5")
 
-@export var player_spawn_height := 300
+@export var player_spawn_height := 500
+@export var falling_block_spawn_height := 300
+
+var level_blocks: Array[LevelBlock] = []
+var level_bounds := Rect2i(0, 0, 0, 0)
 
 @onready var debug_menu: GameplayDebugMenu = %DebugMenu
 @onready var player: CharacterBody2D = %Player
-
-var level_blocks: Array[LevelBlock] = []
-var level_bounds := Rect2(0, 0, 0, 0)
 
 
 func _ready() -> void:
@@ -22,12 +24,12 @@ func _ready() -> void:
 	_respawn_player()
 
 	debug_menu.add_button("respawn player", _respawn_player)
-	debug_menu.add_button("spawn block above player", func(): pass)
+	debug_menu.add_button("spawn block above player", _debug_spawn_block_above_player)
 
 
 func _respawn_player() -> void:
 	player.global_position = (
-			level_bounds.get_center() * Constants.LEVEL_CELL_SIZE
+			Vector2(level_bounds.get_center()) * Constants.LEVEL_CELL_SIZE
 			- Vector2(0, player_spawn_height)
 	)
 	player.velocity = Vector2.ZERO
@@ -38,3 +40,19 @@ func _create_level_block() -> LevelBlock:
 	add_child(block)
 	level_blocks.append(block)
 	return block
+
+
+func _on_block_spawn_timer_timeout() -> void:
+	var block: Node2D = FALLING_BLOCK.instantiate()
+	block.global_position = Vector2(
+		randi_range(level_bounds.position.x, level_bounds.end.x - 1)
+		* Constants.LEVEL_CELL_SIZE,
+		-falling_block_spawn_height,
+	)
+	add_child(block)
+
+
+func _debug_spawn_block_above_player():
+	var block: Node2D = FALLING_BLOCK.instantiate()
+	block.global_position = player.global_position - Vector2(0, 500)
+	add_child(block)
