@@ -14,9 +14,9 @@ var level_bounds := Rect2i(0, 0, 0, 0)
 
 
 func _ready() -> void:
-	_create_level_block().set_level_rect(0, 0, 20, 1)
-	_create_level_block().set_level_rect(1, 1, 18, 1)
-	_create_level_block().set_level_rect(2, 2, 16, 1)
+	_create_level_block().set_level_rect(0, 0, 24, 1)
+	_create_level_block().set_level_rect(1, 1, 22, 1)
+	_create_level_block().set_level_rect(2, 2, 20, 1)
 
 	for level_block in level_blocks:
 		level_bounds = level_bounds.merge(level_block.level_rect)

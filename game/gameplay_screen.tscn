@@ -9,15 +9,18 @@
 script = ExtResource("1_etcqo")
 
 [node name="Camera2D" parent="." unique_id=933668665 node_paths=PackedStringArray("target") instance=ExtResource("2_phy4t")]
+offset = Vector2(0, -120)
 editor_draw_screen = true
 target = NodePath("../Player")
 
 [node name="BlockSpawnTimer" type="Timer" parent="." unique_id=2139284075]
 unique_name_in_owner = true
+wait_time = 0.3
 autostart = true
 
 [node name="Player" parent="." unique_id=1227805615 instance=ExtResource("3_etcqo")]
 unique_name_in_owner = true
+jump_strength = 800.0
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1345430208]
 

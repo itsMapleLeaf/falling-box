@@ -6,7 +6,7 @@ extends CharacterBody2D
 @export var gravity := 2500.0
 
 @export var jump_strength := 700.0
-var has_second_jump := true
+var jumps := 2
 
 
 func _ready() -> void:
@@ -16,16 +16,13 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	velocity += gravity * Vector2.DOWN * delta
 
+	# intentionally allows jumping twice after walking off a ledge - more fun this way!
 	if is_on_floor():
-		has_second_jump = true
+		jumps = 2
 
-	if Input.is_action_just_pressed("jump"):
-		if is_on_floor():
-			velocity.y = -jump_strength
-
-		if not is_on_floor() and has_second_jump:
-			velocity.y = -jump_strength
-			has_second_jump = false
+	if Input.is_action_just_pressed("jump") and jumps > 0:
+		velocity.y = -jump_strength
+		jumps -= 1
 
 	velocity.x = lerpf(
 		velocity.x,

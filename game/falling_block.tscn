@@ -9,8 +9,12 @@ size = Vector2(49, 50)
 collision_layer = 2
 collision_mask = 6
 script = ExtResource("1_653rq")
+gravity = 800.0
+terminal_velocity = 600.0
+max_lifetime = 15.0
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1550194909]
+unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -23,5 +27,6 @@ offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1189798761]
+[node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1189798761]
+unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_7mycd")
