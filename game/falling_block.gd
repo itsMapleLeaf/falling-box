@@ -1,9 +1,10 @@
+class_name FallingBlock
 extends CharacterBody2D
 
-@export var gravity: float
-@export var terminal_velocity: float
+const GRAVITY = 800.0
+const TERMINAL_VELOCITY = 600.0
+const MAX_LIFETIME = 15.0
 
-@export var max_lifetime: float
 var lifetime: float
 
 @onready var sprite: ColorRect = %ColorRect
@@ -11,7 +12,7 @@ var lifetime: float
 
 
 func _ready() -> void:
-	lifetime = max_lifetime
+	lifetime = MAX_LIFETIME
 	sprite.color.a = 0
 
 
@@ -29,8 +30,8 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	velocity.y = clampf(
-		velocity.y + gravity * delta,
-		-terminal_velocity,
-		terminal_velocity,
+			velocity.y + GRAVITY * delta,
+			-TERMINAL_VELOCITY,
+			TERMINAL_VELOCITY,
 	)
 	move_and_slide()
