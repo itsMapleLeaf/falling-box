@@ -1,4 +1,7 @@
+class_name Player
 extends CharacterBody2D
+
+signal yeeted(player: Player, at: Vector2, direction: int)
 
 const MOVE_SPEED = 500.0
 const MOVE_ACCEL = 10.0
@@ -55,6 +58,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		holding = false
 		facing_dot.visible = true
 		held_block.visible = false
+		yeeted.emit(held_block.global_position, facing)
 
 
 func _physics_process(delta: float) -> void:

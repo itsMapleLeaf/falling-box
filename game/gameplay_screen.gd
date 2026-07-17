@@ -1,8 +1,5 @@
 extends Node2D
 
-const LEVEL_BLOCK = preload("uid://dtvqbjemca8sx")
-const FALLING_BLOCK = preload("uid://bc6jrwvfpr8s5")
-
 @export var player_spawn_height := 500
 @export var falling_block_spawn_height := 1000
 
@@ -12,6 +9,7 @@ var level_bounds := Rect2i(0, 0, 0, 0)
 @onready var debug_menu: GameplayDebugMenu = %DebugMenu
 @onready var player: CharacterBody2D = %Player
 @onready var falling_blocks: Node2D = %FallingBlocks
+@onready var flying_blocks: Node2D = %FlyingBlocks
 
 
 func _ready() -> void:
@@ -39,6 +37,7 @@ func _respawn_player() -> void:
 
 
 func _create_level_block() -> LevelBlock:
+	const LEVEL_BLOCK = preload("uid://dtvqbjemca8sx")
 	var block: LevelBlock = LEVEL_BLOCK.instantiate()
 	add_child(block)
 	level_blocks.append(block)
@@ -46,6 +45,7 @@ func _create_level_block() -> LevelBlock:
 
 
 func _on_block_spawn_timer_timeout() -> void:
+	const FALLING_BLOCK = preload("uid://bc6jrwvfpr8s5")
 	var block: Node2D = FALLING_BLOCK.instantiate()
 	block.global_position = Vector2(
 			randi_range(level_bounds.position.x, level_bounds.end.x - 1) * Constants.LEVEL_CELL_SIZE,
@@ -54,7 +54,16 @@ func _on_block_spawn_timer_timeout() -> void:
 	falling_blocks.add_child(block)
 
 
+func _on_player_yeeted(_player_yeeting: Player, at: Vector2, direction: int) -> void:
+	const FLYING_BLOCK = preload("uid://x6duholk1sc1")
+	var block: FlyingBlock = FLYING_BLOCK.instantiate()
+	block.global_position = at
+	block.direction = direction
+	flying_blocks.add_child(block)
+
+
 func _debug_spawn_block_above_player():
+	const FALLING_BLOCK = preload("uid://bc6jrwvfpr8s5")
 	var block: Node2D = FALLING_BLOCK.instantiate()
 	block.global_position = player.global_position - Vector2(0, 500)
 	add_child(block)

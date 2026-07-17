@@ -21,6 +21,9 @@ autostart = true
 [node name="FallingBlocks" type="Node2D" parent="." unique_id=1946728829]
 unique_name_in_owner = true
 
+[node name="FlyingBlocks" type="Node2D" parent="." unique_id=779990653]
+unique_name_in_owner = true
+
 [node name="Player" parent="." unique_id=1227805615 instance=ExtResource("3_etcqo")]
 unique_name_in_owner = true
 
@@ -33,3 +36,4 @@ offset_bottom = 0.0
 focus_mode = 3
 
 [connection signal="timeout" from="BlockSpawnTimer" to="." method="_on_block_spawn_timer_timeout"]
+[connection signal="yeeted" from="Player" to="." method="_on_player_yeeted"]

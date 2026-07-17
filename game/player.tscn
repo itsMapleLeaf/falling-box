@@ -27,7 +27,7 @@ mesh = SubResource("QuadMesh_5a5w3")
 unique_name_in_owner = true
 mesh = SubResource("QuadMesh_dadds")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=161440801]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=161440801]
 unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_yf5fn")
 

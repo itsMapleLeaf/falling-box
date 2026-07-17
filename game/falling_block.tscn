@@ -8,7 +8,7 @@ size = Vector2(50, 50)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
 size = Vector2(49, 50)
 
-[node name="FallingBlock" type="CharacterBody2D" unique_id=2137065520]
+[node name="FallingBlock" type="CharacterBody2D" unique_id=685326334]
 collision_layer = 4
 collision_mask = 6
 script = ExtResource("1_653rq")

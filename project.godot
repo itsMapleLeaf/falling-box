@@ -64,6 +64,7 @@ debug_exit={
 2d_physics/layer_1="players"
 2d_physics/layer_2="level blocks"
 2d_physics/layer_3="falling blocks"
+2d_physics/layer_4="flying blocks"
 
 [physics]
 
