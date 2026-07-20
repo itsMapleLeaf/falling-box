@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
-signal yeeted(player: Player, at: Vector2, direction: int)
+signal block_yeeted(player: Player, at: Vector2, direction: int)
 
 const MOVE_SPEED = 500.0
 const MOVE_ACCEL = 10.0
@@ -23,10 +23,6 @@ var holding := false
 # but to move as if it's still in the global environment, and we're "dragging" it along,
 # so we manually track and apply an interpolated global position to accomplish that
 @onready var held_block_target_global_position := held_block.global_position
-
-
-func _ready() -> void:
-	velocity = Vector2(0, 100)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -58,7 +54,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		holding = false
 		facing_dot.visible = true
 		held_block.visible = false
-		yeeted.emit(held_block.global_position, facing)
+		block_yeeted.emit(self, held_block.global_position, facing)
 
 
 func _physics_process(delta: float) -> void:

@@ -54,7 +54,7 @@ func _on_block_spawn_timer_timeout() -> void:
 	falling_blocks.add_child(block)
 
 
-func _on_player_yeeted(_player_yeeting: Player, at: Vector2, direction: int) -> void:
+func _on_player_block_yeeted(_player: Player, at: Vector2, direction: int) -> void:
 	const FLYING_BLOCK = preload("uid://x6duholk1sc1")
 	var block: FlyingBlock = FLYING_BLOCK.instantiate()
 	block.global_position = at
