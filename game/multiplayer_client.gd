@@ -1,10 +1,11 @@
+class_name MultiplayerClient
 extends Screen
 
 var peer := ENetMultiplayerPeer.new()
 
 
-func _ready() -> void:
-	peer.create_client("localhost", 7586)
+func start(host: String, port: int) -> void:
+	peer.create_client(host, port)
 	multiplayer.multiplayer_peer = peer
 
 

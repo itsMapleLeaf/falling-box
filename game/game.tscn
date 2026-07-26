@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bhljs2y0to2fx"]
 
-[ext_resource type="Script" uid="uid://dhkb1ciy68gip" path="res://game/gameplay.gd" id="1_uqntx"]
+[ext_resource type="Script" uid="uid://dhkb1ciy68gip" path="res://game/game.gd" id="1_uqntx"]
 [ext_resource type="PackedScene" uid="uid://hkgcke44mre4" path="res://game/camera.tscn" id="2_dxrkv"]
 [ext_resource type="PackedScene" uid="uid://drrfhf8cuabel" path="res://game/gameplay_debug_menu.tscn" id="4_u5opy"]
 

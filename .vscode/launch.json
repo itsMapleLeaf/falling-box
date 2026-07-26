@@ -22,16 +22,14 @@
 			"debug_collisions": false,
 			"debug_paths": false,
 			"debug_navigation": false,
-			"additional_options": "host 7586"
-		},
+			"additional_options": "host 7586",
+			"internalConsoleOptions": "openOnSessionStart"
+		}
 	],
 	"compounds": [
 		{
 			"name": "Launch Client and Server",
-			"configurations": [
-				"Launch Server",
-				"Launch Client"
-			]
+			"configurations": ["Launch Server", "Launch Client"]
 		}
 	]
 }

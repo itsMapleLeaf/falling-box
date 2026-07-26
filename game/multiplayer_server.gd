@@ -1,19 +1,19 @@
+class_name MultiplayerServer
 extends Screen
 
 var peer := ENetMultiplayerPeer.new()
 
 @onready var game: Game = %Game
-var player: Player
+
+var players_by_peer_id: Dictionary[int, Player] = { }
 
 
-func _ready() -> void:
-	peer.create_server(7586)
+func start(port: int) -> void:
+	peer.create_server(port)
 	multiplayer.multiplayer_peer = peer
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-
-	player = game.spawn_player()
 
 
 func exit_screen() -> void:
@@ -23,13 +23,20 @@ func exit_screen() -> void:
 func _on_peer_connected(id: int) -> void:
 	prints("connected:", id)
 
+	var player: Player = game.add_player()
+	players_by_peer_id[id] = player
+
+	if not game.camera.target:
+		game.camera.target = player
+
 
 func _on_peer_disconnected(id: int) -> void:
 	prints("disconnected:", id)
 
-
-func _on_stop_button_pressed() -> void:
-	_leave()
+	var player := players_by_peer_id[id]
+	if player:
+		game.remove_player(player)
+		players_by_peer_id.erase(id)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
