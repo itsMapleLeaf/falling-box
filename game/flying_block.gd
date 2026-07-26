@@ -12,6 +12,9 @@ var hits := 2
 
 
 func _process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
+
 	lifetime -= delta
 	if lifetime < 0:
 		queue_free()
@@ -19,10 +22,16 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
+
 	global_position += Vector2(SPEED, 0) * direction * delta
 
 
 func _on_body_entered(body: Node2D) -> void:
+	if not multiplayer.is_server():
+		return
+
 	if body is FallingBlock:
 		if hits > 0:
 			body.queue_free()

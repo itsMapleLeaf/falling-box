@@ -8,6 +8,11 @@ size = Vector2(50, 50)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
 size = Vector2(50, 50)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_my3wi"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="FlyingBlock" type="Area2D" unique_id=444247945]
 collision_layer = 8
 collision_mask = 15
@@ -20,5 +25,8 @@ mesh = SubResource("QuadMesh_vqo22")
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1189798761]
 unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_7mycd")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1536775589]
+replication_config = SubResource("SceneReplicationConfig_my3wi")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

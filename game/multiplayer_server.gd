@@ -2,6 +2,9 @@ extends Screen
 
 var peer := ENetMultiplayerPeer.new()
 
+@onready var game: Game = %Game
+var player: Player
+
 
 func _ready() -> void:
 	peer.create_server(7586)
@@ -9,6 +12,8 @@ func _ready() -> void:
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+
+	player = game.spawn_player()
 
 
 func exit_screen() -> void:

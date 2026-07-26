@@ -8,6 +8,14 @@ size = Vector2(50, 50)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
 size = Vector2(49, 50)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_653rq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:modulate")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="FallingBlock" type="CharacterBody2D" unique_id=685326334]
 collision_layer = 4
 collision_mask = 6
@@ -20,3 +28,6 @@ mesh = SubResource("QuadMesh_vqo22")
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1189798761]
 unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_7mycd")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=700737655]
+replication_config = SubResource("SceneReplicationConfig_653rq")

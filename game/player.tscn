@@ -14,6 +14,20 @@ size = Vector2(40, 40)
 [sub_resource type="QuadMesh" id="QuadMesh_vqo22"]
 size = Vector2(50, 50)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_dadds"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:facing")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:holding")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("HeldBlock:position")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+
 [node name="Player" type="CharacterBody2D" unique_id=1227805615]
 collision_mask = 14
 script = ExtResource("1_dadds")
@@ -36,3 +50,6 @@ unique_name_in_owner = true
 visible = false
 position = Vector2(57, 0)
 mesh = SubResource("QuadMesh_vqo22")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1010554231]
+replication_config = SubResource("SceneReplicationConfig_dadds")

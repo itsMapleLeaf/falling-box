@@ -1,9 +1,13 @@
 [gd_scene format=3 uid="uid://e26iex8f85mj"]
 
 [ext_resource type="Script" uid="uid://hv17650wfjli" path="res://game/multiplayer_server.gd" id="1_wck1c"]
+[ext_resource type="PackedScene" uid="uid://bhljs2y0to2fx" path="res://game/gameplay.tscn" id="2_es08d"]
 
 [node name="Server" type="Node" unique_id=1470199767]
 script = ExtResource("1_wck1c")
+
+[node name="Game" parent="." unique_id=1834170711 instance=ExtResource("2_es08d")]
+unique_name_in_owner = true
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=357548715]
 

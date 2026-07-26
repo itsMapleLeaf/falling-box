@@ -12,11 +12,17 @@ var lifetime: float
 
 
 func _ready() -> void:
+	if not multiplayer.is_server():
+		return
+
 	lifetime = MAX_LIFETIME
 	sprite.modulate.a = 0
 
 
 func _process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
+
 	lifetime -= delta
 	if lifetime > 0:
 		sprite.modulate.a = minf(sprite.modulate.a + delta, 1)
@@ -29,6 +35,9 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if not multiplayer.is_server():
+		return
+
 	velocity.y = clampf(
 			velocity.y + GRAVITY * delta,
 			-TERMINAL_VELOCITY,

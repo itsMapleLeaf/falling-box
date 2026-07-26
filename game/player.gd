@@ -10,14 +10,14 @@ const JUMP_STRENGTH = 750.0
 const HELD_BLOCK_INTERPOLATION_STIFFNESS = 20.0
 
 var jumps := 2
-var facing := 1
-var holding := false
+@export var facing := 1
+@export var holding := false
 
 @onready var facing_dot: MeshInstance2D = %FacingDot
-@onready var facing_dot_offset := facing_dot.position - position
+@onready var facing_dot_offset := facing_dot.position
 
 @onready var held_block: MeshInstance2D = %HeldBlock
-@onready var held_block_offset := held_block.position - position
+@onready var held_block_offset := held_block.position
 
 # we don't want the held block position to be fixed with the parent,
 # but to move as if it's still in the global environment, and we're "dragging" it along,
@@ -26,43 +26,45 @@ var holding := false
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if event.is_action_pressed("move_left"):
-		facing = -1
-		facing_dot.position = -facing_dot_offset
+	if multiplayer.is_server():
+		if event.is_action_pressed("move_left"):
+			facing = -1
 
-	if event.is_action_pressed("move_right"):
-		facing = 1
-		facing_dot.position = facing_dot_offset
+		if event.is_action_pressed("move_right"):
+			facing = 1
 
-	if event.is_action_pressed("grab") and not holding:
-		var query := PhysicsPointQueryParameters2D.new()
-		query.position = facing_dot.global_position
+		if event.is_action_pressed("grab") and not holding:
+			var query := PhysicsPointQueryParameters2D.new()
+			query.position = facing_dot.global_position
 
-		var results := get_world_2d().direct_space_state.intersect_point(query, 32)
-		for result in results:
-			var block := result['collider'] as FallingBlock
-			if block:
-				holding = true
-				facing_dot.visible = false
-				held_block.visible = true
-				held_block.global_position = block.global_position
-				held_block_target_global_position = held_block.global_position
-				block.queue_free()
-				break
+			var results := get_world_2d().direct_space_state.intersect_point(query, 32)
+			for result in results:
+				var block := result['collider'] as FallingBlock
+				if block:
+					holding = true
+					held_block.global_position = block.global_position
+					held_block_target_global_position = held_block.global_position
+					block.queue_free()
+					break
 
-	if event.is_action_released("grab") and holding:
-		holding = false
-		facing_dot.visible = true
-		held_block.visible = false
-		block_yeeted.emit(self, held_block.global_position, facing)
+		if event.is_action_released("grab") and holding:
+			holding = false
+			block_yeeted.emit(self, held_block.global_position, facing)
+
+
+func _process(_delta: float) -> void:
+	facing_dot.position = facing * facing_dot_offset
+	facing_dot.visible = not holding
+	held_block.visible = holding
 
 
 func _physics_process(delta: float) -> void:
-	velocity += GRAVITY * Vector2.DOWN * delta
+	if multiplayer.is_server():
+		velocity += GRAVITY * Vector2.DOWN * delta
 
-	_handle_jumping()
-	_move_colliding(delta)
-	_reposition_held_block(delta)
+		_handle_jumping()
+		_move_colliding(delta)
+		_reposition_held_block(delta)
 
 
 func _handle_jumping():

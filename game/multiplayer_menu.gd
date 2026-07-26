@@ -4,10 +4,12 @@ extends Screen
 
 
 func _on_host_button_pressed() -> void:
-	var multiplayer_server_scene := load("uid://e26iex8f85mj")
-	ScreenManager.switch(multiplayer_server_scene.instantiate())
+	var gameplay: Gameplay = load("uid://bhljs2y0to2fx").instantiate()
+	ScreenManager.switch(gameplay)
+	gameplay.start_server()
 
 
 func _on_connect_button_pressed() -> void:
-	var multiplayer_client_scene := load("uid://l5cq1fqrpluh")
-	ScreenManager.switch(multiplayer_client_scene.instantiate())
+	var gameplay: Gameplay = load("uid://bhljs2y0to2fx").instantiate()
+	ScreenManager.switch(gameplay)
+	gameplay.start_client()
