@@ -15,7 +15,7 @@ func _ready() -> void:
 			_start_menu()
 		_:
 			push_error("Invalid launch arguments: " + str(args))
-			get_tree().quit()
+			_start_menu()
 
 
 func _start_menu() -> void:

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bc6jrwvfpr8s5"]
 
-[ext_resource type="Script" uid="uid://dftaak8mfyrdp" path="res://game/falling_block.gd" id="1_653rq"]
+[ext_resource type="Script" uid="uid://dftaak8mfyrdp" path="res://src/falling_block.gd" id="1_653rq"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_vqo22"]
 size = Vector2(50, 50)

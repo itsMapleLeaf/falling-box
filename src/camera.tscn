@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://hkgcke44mre4"]
 
-[ext_resource type="Script" uid="uid://c5sduc88r4v8k" path="res://game/camera.gd" id="1_hccnn"]
+[ext_resource type="Script" uid="uid://c5sduc88r4v8k" path="res://src/camera.gd" id="1_hccnn"]
 
 [node name="Camera2D" type="Camera2D" unique_id=933668665]
 offset = Vector2(0, -100)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://48dg7eo7ue11"]
 
-[ext_resource type="Script" uid="uid://c78xjkapb6nqk" path="res://game/player.gd" id="1_dadds"]
+[ext_resource type="Script" uid="uid://c78xjkapb6nqk" path="res://src/player.gd" id="1_dadds"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_5a5w3"]
 size = Vector2(5, 5)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://drrfhf8cuabel"]
 
-[ext_resource type="Script" uid="uid://d36n7urlvxoux" path="res://game/gameplay_debug_menu.gd" id="1_1vay1"]
+[ext_resource type="Script" uid="uid://d36n7urlvxoux" path="res://src/gameplay_debug_menu.gd" id="1_1vay1"]
 
 [node name="GameplayDebugMenu" type="Control" unique_id=907468527]
 layout_mode = 3

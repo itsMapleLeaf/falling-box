@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://e26iex8f85mj"]
 
-[ext_resource type="Script" uid="uid://hv17650wfjli" path="res://game/multiplayer_server.gd" id="1_wck1c"]
-[ext_resource type="PackedScene" uid="uid://bhljs2y0to2fx" path="res://game/game.tscn" id="2_es08d"]
+[ext_resource type="Script" uid="uid://hv17650wfjli" path="res://src/multiplayer_server.gd" id="1_wck1c"]
+[ext_resource type="PackedScene" uid="uid://bhljs2y0to2fx" path="res://src/game.tscn" id="2_es08d"]
 
 [node name="Server" type="Node" unique_id=1470199767]
 script = ExtResource("1_wck1c")
