@@ -1,30 +1,15 @@
 [gd_scene format=3 uid="uid://bhljs2y0to2fx"]
 
-[ext_resource type="Script" uid="uid://dhkb1ciy68gip" path="res://src/game.gd" id="1_uqntx"]
-[ext_resource type="PackedScene" uid="uid://hkgcke44mre4" path="res://src/camera.tscn" id="2_dxrkv"]
+[ext_resource type="Script" uid="uid://dhkb1ciy68gip" path="res://src/gameplay.gd" id="1_uqntx"]
 [ext_resource type="PackedScene" uid="uid://drrfhf8cuabel" path="res://src/gameplay_debug_menu.tscn" id="4_u5opy"]
 
-[node name="Game" type="Node" unique_id=466922683]
+[node name="Gameplay" type="Node" unique_id=466922683]
 script = ExtResource("1_uqntx")
-
-[node name="Camera" parent="." unique_id=933668665 instance=ExtResource("2_dxrkv")]
-unique_name_in_owner = true
-offset = Vector2(0, -120)
-editor_draw_screen = true
 
 [node name="BlockSpawnTimer" type="Timer" parent="." unique_id=2139284075]
 unique_name_in_owner = true
 wait_time = 0.945
 autostart = true
-
-[node name="FallingBlocks" type="Node2D" parent="." unique_id=1946728829]
-unique_name_in_owner = true
-
-[node name="FlyingBlocks" type="Node2D" parent="." unique_id=779990653]
-unique_name_in_owner = true
-
-[node name="Players" type="Node2D" parent="." unique_id=1324638986]
-unique_name_in_owner = true
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1345430208]
 visible = false
@@ -37,14 +22,14 @@ focus_mode = 3
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1628562308]
 _spawnable_scenes = PackedStringArray("uid://48dg7eo7ue11")
-spawn_path = NodePath("../Players")
+spawn_path = NodePath("..")
 
 [node name="FallingBlockSpawner" type="MultiplayerSpawner" parent="." unique_id=1909937755]
 _spawnable_scenes = PackedStringArray("uid://bc6jrwvfpr8s5")
-spawn_path = NodePath("../FallingBlocks")
+spawn_path = NodePath("..")
 
 [node name="FlyingBlockSpawner" type="MultiplayerSpawner" parent="." unique_id=1576534305]
 _spawnable_scenes = PackedStringArray("uid://x6duholk1sc1")
-spawn_path = NodePath("../FlyingBlocks")
+spawn_path = NodePath("..")
 
 [connection signal="timeout" from="BlockSpawnTimer" to="." method="_on_block_spawn_timer_timeout"]

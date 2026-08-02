@@ -3,14 +3,16 @@ extends Node2D
 
 func _ready() -> void:
 	# get launch args
-	var args := OS.get_cmdline_args()
+	var args := OS.get_cmdline_user_args()
 	prints("Launch args: ", args)
 
 	match Array(args):
 		["host", var port]:
-			_start_host(int(port))
+			#_start_host(int(port))
+			prints("host", port)
 		["join", var host, var port]:
-			_start_client(host, int(port))
+			prints("join", host, port)
+			#_start_client(host, int(port))
 		[]:
 			_start_menu()
 		_:
@@ -24,12 +26,12 @@ func _start_menu() -> void:
 
 
 func _start_host(port: int) -> void:
-	var server: MultiplayerServer = load("res://game/multiplayer_server.tscn").instantiate()
+	var server: MultiplayerServer = load("res://src/multiplayer_server.tscn").instantiate()
 	ScreenManager.switch(server)
 	server.start(port)
 
 
 func _start_client(host: String, port: int) -> void:
-	var client: MultiplayerClient = load("res://game/multiplayer_client.tscn").instantiate()
+	var client: MultiplayerClient = load("res://src/multiplayer_client.tscn").instantiate()
 	ScreenManager.switch(client)
 	client.start(host, port)

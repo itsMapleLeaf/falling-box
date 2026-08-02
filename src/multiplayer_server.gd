@@ -3,7 +3,7 @@ extends Screen
 
 var peer := ENetMultiplayerPeer.new()
 
-@onready var game: Game = %Game
+@onready var game: Gameplay = %Gameplay
 
 var players_by_peer_id: Dictionary[int, Player] = { }
 

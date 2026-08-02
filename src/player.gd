@@ -24,9 +24,28 @@ var jumps := 2
 # so we manually track and apply an interpolated global position to accomplish that
 @onready var held_block_target_global_position := held_block.global_position
 
+@onready var camera: Camera2D = $Camera2D
+
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(int(name))
+
+
+func _ready() -> void:
+	camera.enabled = is_multiplayer_authority()
+
+
+@rpc("any_peer", "call_local", "reliable")
+func spawn_at(new_position: Vector2) -> void:
+	if not is_node_ready():
+		await ready
+
+	prints("spawn", new_position)
+	global_position = new_position
+
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if multiplayer.is_server():
+	if is_multiplayer_authority():
 		if event.is_action_pressed("move_left"):
 			facing = -1
 
@@ -59,7 +78,7 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if multiplayer.is_server():
+	if is_multiplayer_authority():
 		velocity += GRAVITY * Vector2.DOWN * delta
 
 		_handle_jumping()

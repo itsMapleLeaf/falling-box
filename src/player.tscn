@@ -53,3 +53,9 @@ mesh = SubResource("QuadMesh_vqo22")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1010554231]
 replication_config = SubResource("SceneReplicationConfig_dadds")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1432060970]
+offset = Vector2(0, -100)
+enabled = false
+position_smoothing_enabled = true
+position_smoothing_speed = 12.0

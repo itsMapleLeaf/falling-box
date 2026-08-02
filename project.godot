@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="falling box"
-run/main_scene="uid://bxh2pxa717jhx"
+run/main_scene="uid://bhljs2y0to2fx"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
