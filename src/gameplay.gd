@@ -15,9 +15,9 @@ var players_by_peer_id: Dictionary[int, Player] = { }
 
 
 func _ready() -> void:
-	_create_level_block().set_level_rect(0, 0, 24, 1)
-	_create_level_block().set_level_rect(1, 1, 22, 1)
-	_create_level_block().set_level_rect(2, 2, 20, 1)
+	_create_level_block().set_level_rect(Rect2i(0, 0, 24, 1))
+	_create_level_block().set_level_rect(Rect2i(0, 1, 22, 1))
+	_create_level_block().set_level_rect(Rect2i(0, 2, 20, 1))
 
 	for level_block in level_blocks:
 		level_bounds = level_bounds.merge(level_block.level_rect)
@@ -73,15 +73,13 @@ func add_player(peer_id: int) -> Player:
 	players_by_peer_id[peer_id] = player
 
 	add_child(player)
-	
+
 	# there's a dumb timing issue that i dunno how to resolve
 	await get_tree().create_timer(1).timeout
 
 	player.spawn_at.rpc(
-			Vector2(level_bounds.get_center()) * Constants.LEVEL_CELL_SIZE - Vector2(
-					0,
-					player_spawn_height,
-			)
+		Vector2(level_bounds.get_center()) * Constants.LEVEL_CELL_SIZE
+		- Vector2(0, player_spawn_height)
 	)
 
 	return player
@@ -105,8 +103,8 @@ func _on_block_spawn_timer_timeout() -> void:
 	if multiplayer.is_server():
 		var block: Node2D = load("uid://bc6jrwvfpr8s5").instantiate()
 		block.global_position = Vector2(
-				randi_range(level_bounds.position.x, level_bounds.end.x - 1) * Constants.LEVEL_CELL_SIZE,
-				-falling_block_spawn_height,
+			randi_range(level_bounds.position.x, level_bounds.end.x - 1) * Constants.LEVEL_CELL_SIZE,
+			-falling_block_spawn_height,
 		)
 		add_child(block, true)
 
