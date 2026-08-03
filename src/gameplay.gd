@@ -1,11 +1,7 @@
 class_name Gameplay
 extends Screen
 
-@export var player_spawn_height := 500
 @export var falling_block_spawn_height := 1000
-
-var level_blocks: Array[LevelBlock] = []
-var level_bounds := Rect2i(0, 0, 0, 0)
 
 @onready var debug_menu: GameplayDebugMenu = %DebugMenu
 
@@ -15,12 +11,8 @@ var players_by_peer_id: Dictionary[int, Player] = { }
 
 
 func _ready() -> void:
-	_create_level_block().set_level_rect(Rect2i(0, 0, 24, 1))
-	_create_level_block().set_level_rect(Rect2i(0, 1, 22, 1))
-	_create_level_block().set_level_rect(Rect2i(0, 2, 20, 1))
-
-	for level_block in level_blocks:
-		level_bounds = level_bounds.merge(level_block.level_rect)
+	for level_rect in Globals.default_level.rects:
+		_create_level_block().set_level_rect(level_rect)
 
 	var args := OS.get_cmdline_user_args()
 	prints("Launch args: ", args)
@@ -74,14 +66,6 @@ func add_player(peer_id: int) -> Player:
 
 	add_child(player)
 
-	# there's a dumb timing issue that i dunno how to resolve
-	await get_tree().create_timer(1).timeout
-
-	player.spawn_at.rpc(
-		Vector2(level_bounds.get_center()) * Constants.LEVEL_CELL_SIZE
-		- Vector2(0, player_spawn_height)
-	)
-
 	return player
 
 
@@ -95,7 +79,6 @@ func remove_player(peer_id) -> void:
 func _create_level_block() -> LevelBlock:
 	var block: LevelBlock = load("uid://dtvqbjemca8sx").instantiate()
 	add_child(block, true)
-	level_blocks.append(block)
 	return block
 
 
@@ -103,7 +86,11 @@ func _on_block_spawn_timer_timeout() -> void:
 	if multiplayer.is_server():
 		var block: Node2D = load("uid://bc6jrwvfpr8s5").instantiate()
 		block.global_position = Vector2(
-			randi_range(level_bounds.position.x, level_bounds.end.x - 1) * Constants.LEVEL_CELL_SIZE,
+			randi_range(
+				Globals.default_level.bounds.position.x,
+				Globals.default_level.bounds.end.x - 1,
+			)
+			* Globals.LEVEL_CELL_SIZE,
 			-falling_block_spawn_height,
 		)
 		add_child(block, true)

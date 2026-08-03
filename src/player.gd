@@ -8,6 +8,7 @@ const MOVE_ACCEL = 10.0
 const GRAVITY = 2500.0
 const JUMP_STRENGTH = 750.0
 const HELD_BLOCK_INTERPOLATION_STIFFNESS = 20.0
+const SPAWN_HEIGHT = 500
 
 var jumps := 2
 @export var facing := 1
@@ -34,18 +35,19 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	camera.enabled = is_multiplayer_authority()
 
-
-@rpc("any_peer", "call_local", "reliable")
-func spawn_at(new_position: Vector2) -> void:
-	if not is_node_ready():
-		await ready
-
-	prints("spawn", new_position)
-	global_position = new_position
+	# crimes
+	global_position = Vector2(
+		(
+			randi_range(Globals.default_level.bounds.position.x, Globals.default_level.bounds.end.x)
+			- float(Globals.default_level.bounds.size.x) / 2
+		)
+		* Globals.LEVEL_CELL_SIZE,
+		-SPAWN_HEIGHT,
+	)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if is_multiplayer_authority():
+	if is_multiplayer_authority() and get_window().has_focus():
 		if event.is_action_pressed("move_left"):
 			facing = -1
 
@@ -98,9 +100,9 @@ func _handle_jumping():
 
 func _move_colliding(delta: float):
 	velocity.x = lerpf(
-			velocity.x,
-			Input.get_axis("move_left", "move_right") * MOVE_SPEED,
-			clampf(MOVE_ACCEL * delta, 0, 1),
+		velocity.x,
+		Input.get_axis("move_left", "move_right") * MOVE_SPEED,
+		clampf(MOVE_ACCEL * delta, 0, 1),
 	)
 
 	move_and_slide()
@@ -125,7 +127,7 @@ func _move_colliding(delta: float):
 func _reposition_held_block(delta: float):
 	if holding:
 		held_block_target_global_position = held_block_target_global_position.lerp(
-				global_position + held_block_offset * facing,
-				clampf(delta * HELD_BLOCK_INTERPOLATION_STIFFNESS, 0, 1),
+			global_position + held_block_offset * facing,
+			clampf(delta * HELD_BLOCK_INTERPOLATION_STIFFNESS, 0, 1),
 		)
 		held_block.global_position = held_block_target_global_position
