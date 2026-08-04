@@ -11,6 +11,12 @@ const HELD_BLOCK_INTERPOLATION_STIFFNESS = 20.0
 const SPAWN_HEIGHT = 500
 
 var jumps := 2
+
+## variable for the input handler to communicate to the process loop that a jump is desired,
+## to ensure the correct order of jumps and jump resets, e.g. so we don't accidentally get extra jumps
+var jump_queued := false
+
+var movement := 0
 @export var facing := 1
 @export var holding := false
 
@@ -46,13 +52,12 @@ func _ready() -> void:
 	)
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if is_multiplayer_authority() and get_window().has_focus():
-		if event.is_action_pressed("move_left"):
-			facing = -1
+		movement = int(signf(Input.get_axis("move_left", "move_right")))
 
-		if event.is_action_pressed("move_right"):
-			facing = 1
+		if movement != 0:
+			facing = movement
 
 		if event.is_action_pressed("grab") and not holding:
 			var query := PhysicsPointQueryParameters2D.new()
@@ -72,6 +77,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			holding = false
 			block_yeeted.emit(self, held_block.global_position, facing)
 
+		if event.is_action_pressed("jump") and jumps > 0:
+			jump_queued = true
+
 
 func _process(_delta: float) -> void:
 	facing_dot.position = facing * facing_dot_offset
@@ -83,27 +91,22 @@ func _physics_process(delta: float) -> void:
 	if is_multiplayer_authority():
 		velocity += GRAVITY * Vector2.DOWN * delta
 
-		_handle_jumping()
+		# intentionally allows jumping twice after walking off a ledge - more fun this way!
+		if is_on_floor():
+			jumps = 2
+
+		if jump_queued:
+			jump_queued = false
+			if jumps > 0:
+				velocity.y = -JUMP_STRENGTH
+				jumps -= 1
+
 		_move_colliding(delta)
 		_reposition_held_block(delta)
 
 
-func _handle_jumping():
-	# intentionally allows jumping twice after walking off a ledge - more fun this way!
-	if is_on_floor():
-		jumps = 2
-
-	if Input.is_action_just_pressed("jump") and jumps > 0:
-		velocity.y = -JUMP_STRENGTH
-		jumps -= 1
-
-
 func _move_colliding(delta: float):
-	velocity.x = lerpf(
-		velocity.x,
-		Input.get_axis("move_left", "move_right") * MOVE_SPEED,
-		clampf(MOVE_ACCEL * delta, 0, 1),
-	)
+	velocity.x = lerpf(velocity.x, movement * MOVE_SPEED, clampf(MOVE_ACCEL * delta, 0, 1))
 
 	move_and_slide()
 
