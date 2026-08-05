@@ -80,17 +80,13 @@ func remove_player(peer_id) -> void:
 func _on_block_spawn_timer_timeout() -> void:
 	if multiplayer.is_server():
 		var block: Node2D = load("uid://bc6jrwvfpr8s5").instantiate()
+		var level_bounds := Globals.default_level.bounds
 		block.global_position = (
 			Vector2(
-				randi_range(
-					Globals.default_level.bounds.position.x,
-					Globals.default_level.bounds.end.x - 1,
-				)
-				* Level.CELL_SIZE,
+				randi_range(level_bounds.position.x, level_bounds.end.x - 1) * Level.CELL_SIZE,
 				-falling_block_spawn_height,
 			)
 		)
-		print(block.global_position.x)
 		add_child(block, true)
 
 

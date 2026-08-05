@@ -20,16 +20,8 @@ offset_right = 0.0
 offset_bottom = 0.0
 focus_mode = 3
 
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1628562308]
-_spawnable_scenes = PackedStringArray("uid://48dg7eo7ue11")
-spawn_path = NodePath("..")
-
-[node name="FallingBlockSpawner" type="MultiplayerSpawner" parent="." unique_id=1909937755]
-_spawnable_scenes = PackedStringArray("uid://bc6jrwvfpr8s5")
-spawn_path = NodePath("..")
-
-[node name="FlyingBlockSpawner" type="MultiplayerSpawner" parent="." unique_id=1576534305]
-_spawnable_scenes = PackedStringArray("uid://x6duholk1sc1")
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1628562308]
+_spawnable_scenes = PackedStringArray("uid://48dg7eo7ue11", "uid://bc6jrwvfpr8s5", "uid://x6duholk1sc1")
 spawn_path = NodePath("..")
 
 [connection signal="timeout" from="BlockSpawnTimer" to="." method="_on_block_spawn_timer_timeout"]
