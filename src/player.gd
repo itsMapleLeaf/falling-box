@@ -9,6 +9,7 @@ const GRAVITY = 2500.0
 const JUMP_STRENGTH = 750.0
 const HELD_BLOCK_INTERPOLATION_STIFFNESS = 20.0
 const SPAWN_HEIGHT = 700
+const FALLOUT_HEIGHT = 500
 
 var jumps := 2
 
@@ -19,6 +20,7 @@ var jump_queued := false
 var movement := 0
 @export var facing := 1
 @export var holding := false
+@export var dead := false
 
 @onready var facing_dot: MeshInstance2D = %FacingDot
 @onready var facing_dot_offset := facing_dot.position
@@ -40,7 +42,12 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	camera.enabled = is_multiplayer_authority()
+	_respawn()
+
+
+func _respawn() -> void:
 	global_position = Vector2(Globals.default_level.get_spawn_x_position(), -SPAWN_HEIGHT)
+	velocity = Vector2.ZERO
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -50,36 +57,51 @@ func _unhandled_input(event: InputEvent) -> void:
 		if movement != 0:
 			facing = movement
 
-		if event.is_action_pressed("grab") and not holding:
-			var query := PhysicsPointQueryParameters2D.new()
-			query.position = facing_dot.global_position
-
-			var results := get_world_2d().direct_space_state.intersect_point(query, 32)
-			for result in results:
-				var block := result['collider'] as FallingBlock
-				if block:
-					holding = true
-					held_block.global_position = block.global_position
-					held_block_target_global_position = held_block.global_position
-					block.queue_free()
-					break
-
-		if event.is_action_released("grab") and holding:
-			holding = false
-			block_yeeted.emit(self, held_block.global_position, facing)
-
 		if event.is_action_pressed("jump") and jumps > 0:
 			jump_queued = true
 
+		if event.is_action_pressed("grab") and not holding:
+			_grab()
+
+		if event.is_action_released("grab") and holding:
+			_yeet()
+
+
+func _grab():
+	var query := PhysicsPointQueryParameters2D.new()
+	query.position = facing_dot.global_position
+
+	var results := get_world_2d().direct_space_state.intersect_point(query, 32)
+	for result in results:
+		var block := result['collider'] as FallingBlock
+		if block:
+			holding = true
+			held_block.global_position = block.global_position + Vector2(
+				Level.CELL_SIZE / 2,
+				Level.CELL_SIZE / 2,
+			)
+			held_block_target_global_position = held_block.global_position
+			block.queue_free()
+			break
+
+
+func _yeet():
+	holding = false
+	block_yeeted.emit(self, held_block.global_position, facing)
+
 
 func _process(_delta: float) -> void:
-	facing_dot.position = facing * facing_dot_offset
-	facing_dot.visible = not holding
-	held_block.visible = holding
+	if dead:
+		visible = false
+	else:
+		visible = true
+		facing_dot.position = facing * facing_dot_offset
+		facing_dot.visible = not holding
+		held_block.visible = holding
 
 
 func _physics_process(delta: float) -> void:
-	if is_multiplayer_authority():
+	if is_multiplayer_authority() and not dead:
 		velocity += GRAVITY * Vector2.DOWN * delta
 
 		# intentionally allows jumping twice after walking off a ledge - more fun this way!
@@ -94,6 +116,17 @@ func _physics_process(delta: float) -> void:
 
 		_move_colliding(delta)
 		_reposition_held_block(delta)
+
+		if global_position.y > FALLOUT_HEIGHT:
+			_kill()
+
+
+func _kill() -> void:
+	dead = true
+	_yeet()
+	await get_tree().create_timer(2).timeout
+	dead = false
+	_respawn()
 
 
 func _move_colliding(delta: float):
