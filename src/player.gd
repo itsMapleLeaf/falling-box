@@ -8,7 +8,7 @@ const MOVE_ACCEL = 10.0
 const GRAVITY = 2500.0
 const JUMP_STRENGTH = 750.0
 const HELD_BLOCK_INTERPOLATION_STIFFNESS = 20.0
-const SPAWN_HEIGHT = 500
+const SPAWN_HEIGHT = 700
 
 var jumps := 2
 
@@ -40,16 +40,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	camera.enabled = is_multiplayer_authority()
-
-	# crimes
-	global_position = Vector2(
-		(
-			randi_range(Globals.default_level.bounds.position.x, Globals.default_level.bounds.end.x)
-			- float(Globals.default_level.bounds.size.x) / 2
-		)
-		* Globals.LEVEL_CELL_SIZE,
-		-SPAWN_HEIGHT,
-	)
+	global_position = Vector2(Globals.default_level.get_spawn_x_position(), -SPAWN_HEIGHT)
 
 
 func _unhandled_input(event: InputEvent) -> void:

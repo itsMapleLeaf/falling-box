@@ -23,10 +23,12 @@ script = ExtResource("1_653rq")
 
 [node name="Sprite" type="MeshInstance2D" parent="." unique_id=1517500614]
 unique_name_in_owner = true
+position = Vector2(25, 25)
 mesh = SubResource("QuadMesh_vqo22")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1189798761]
 unique_name_in_owner = true
+position = Vector2(25, 25)
 shape = SubResource("RectangleShape2D_7mycd")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=700737655]

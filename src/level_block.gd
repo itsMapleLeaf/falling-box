@@ -19,8 +19,8 @@ func _ready() -> void:
 
 
 func _update() -> void:
-	global_position = level_rect.position * Globals.LEVEL_CELL_SIZE
-	sprite.size = level_rect.size * Globals.LEVEL_CELL_SIZE
+	global_position = level_rect.position * Level.CELL_SIZE
+	sprite.size = level_rect.size * Level.CELL_SIZE
 
 	var collision_rect := RectangleShape2D.new()
 	collision_rect.size = sprite.size

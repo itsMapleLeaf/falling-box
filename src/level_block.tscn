@@ -12,19 +12,11 @@ script = ExtResource("1_amfyk")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=936482134]
 unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -25.0
-offset_top = -25.0
-offset_right = 25.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 50.0
+offset_bottom = 50.0
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1582181713]
 unique_name_in_owner = true
 editor_description = "note: x size is a pixel less than the real size to prevent blocks stacking by their corners"
+position = Vector2(25, 25)
 shape = SubResource("RectangleShape2D_phy4t")

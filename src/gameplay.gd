@@ -11,8 +11,9 @@ var players_by_peer_id: Dictionary[int, Player] = { }
 
 
 func _ready() -> void:
-	for level_rect in Globals.default_level.rects:
-		_create_level_block().set_level_rect(level_rect)
+	var level_blocks := Globals.default_level.create_level_blocks()
+	for block in level_blocks:
+		add_child(block, true)
 
 	var args := OS.get_cmdline_user_args()
 	prints("Launch args: ", args)
@@ -76,23 +77,20 @@ func remove_player(peer_id) -> void:
 		player.queue_free()
 
 
-func _create_level_block() -> LevelBlock:
-	var block: LevelBlock = load("uid://dtvqbjemca8sx").instantiate()
-	add_child(block, true)
-	return block
-
-
 func _on_block_spawn_timer_timeout() -> void:
 	if multiplayer.is_server():
 		var block: Node2D = load("uid://bc6jrwvfpr8s5").instantiate()
-		block.global_position = Vector2(
-			randi_range(
-				Globals.default_level.bounds.position.x,
-				Globals.default_level.bounds.end.x - 1,
+		block.global_position = (
+			Vector2(
+				randi_range(
+					Globals.default_level.bounds.position.x,
+					Globals.default_level.bounds.end.x - 1,
+				)
+				* Level.CELL_SIZE,
+				-falling_block_spawn_height,
 			)
-			* Globals.LEVEL_CELL_SIZE,
-			-falling_block_spawn_height,
 		)
+		print(block.global_position.x)
 		add_child(block, true)
 
 
