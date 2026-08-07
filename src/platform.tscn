@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cud0fufuh0rol"]
+
+[ext_resource type="Script" uid="uid://cvmrr4gafm5a0" path="res://src/platform.gd" id="1_0ouva"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_0ouva"]
+size = Vector2(1500, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uc2gi"]
+size = Vector2(1500, 50)
+
+[node name="Platform" type="StaticBody2D" unique_id=1814969820 node_paths=PackedStringArray("body", "hitbox")]
+script = ExtResource("1_0ouva")
+body = NodePath("Body")
+hitbox = NodePath("Hitbox")
+
+[node name="Body" type="MeshInstance2D" parent="." unique_id=715972331]
+modulate = Color(0.325, 0.404, 0.498, 1)
+mesh = SubResource("QuadMesh_0ouva")
+
+[node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1986253154]
+shape = SubResource("RectangleShape2D_uc2gi")

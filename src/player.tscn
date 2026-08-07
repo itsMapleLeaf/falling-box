@@ -14,9 +14,10 @@ size = Vector2(8, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(40, 40)
 
-[node name="Player" type="CharacterBody2D" unique_id=1988052361 node_paths=PackedStringArray("cursor")]
+[node name="Player" type="CharacterBody2D" unique_id=1988052361 node_paths=PackedStringArray("cursor", "camera")]
 script = ExtResource("1_lowyb")
 cursor = NodePath("Cursor")
+camera = NodePath("Camera")
 
 [node name="Outline" type="MeshInstance2D" parent="." unique_id=1002280051]
 modulate = Color(0.706, 1, 0.863, 1)

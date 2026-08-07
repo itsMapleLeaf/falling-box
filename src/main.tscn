@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://xww15h6ot34y"]
 
 [ext_resource type="Script" uid="uid://dusiewyn523t5" path="res://src/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://cud0fufuh0rol" path="res://src/platform.tscn" id="2_5q4o7"]
 [ext_resource type="PackedScene" uid="uid://dgfxlv2n2qtvd" path="res://src/player.tscn" id="2_gh0ne"]
 
 [sub_resource type="Shader" id="Shader_grid"]
@@ -23,15 +24,6 @@ shader = SubResource("Shader_grid")
 [sub_resource type="QuadMesh" id="QuadMesh_background"]
 size = Vector2(1280, 720)
 
-[sub_resource type="QuadMesh" id="QuadMesh_platform"]
-size = Vector2(900, 50)
-
-[sub_resource type="QuadMesh" id="QuadMesh_platform_top"]
-size = Vector2(900, 3)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
-size = Vector2(900, 50)
-
 [sub_resource type="QuadMesh" id="QuadMesh_box"]
 size = Vector2(50, 50)
 
@@ -39,45 +31,41 @@ size = Vector2(50, 50)
 script = ExtResource("1_main")
 
 [node name="Background" type="MeshInstance2D" parent="." unique_id=738097782]
+visible = false
 z_index = -100
 material = SubResource("ShaderMaterial_grid")
 position = Vector2(640, 360)
 mesh = SubResource("QuadMesh_background")
 
-[node name="Platform" type="StaticBody2D" parent="." unique_id=1641384834]
-position = Vector2(640, 543)
+[node name="Platform" parent="." unique_id=1814969820 instance=ExtResource("2_5q4o7")]
 
-[node name="Body" type="MeshInstance2D" parent="Platform" unique_id=134367230]
-modulate = Color(0.325, 0.404, 0.498, 1)
-mesh = SubResource("QuadMesh_platform")
+[node name="Platform2" parent="." unique_id=1824564146 instance=ExtResource("2_5q4o7")]
+position = Vector2(0, 50)
+size_in_cells = Vector2i(28, 1)
 
-[node name="TopEdge" type="MeshInstance2D" parent="Platform" unique_id=1165475905]
-modulate = Color(0.549, 0.643, 0.749, 1)
-position = Vector2(0, -23.5)
-mesh = SubResource("QuadMesh_platform_top")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=1194835286]
-shape = SubResource("RectangleShape2D_platform")
+[node name="Platform3" parent="." unique_id=1812535247 instance=ExtResource("2_5q4o7")]
+position = Vector2(0, 100)
+size_in_cells = Vector2i(26, 1)
 
 [node name="Player" parent="." unique_id=1988052361 node_paths=PackedStringArray("fallout_threshold", "respawn_left", "respawn_right") instance=ExtResource("2_gh0ne")]
-position = Vector2(640, 498)
+position = Vector2(0, -175)
 fallout_threshold = NodePath("../FalloutThreshold")
 respawn_left = NodePath("../RespawnLeft")
 respawn_right = NodePath("../RespawnRight")
 
-[node name="RespawnLeft" type="Marker2D" parent="."]
-position = Vector2(210, 250)
+[node name="RespawnLeft" type="Marker2D" parent="." unique_id=1525022536]
+position = Vector2(-725, -375)
 
-[node name="RespawnRight" type="Marker2D" parent="."]
-position = Vector2(1070, 250)
+[node name="RespawnRight" type="Marker2D" parent="." unique_id=281882573]
+position = Vector2(725, -375)
 
 [node name="FalloutThreshold" type="Marker2D" parent="." unique_id=1201628059]
-position = Vector2(640, 750)
+position = Vector2(0, 500)
 gizmo_extents = 25.0
 
 [node name="PreviewBox" type="MeshInstance2D" parent="." unique_id=475990805]
 modulate = Color(0.945, 0.722, 0.294, 1)
-position = Vector2(827, 493)
+position = Vector2(225, -50)
 mesh = SubResource("QuadMesh_box")
 
 [node name="Interface" type="CanvasLayer" parent="." unique_id=149482746]
@@ -89,6 +77,8 @@ theme_override_constants/margin_left = 28
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 28
 theme_override_constants/margin_bottom = 24
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
 [node name="Layout" type="VBoxContainer" parent="Interface/Margin" unique_id=2087117705]
 layout_mode = 2
