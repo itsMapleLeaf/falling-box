@@ -1,0 +1,10 @@
+# Godot-generated files
+.godot/
+
+# Exported builds
+builds/
+
+# Local editor settings
+.vscode/
+.idea/
+

@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://xww15h6ot34y"]
+
+[ext_resource type="Script" uid="uid://dusiewyn523t5" path="res://src/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://di0e16vca8oa3" path="res://src/player.gd" id="2_player"]
+
+[sub_resource type="Shader" id="Shader_grid"]
+code = "shader_type canvas_item;
+
+void fragment() {
+	vec2 cell = fract(UV * vec2(25.6, 14.4));
+	float vertical = 1.0 - step(0.025, cell.x);
+	float horizontal = 1.0 - step(0.025, cell.y);
+	float line = max(vertical, horizontal);
+	vec4 background = vec4(0.035, 0.067, 0.122, 1.0);
+	vec4 grid = vec4(0.086, 0.149, 0.227, 1.0);
+	COLOR = mix(background, grid, line);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grid"]
+shader = SubResource("Shader_grid")
+
+[sub_resource type="QuadMesh" id="QuadMesh_background"]
+size = Vector2(1280, 720)
+
+[sub_resource type="QuadMesh" id="QuadMesh_platform"]
+size = Vector2(900, 50)
+
+[sub_resource type="QuadMesh" id="QuadMesh_platform_top"]
+size = Vector2(900, 3)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(900, 50)
+
+[sub_resource type="QuadMesh" id="QuadMesh_player_outline"]
+size = Vector2(44, 44)
+
+[sub_resource type="QuadMesh" id="QuadMesh_player"]
+size = Vector2(40, 40)
+
+[sub_resource type="QuadMesh" id="QuadMesh_cursor"]
+size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(40, 40)
+
+[sub_resource type="QuadMesh" id="QuadMesh_box"]
+size = Vector2(50, 50)
+
+[node name="Main" type="Node2D" unique_id=1989960642]
+script = ExtResource("1_main")
+
+[node name="Background" type="MeshInstance2D" parent="." unique_id=738097782]
+z_index = -100
+material = SubResource("ShaderMaterial_grid")
+position = Vector2(640, 360)
+mesh = SubResource("QuadMesh_background")
+
+[node name="Platform" type="StaticBody2D" parent="." unique_id=1641384834]
+position = Vector2(640, 543)
+
+[node name="Body" type="MeshInstance2D" parent="Platform" unique_id=134367230]
+modulate = Color(0.325, 0.404, 0.498, 1)
+mesh = SubResource("QuadMesh_platform")
+
+[node name="TopEdge" type="MeshInstance2D" parent="Platform" unique_id=1165475905]
+modulate = Color(0.549, 0.643, 0.749, 1)
+position = Vector2(0, -23.5)
+mesh = SubResource("QuadMesh_platform_top")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=1194835286]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=757398186]
+position = Vector2(640, 498)
+script = ExtResource("2_player")
+
+[node name="Outline" type="MeshInstance2D" parent="Player" unique_id=1001655653]
+modulate = Color(0.706, 1, 0.863, 1)
+z_index = -1
+mesh = SubResource("QuadMesh_player_outline")
+
+[node name="Body" type="MeshInstance2D" parent="Player" unique_id=1704286337]
+modulate = Color(0.369, 0.902, 0.659, 1)
+mesh = SubResource("QuadMesh_player")
+
+[node name="Cursor" type="MeshInstance2D" parent="Player" unique_id=177246437]
+position = Vector2(45, 0)
+mesh = SubResource("QuadMesh_cursor")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1705717025]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="PreviewBox" type="MeshInstance2D" parent="." unique_id=475990805]
+modulate = Color(0.945, 0.722, 0.294, 1)
+position = Vector2(827, 493)
+mesh = SubResource("QuadMesh_box")
+
+[node name="Interface" type="CanvasLayer" parent="." unique_id=149482746]
+
+[node name="Margin" type="MarginContainer" parent="Interface" unique_id=93138101]
+offset_right = 1280.0
+offset_bottom = 720.0
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="Layout" type="VBoxContainer" parent="Interface/Margin" unique_id=2087117705]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Interface/Margin/Layout" unique_id=1637956605]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "THAT FALLING BOX GAME"
+
+[node name="Status" type="Label" parent="Interface/Margin/Layout" unique_id=1046716318]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.66, 0.78, 1)
+theme_override_font_sizes/font_size = 16
+text = "Move: A/D or arrows  •  Double-jump: W, ↑, or Space"
+
+[node name="Hint" type="Label" parent="Interface/Margin" unique_id=433532072]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.55, 0.66, 0.78, 1)
+theme_override_font_sizes/font_size = 14
+text = "50 px grid  •  40 px player  •  15 s landed-box lifetime"
+horizontal_alignment = 1
