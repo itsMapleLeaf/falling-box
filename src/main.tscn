@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://xww15h6ot34y"]
 
 [ext_resource type="Script" uid="uid://dusiewyn523t5" path="res://src/main.gd" id="1_main"]
-[ext_resource type="Script" uid="uid://di0e16vca8oa3" path="res://src/player.gd" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://dgfxlv2n2qtvd" path="res://src/player.tscn" id="2_gh0ne"]
 
 [sub_resource type="Shader" id="Shader_grid"]
 code = "shader_type canvas_item;
@@ -32,18 +32,6 @@ size = Vector2(900, 3)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
 size = Vector2(900, 50)
 
-[sub_resource type="QuadMesh" id="QuadMesh_player_outline"]
-size = Vector2(44, 44)
-
-[sub_resource type="QuadMesh" id="QuadMesh_player"]
-size = Vector2(40, 40)
-
-[sub_resource type="QuadMesh" id="QuadMesh_cursor"]
-size = Vector2(8, 8)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
-size = Vector2(40, 40)
-
 [sub_resource type="QuadMesh" id="QuadMesh_box"]
 size = Vector2(50, 50)
 
@@ -71,26 +59,8 @@ mesh = SubResource("QuadMesh_platform_top")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=1194835286]
 shape = SubResource("RectangleShape2D_platform")
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=757398186 node_paths=PackedStringArray("cursor")]
+[node name="Player" parent="." unique_id=1988052361 instance=ExtResource("2_gh0ne")]
 position = Vector2(640, 498)
-script = ExtResource("2_player")
-cursor = NodePath("Cursor")
-
-[node name="Outline" type="MeshInstance2D" parent="Player" unique_id=1001655653]
-modulate = Color(0.706, 1, 0.863, 1)
-z_index = -1
-mesh = SubResource("QuadMesh_player_outline")
-
-[node name="Body" type="MeshInstance2D" parent="Player" unique_id=1704286337]
-modulate = Color(0.369, 0.902, 0.659, 1)
-mesh = SubResource("QuadMesh_player")
-
-[node name="Cursor" type="MeshInstance2D" parent="Player" unique_id=177246437]
-position = Vector2(45, 0)
-mesh = SubResource("QuadMesh_cursor")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1705717025]
-shape = SubResource("RectangleShape2D_player")
 
 [node name="PreviewBox" type="MeshInstance2D" parent="." unique_id=475990805]
 modulate = Color(0.945, 0.722, 0.294, 1)

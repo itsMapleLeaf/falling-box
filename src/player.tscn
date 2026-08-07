@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dgfxlv2n2qtvd"]
+
+[ext_resource type="Script" uid="uid://di0e16vca8oa3" path="res://src/player.gd" id="1_lowyb"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_player_outline"]
+size = Vector2(44, 44)
+
+[sub_resource type="QuadMesh" id="QuadMesh_player"]
+size = Vector2(40, 40)
+
+[sub_resource type="QuadMesh" id="QuadMesh_cursor"]
+size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(40, 40)
+
+[node name="Player" type="CharacterBody2D" unique_id=1988052361 node_paths=PackedStringArray("cursor")]
+script = ExtResource("1_lowyb")
+cursor = NodePath("Cursor")
+
+[node name="Outline" type="MeshInstance2D" parent="." unique_id=1002280051]
+modulate = Color(0.706, 1, 0.863, 1)
+z_index = -1
+mesh = SubResource("QuadMesh_player_outline")
+
+[node name="Body" type="MeshInstance2D" parent="." unique_id=857442156]
+modulate = Color(0.369, 0.902, 0.659, 1)
+mesh = SubResource("QuadMesh_player")
+
+[node name="Cursor" type="MeshInstance2D" parent="." unique_id=1793711821]
+position = Vector2(45, 0)
+mesh = SubResource("QuadMesh_cursor")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=206726635]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Camera" type="Camera2D" parent="." unique_id=1793847058]
+offset = Vector2(0, -80)
+position_smoothing_enabled = true
+position_smoothing_speed = 12.0
