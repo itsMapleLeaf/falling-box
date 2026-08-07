@@ -4,7 +4,7 @@ extends CharacterBody2D
 const CURSOR_DISTANCE := 25.0
 const MAX_JUMPS := 2
 
-@onready var cursor: MeshInstance2D = $Cursor
+@export var cursor: MeshInstance2D
 
 var facing := 1
 var jumps_remaining := MAX_JUMPS

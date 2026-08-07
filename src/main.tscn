@@ -71,9 +71,10 @@ mesh = SubResource("QuadMesh_platform_top")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=1194835286]
 shape = SubResource("RectangleShape2D_platform")
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=757398186]
+[node name="Player" type="CharacterBody2D" parent="." unique_id=757398186 node_paths=PackedStringArray("cursor")]
 position = Vector2(640, 498)
 script = ExtResource("2_player")
+cursor = NodePath("Cursor")
 
 [node name="Outline" type="MeshInstance2D" parent="Player" unique_id=1001655653]
 modulate = Color(0.706, 1, 0.863, 1)
