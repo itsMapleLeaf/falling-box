@@ -42,7 +42,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		jumps_remaining = MAX_JUMPS
 	else:
-		velocity.y = minf(velocity.y + GameConfig.GRAVITY * delta, GameConfig.MAX_FALL_SPEED)
+		velocity.y = minf(velocity.y + GameConfig.PLAYER_GRAVITY * delta, GameConfig.MAX_FALL_SPEED)
 
 	if Input.is_action_just_pressed("jump") and jumps_remaining > 0:
 		velocity.y = GameConfig.JUMP_VELOCITY

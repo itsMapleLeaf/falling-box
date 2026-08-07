@@ -1,0 +1,135 @@
+extends GutTest
+
+const MainScene := preload("res://src/main.tscn")
+const BoxScene := preload("res://src/falling_box.tscn")
+
+var main: Node2D
+var boxes: Node2D
+var spawner: FallingBoxSpawner
+
+
+func before_each() -> void:
+	main = add_child_autofree(MainScene.instantiate())
+	boxes = main.get_node("Boxes")
+	spawner = main.get_node("BoxSpawner")
+	spawner.spawn_timer.stop()
+
+
+func test_spawner_uses_its_own_grid_aligned_horizontal_range() -> void:
+	spawner.spawn_rng.seed = 12345
+	var spawn_columns := { }
+
+	for _iteration in 20:
+		var box := spawner.spawn_box()
+		spawn_columns[box.global_position.x] = true
+		assert_true(
+			box.global_position.x >= spawner.spawn_left.global_position.x
+			and box.global_position.x <= spawner.spawn_right.global_position.x,
+			"Box should spawn inside the box-specific horizontal range",
+		)
+		assert_almost_eq(
+			fposmod(box.global_position.x, GameConfig.CELL_SIZE),
+			0.0,
+			0.001,
+			"Spawned box X should align to the world grid",
+		)
+		assert_almost_eq(
+			fposmod(box.global_position.y, GameConfig.CELL_SIZE),
+			0.0,
+			0.001,
+			"Spawned box Y should align to the world grid",
+		)
+
+	assert_gt(spawn_columns.size(), 1, "The spawner should use multiple grid columns")
+
+
+func test_box_fades_in_while_falling() -> void:
+	var box := _add_box(Vector2(0.0, -300.0))
+	assert_almost_eq(box.visual.modulate.a, 0.0, 0.001, "Box should begin transparent")
+
+	await wait_seconds(box.spawn_fade_seconds * 0.5)
+	assert_gt(box.visual.modulate.a, 0.0, "Box should become visible during spawn fade")
+	assert_lt(box.visual.modulate.a, 1.0, "Box should not become opaque halfway through its fade")
+
+	await wait_seconds(box.spawn_fade_seconds)
+	assert_almost_eq(box.visual.modulate.a, 1.0, 0.001, "Box should finish opaque")
+
+
+func test_box_stops_and_snaps_to_grid_when_it_lands() -> void:
+	var box := _add_box(Vector2(0.0, -200.0))
+	var did_land: bool = await wait_for_signal(box.grounded, 2.0, "Waiting for box to land")
+	assert_true(did_land, "Box should land before the timeout")
+	if not did_land:
+		return
+
+	assert_eq(box.state, FallingBox.State.GROUNDED, "Box should stop after landing")
+	assert_eq(box.velocity, Vector2.ZERO, "Grounded box should have no velocity")
+	assert_eq(box.global_position, Vector2(0.0, -50.0), "Box should land on the grid")
+
+
+func test_boxes_stack_on_the_grid() -> void:
+	var lower_box := _add_box(Vector2(0.0, -200.0))
+	var lower_did_land: bool = await wait_for_signal(
+		lower_box.grounded, 2.0, "Waiting for lower box"
+	)
+	assert_true(lower_did_land, "Lower box should land before the timeout")
+	if not lower_did_land:
+		return
+
+	var upper_box := _add_box(Vector2(0.0, -200.0))
+	var upper_did_land: bool = await wait_for_signal(
+		upper_box.grounded, 2.0, "Waiting for upper box"
+	)
+	assert_true(upper_did_land, "Upper box should land before the timeout")
+	if not upper_did_land:
+		return
+
+	assert_eq(lower_box.global_position, Vector2(0.0, -50.0), "Lower box should stay put")
+	assert_eq(upper_box.state, FallingBox.State.GROUNDED, "Upper box should land")
+	assert_eq(upper_box.global_position, Vector2(0.0, -100.0), "Boxes should stack by one cell")
+
+
+func test_expired_box_disables_collision_fades_falls_and_is_freed() -> void:
+	var box := BoxScene.instantiate() as FallingBox
+	box.spawn_fade_seconds = 0.01
+	box.landed_lifetime_seconds = 0.2
+	box.despawn_fade_seconds = 0.25
+	boxes.add_child(box)
+	box.global_position = Vector2(0.0, -100.0)
+
+	var did_land: bool = await wait_for_signal(
+		box.grounded, 2.0, "Waiting for expiring box to land"
+	)
+	assert_true(did_land, "Expiring box should land before the timeout")
+	if not did_land:
+		return
+
+	assert_eq(box.state, FallingBox.State.GROUNDED, "Box should first become grounded")
+	var grounded_y := box.global_position.y
+
+	var did_expire: bool = await wait_for_signal(box.expiring, 1.0, "Waiting for box lifetime")
+	assert_true(did_expire, "Grounded lifetime should expire before the timeout")
+	if not did_expire:
+		return
+	await wait_physics_frames(2)
+
+	assert_eq(box.state, FallingBox.State.EXPIRING, "Lifetime should begin expiration")
+	assert_eq(box.collision_layer, 0, "Expiring box should leave collision layers")
+	assert_eq(box.collision_mask, 0, "Expiring box should stop collision checks")
+	assert_true(box.hitbox.disabled, "Expiring box hitbox should be disabled")
+	assert_lt(box.visual.modulate.a, 1.0, "Expiring box should fade")
+	assert_gt(box.global_position.y, grounded_y, "Expiring box should resume falling")
+
+	var box_reference: WeakRef = weakref(box)
+	var did_exit: bool = await wait_for_signal(box.tree_exited, 1.0, "Waiting for fade-out cleanup")
+	assert_true(did_exit, "Fully transparent box should leave the scene before the timeout")
+	await wait_process_frames(1)
+	assert_null(box_reference.get_ref(), "Fully transparent box should be freed")
+
+
+func _add_box(at_position: Vector2) -> FallingBox:
+	var box := BoxScene.instantiate() as FallingBox
+	box.landed_lifetime_seconds = 100.0
+	boxes.add_child(box)
+	box.global_position = at_position
+	return box
