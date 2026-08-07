@@ -1,5 +1,4 @@
 class_name GameConfig
-extends RefCounted
 
 ## Shared gameplay dimensions and initial tuning values.
 ## The authoritative server and clients should both reference these values.
