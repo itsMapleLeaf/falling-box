@@ -8,7 +8,7 @@ falling boxes.
 The project targets Godot 4.7.1. Open `project.godot` in Godot, or run it from
 the repository root:
 
-```powershell
+```sh
 godot --editor --path .
 ```
 
@@ -27,8 +27,8 @@ The current scene is a scale preview for the 50 px world grid, 40 px player,
 and 50 px boxes. The player can move with A/D or the arrow keys and double-jump
 with W, Up, or Space.
 
-Run the headless movement check with:
+GUT 9.7.1 is installed in `addons/gut`. Run the headless test suite with:
 
-```powershell
-godot --headless --path . --script res://src/player_movement_test.gd
+```sh
+godot --debug --path . --script addons/gut/gut_cmdln.gd
 ```

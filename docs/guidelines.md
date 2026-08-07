@@ -37,6 +37,8 @@ requiring the game to run.
 
 ## Verification
 
+- Write automated gameplay tests with GUT. Keep test scripts in the flat `src/`
+  directory with the `_test.gd` filename suffix.
 - Changes to gameplay behavior should receive a small headless regression test
   when the behavior can be checked deterministically.
 - Run the project through Godot after editing scenes or scripts so broken resource
