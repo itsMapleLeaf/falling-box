@@ -91,12 +91,6 @@ text = "THAT FALLING BOX GAME"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.66, 0.78, 1)
 theme_override_font_sizes/font_size = 16
-text = "Move: A/D or arrows  •  Double-jump: W, ↑, or Space"
-
-[node name="Hint" type="Label" parent="Interface/Margin" unique_id=433532072]
-layout_mode = 2
-size_flags_vertical = 8
-theme_override_colors/font_color = Color(0.55, 0.66, 0.78, 1)
-theme_override_font_sizes/font_size = 14
-text = "50 px grid  •  40 px player  •  15 s landed-box lifetime"
-horizontal_alignment = 1
+text = "Move: Left & right arrows
+Jump: Up arrow or Space
+Grab & release: Z"
