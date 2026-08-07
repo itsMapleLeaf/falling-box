@@ -35,6 +35,6 @@ mesh = SubResource("QuadMesh_cursor")
 shape = SubResource("RectangleShape2D_player")
 
 [node name="Camera" type="Camera2D" parent="." unique_id=1793847058]
-offset = Vector2(0, -80)
+offset = Vector2(0, -140)
+limit_enabled = false
 position_smoothing_enabled = true
-position_smoothing_speed = 12.0
