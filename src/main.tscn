@@ -6,35 +6,14 @@
 [ext_resource type="PackedScene" uid="uid://b6hwok27qogib" path="res://src/falling_box.tscn" id="3_box"]
 [ext_resource type="Script" uid="uid://b1ppimynnjxmx" path="res://src/falling_box_spawner.gd" id="4_spawner"]
 
-[sub_resource type="Shader" id="Shader_grid"]
-code = "shader_type canvas_item;
-
-void fragment() {
-	vec2 cell = fract(UV * vec2(25.6, 14.4));
-	float vertical = 1.0 - step(0.025, cell.x);
-	float horizontal = 1.0 - step(0.025, cell.y);
-	float line = max(vertical, horizontal);
-	vec4 background = vec4(0.035, 0.067, 0.122, 1.0);
-	vec4 grid = vec4(0.086, 0.149, 0.227, 1.0);
-	COLOR = mix(background, grid, line);
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_grid"]
-shader = SubResource("Shader_grid")
-
-[sub_resource type="QuadMesh" id="QuadMesh_background"]
-size = Vector2(1280, 720)
+[sub_resource type="Environment" id="Environment_h5w0j"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.19
 
 [node name="Main" type="Node2D" unique_id=1989960642]
+modulate = Color(2.3243644, 2.3243644, 2.3243644, 1)
 script = ExtResource("1_main")
-
-[node name="Background" type="MeshInstance2D" parent="." unique_id=738097782]
-visible = false
-z_index = -100
-material = SubResource("ShaderMaterial_grid")
-position = Vector2(640, 360)
-mesh = SubResource("QuadMesh_background")
 
 [node name="Platform" parent="." unique_id=1814969820 instance=ExtResource("2_5q4o7")]
 size_in_cells = Vector2i(29, 1)
@@ -80,7 +59,7 @@ spawn_right = NodePath("../BoxSpawnRight")
 spawn_timer = NodePath("Timer")
 
 [node name="Timer" type="Timer" parent="BoxSpawner" unique_id=1876258002]
-wait_time = 0.7
+wait_time = 0.5
 autostart = true
 
 [node name="Interface" type="CanvasLayer" parent="." unique_id=149482746]
@@ -101,14 +80,17 @@ theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="Interface/Margin/Layout" unique_id=1637956605]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
+theme_override_colors/font_color = Color(0.9, 0.91, 0.93, 1)
 theme_override_font_sizes/font_size = 30
 text = "THAT FALLING BOX GAME"
 
 [node name="Status" type="Label" parent="Interface/Margin/Layout" unique_id=1046716318]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.55, 0.66, 0.78, 1)
+theme_override_colors/font_color = Color(0.62, 0.64, 0.67, 1)
 theme_override_font_sizes/font_size = 16
 text = "Move: Left & right arrows
 Jump: Up arrow or Space
 Grab & release: Z"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1587856842]
+environment = SubResource("Environment_h5w0j")

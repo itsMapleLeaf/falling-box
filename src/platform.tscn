@@ -14,7 +14,6 @@ body = NodePath("Body")
 hitbox = NodePath("Hitbox")
 
 [node name="Body" type="MeshInstance2D" parent="." unique_id=715972331]
-modulate = Color(0.325, 0.404, 0.498, 1)
 mesh = SubResource("QuadMesh_0ouva")
 
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1986253154]
