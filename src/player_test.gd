@@ -87,6 +87,11 @@ func test_landing_restores_both_jumps() -> void:
 
 func test_falling_far_past_the_threshold_respawns_player_above_platform() -> void:
 	watch_signals(player)
+	var velocity_at_respawn := [Vector2.INF]
+	player.respawned.connect(
+		func(_at_position: Vector2) -> void: velocity_at_respawn[0] = player.velocity,
+		CONNECT_ONE_SHOT,
+	)
 
 	player.velocity = Vector2(100.0, GameConfig.MAX_FALL_SPEED)
 	player.global_position = player.fallout_threshold.global_position + Vector2(0.0, 5000.0)
@@ -104,7 +109,7 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 		5.0,
 		"Player should respawn high above the platform",
 	)
-	assert_lt(player.velocity.length(), 100.0, "Respawning should clear fall velocity")
+	assert_eq(velocity_at_respawn[0], Vector2.ZERO, "Respawning should clear fall velocity")
 	assert_eq(player.jumps_remaining, 2, "Respawning should restore both jumps")
 
 

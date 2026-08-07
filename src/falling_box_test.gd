@@ -6,13 +6,20 @@ const BoxScene := preload("res://src/falling_box.tscn")
 var main: Node2D
 var boxes: Node2D
 var spawner: FallingBoxSpawner
+var player: Player
 
 
 func before_each() -> void:
 	main = add_child_autofree(MainScene.instantiate())
 	boxes = main.get_node("Boxes")
 	spawner = main.get_node("BoxSpawner")
+	player = main.get_node("Player")
 	spawner.spawn_timer.stop()
+
+
+func after_each() -> void:
+	Input.action_release("move_left")
+	Input.action_release("move_right")
 
 
 func test_spawner_uses_its_own_grid_aligned_horizontal_range() -> void:
@@ -87,6 +94,43 @@ func test_boxes_stack_on_the_grid() -> void:
 	assert_eq(lower_box.global_position, Vector2(0.0, -50.0), "Lower box should stay put")
 	assert_eq(upper_box.state, FallingBox.State.GROUNDED, "Upper box should land")
 	assert_eq(upper_box.global_position, Vector2(0.0, -100.0), "Boxes should stack by one cell")
+
+
+func test_player_is_blocked_by_a_grounded_box() -> void:
+	var box := _add_box(Vector2(0.0, -50.0))
+	var did_land: bool = await wait_for_signal(box.grounded, 1.0, "Waiting for blocking box")
+	assert_true(did_land, "Blocking box should become grounded")
+	if not did_land:
+		return
+
+	player.global_position = Vector2(-100.0, -45.0)
+	player.velocity = Vector2.ZERO
+	player.reset_physics_interpolation()
+	await wait_physics_frames(2)
+
+	Input.action_press("move_right")
+	await wait_physics_frames(30)
+	Input.action_release("move_right")
+
+	assert_lt(player.global_position.x, -43.0, "Player should not pass through the box")
+	assert_eq(box.global_position, Vector2(0.0, -50.0), "Player should not move the box")
+
+
+func test_falling_box_passes_through_player_without_reacting() -> void:
+	player.set_physics_process(false)
+	player.global_position = Vector2(0.0, -150.0)
+	player.velocity = Vector2.ZERO
+	player.reset_physics_interpolation()
+
+	var box := _add_box(Vector2(0.0, -250.0))
+	var did_pass_player: bool = await wait_until(
+		func() -> bool: return box.global_position.y > player.global_position.y + 50.0,
+		2.0,
+		"Waiting for box to pass through player",
+	)
+
+	assert_true(did_pass_player, "Falling box should pass completely through the player")
+	assert_eq(box.state, FallingBox.State.FALLING, "Player should not ground a falling box")
 
 
 func test_expired_box_disables_collision_fades_falls_and_is_freed() -> void:
