@@ -59,8 +59,21 @@ mesh = SubResource("QuadMesh_platform_top")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=1194835286]
 shape = SubResource("RectangleShape2D_platform")
 
-[node name="Player" parent="." unique_id=1988052361 instance=ExtResource("2_gh0ne")]
+[node name="Player" parent="." unique_id=1988052361 node_paths=PackedStringArray("fallout_threshold", "respawn_left", "respawn_right") instance=ExtResource("2_gh0ne")]
 position = Vector2(640, 498)
+fallout_threshold = NodePath("../FalloutThreshold")
+respawn_left = NodePath("../RespawnLeft")
+respawn_right = NodePath("../RespawnRight")
+
+[node name="RespawnLeft" type="Marker2D" parent="."]
+position = Vector2(210, 250)
+
+[node name="RespawnRight" type="Marker2D" parent="."]
+position = Vector2(1070, 250)
+
+[node name="FalloutThreshold" type="Marker2D" parent="." unique_id=1201628059]
+position = Vector2(640, 750)
+gizmo_extents = 25.0
 
 [node name="PreviewBox" type="MeshInstance2D" parent="." unique_id=475990805]
 modulate = Color(0.945, 0.722, 0.294, 1)

@@ -85,6 +85,44 @@ func test_landing_restores_both_jumps() -> void:
 	assert_eq(player.jumps_remaining, 2, "Landing should restore both jumps")
 
 
+func test_falling_far_past_the_threshold_respawns_player_above_platform() -> void:
+	watch_signals(player)
+
+	player.velocity = Vector2(100.0, GameConfig.MAX_FALL_SPEED)
+	player.global_position = player.fallout_threshold.global_position + Vector2(0.0, 5000.0)
+	await wait_physics_frames(3)
+
+	assert_signal_emitted(player, "respawned", "Falling out should trigger a respawn")
+	assert_true(
+		player.global_position.x >= player.respawn_left.global_position.x
+		and player.global_position.x <= player.respawn_right.global_position.x,
+		"Player should respawn within the horizontal spawn range"
+	)
+	assert_almost_eq(
+		player.global_position.y,
+		player.respawn_left.global_position.y,
+		5.0,
+		"Player should respawn high above the platform"
+	)
+	assert_lt(player.velocity.length(), 100.0, "Respawning should clear fall velocity")
+	assert_eq(player.jumps_remaining, 2, "Respawning should restore both jumps")
+
+
+func test_respawning_varies_the_horizontal_position() -> void:
+	player.respawn_rng.seed = 12345
+	var horizontal_positions := {}
+
+	for iteration in 8:
+		player.respawn()
+		horizontal_positions[player.global_position.x] = true
+
+	assert_gt(
+		horizontal_positions.size(),
+		1,
+		"Repeated respawns should not always choose the same horizontal position"
+	)
+
+
 func _press_jump() -> void:
 	Input.action_press("jump")
 	await wait_physics_frames(2)
