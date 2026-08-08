@@ -16,3 +16,8 @@ func _on_join_button_pressed() -> void:
 	var game: Game = load("uid://behcxl4o21rrt").instantiate()
 	_change_screen(game)
 	game.join_server("localhost", 7586)
+
+
+func _on_play_local_button_pressed() -> void:
+	var game: Game = load("uid://behcxl4o21rrt").instantiate()
+	_change_screen(game)
