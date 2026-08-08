@@ -1,14 +1,14 @@
 extends GutTest
 
-const MainScene := preload("res://src/main.tscn")
+const GameScene := preload("res://src/game.tscn")
 
-var main: Node2D
+var game: Game
 var player: Player
 
 
 func before_each() -> void:
-	main = add_child_autofree(MainScene.instantiate())
-	player = main.get_node("Player")
+	game = add_child_autofree(GameScene.instantiate())
+	player = game.get_node("Player")
 	await wait_physics_frames(5)
 
 

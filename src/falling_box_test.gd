@@ -1,19 +1,19 @@
 extends GutTest
 
-const MainScene := preload("res://src/main.tscn")
+const GameScene := preload("res://src/game.tscn")
 const BoxScene := preload("res://src/falling_box.tscn")
 
-var main: Node2D
+var game: Game
 var boxes: Node2D
 var spawner: FallingBoxSpawner
 var player: Player
 
 
 func before_each() -> void:
-	main = add_child_autofree(MainScene.instantiate())
-	boxes = main.get_node("Boxes")
-	spawner = main.get_node("BoxSpawner")
-	player = main.get_node("Player")
+	game = add_child_autofree(GameScene.instantiate())
+	boxes = game.get_node("Boxes")
+	spawner = game.get_node("BoxSpawner")
+	player = game.get_node("Player")
 	spawner.spawn_timer.stop()
 
 
