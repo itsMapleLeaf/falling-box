@@ -11,12 +11,16 @@ size = Vector2(8, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(40, 40)
 
-[node name="Player" type="CharacterBody2D" unique_id=1988052361 node_paths=PackedStringArray("cursor", "camera")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lowyb"]
+size = Vector2(25, 40)
+
+[node name="Player" type="CharacterBody2D" unique_id=1988052361 node_paths=PackedStringArray("cursor", "camera", "crush_detector")]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_lowyb")
 cursor = NodePath("Cursor")
 camera = NodePath("Camera")
+crush_detector = NodePath("CrushDetector")
 
 [node name="Body" type="MeshInstance2D" parent="." unique_id=857442156]
 mesh = SubResource("QuadMesh_player")
@@ -28,7 +32,16 @@ mesh = SubResource("QuadMesh_cursor")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=206726635]
 shape = SubResource("RectangleShape2D_player")
 
+[node name="CrushDetector" type="Area2D" parent="." unique_id=719728603]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CrushDetector" unique_id=1281780896]
+shape = SubResource("RectangleShape2D_lowyb")
+debug_color = Color(0.9999998, 0.003031034, 0.14555445, 0.41960785)
+
 [node name="Camera" type="Camera2D" parent="." unique_id=1793847058]
 offset = Vector2(0, -140)
 limit_enabled = false
 position_smoothing_enabled = true
+metadata/_edit_lock_ = true

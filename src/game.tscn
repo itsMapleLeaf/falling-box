@@ -36,10 +36,10 @@ respawn_left = NodePath("../RespawnLeft")
 respawn_right = NodePath("../RespawnRight")
 
 [node name="RespawnLeft" type="Marker2D" parent="." unique_id=2143609635]
-position = Vector2(-725, -375)
+position = Vector2(-725, -575)
 
 [node name="RespawnRight" type="Marker2D" parent="." unique_id=1413309880]
-position = Vector2(725, -375)
+position = Vector2(725, -575)
 
 [node name="FalloutThreshold" type="Marker2D" parent="." unique_id=1665585315]
 position = Vector2(0, 500)

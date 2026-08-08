@@ -2,6 +2,7 @@ class_name Player
 extends CharacterBody2D
 
 signal respawned(at_position: Vector2)
+signal died
 
 const CURSOR_OFFSET := 55.0
 const MAX_JUMPS := 2
@@ -11,6 +12,7 @@ const MAX_JUMPS := 2
 @export var respawn_left: Marker2D
 @export var respawn_right: Marker2D
 @export var camera: Camera2D
+@export var crush_detector: Area2D
 
 var facing := 1
 var jumps_remaining := MAX_JUMPS
@@ -50,6 +52,10 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+	if _is_squished_by_falling_box():
+		die()
+		return
+
 	if is_on_floor():
 		jumps_remaining = MAX_JUMPS
 
@@ -58,6 +64,27 @@ func _physics_process(delta: float) -> void:
 		and global_position.y > fallout_threshold.global_position.y
 	):
 		respawn()
+
+
+func _is_squished_by_falling_box() -> bool:
+	if not is_on_floor():
+		return false
+
+	var body_above := false
+	var body_below := false
+
+	for body in crush_detector.get_overlapping_bodies():
+		body_above = body_above or body.global_position.y < global_position.y
+		body_below = body_below or body.global_position.y > global_position.y
+		if body_above and body_below:
+			return true
+
+	return false
+
+
+func die() -> void:
+	died.emit()
+	respawn()
 
 
 func respawn() -> void:

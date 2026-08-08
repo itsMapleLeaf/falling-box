@@ -77,7 +77,9 @@ func test_box_stops_and_snaps_to_grid_when_it_lands() -> void:
 func test_boxes_stack_on_the_grid() -> void:
 	var lower_box := _add_box(Vector2(0.0, -200.0))
 	var lower_did_land: bool = await wait_for_signal(
-		lower_box.grounded, 2.0, "Waiting for lower box"
+		lower_box.grounded,
+		2.0,
+		"Waiting for lower box",
 	)
 	assert_true(lower_did_land, "Lower box should land before the timeout")
 	if not lower_did_land:
@@ -85,7 +87,9 @@ func test_boxes_stack_on_the_grid() -> void:
 
 	var upper_box := _add_box(Vector2(0.0, -200.0))
 	var upper_did_land: bool = await wait_for_signal(
-		upper_box.grounded, 2.0, "Waiting for upper box"
+		upper_box.grounded,
+		2.0,
+		"Waiting for upper box",
 	)
 	assert_true(upper_did_land, "Upper box should land before the timeout")
 	if not upper_did_land:
@@ -107,6 +111,7 @@ func test_player_is_blocked_by_a_grounded_box() -> void:
 	player.velocity = Vector2.ZERO
 	player.reset_physics_interpolation()
 	await wait_physics_frames(2)
+	watch_signals(player)
 
 	Input.action_press("move_right")
 	await wait_physics_frames(30)
@@ -114,6 +119,7 @@ func test_player_is_blocked_by_a_grounded_box() -> void:
 
 	assert_lt(player.global_position.x, -43.0, "Player should not pass through the box")
 	assert_eq(box.global_position, Vector2(0.0, -50.0), "Player should not move the box")
+	assert_signal_not_emitted(player, "died", "A grounded box should not squish the player")
 
 
 func test_falling_box_passes_through_player_without_reacting() -> void:
@@ -124,13 +130,52 @@ func test_falling_box_passes_through_player_without_reacting() -> void:
 
 	var box := _add_box(Vector2(0.0, -250.0))
 	var did_pass_player: bool = await wait_until(
-		func() -> bool: return box.global_position.y > player.global_position.y + 50.0,
+		func() -> bool:
+			return box.global_position.y > player.global_position.y + 50.0,
 		2.0,
 		"Waiting for box to pass through player",
 	)
 
 	assert_true(did_pass_player, "Falling box should pass completely through the player")
 	assert_eq(box.state, FallingBox.State.FALLING, "Player should not ground a falling box")
+
+
+func test_falling_box_squishes_player_against_floor() -> void:
+	player.global_position = Vector2(0.0, -45.0)
+	player.velocity = Vector2.ZERO
+	player.reset_physics_interpolation()
+	await wait_physics_frames(3)
+	assert_true(player.is_on_floor(), "Player should be standing on the platform")
+
+	watch_signals(player)
+	_add_box(Vector2(0.0, -150.0))
+	var did_die: bool = await wait_for_signal(
+		player.died,
+		1.0,
+		"Waiting for a falling box to squish the player",
+	)
+
+	assert_true(did_die, "A falling box should kill a player pinned against a floor")
+	assert_signal_emitted(player, "respawned", "A squished player should respawn")
+	assert_eq(player.velocity, Vector2.ZERO, "Respawning should clear the player's velocity")
+
+
+func test_falling_box_does_not_squish_airborne_player() -> void:
+	player.global_position = Vector2(0.0, -300.0)
+	player.velocity = Vector2.ZERO
+	player.reset_physics_interpolation()
+	await wait_physics_frames(1)
+	assert_false(player.is_on_floor(), "Player should be airborne")
+
+	watch_signals(player)
+	_add_box(Vector2(0.0, -330.0))
+	await wait_physics_frames(5)
+
+	assert_signal_not_emitted(
+		player,
+		"died",
+		"Contact with a falling box should only squish a player pinned against a floor",
+	)
 
 
 func test_expired_box_disables_collision_fades_falls_and_is_freed() -> void:
@@ -142,7 +187,9 @@ func test_expired_box_disables_collision_fades_falls_and_is_freed() -> void:
 	box.global_position = Vector2(0.0, -100.0)
 
 	var did_land: bool = await wait_for_signal(
-		box.grounded, 2.0, "Waiting for expiring box to land"
+		box.grounded,
+		2.0,
+		"Waiting for expiring box to land",
 	)
 	assert_true(did_land, "Expiring box should land before the timeout")
 	if not did_land:
