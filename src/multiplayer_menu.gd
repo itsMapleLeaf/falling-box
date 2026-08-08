@@ -1,4 +1,4 @@
-class_name NetworkMenu extends Screen
+extends Screen
 
 
 func _unhandled_input(event: InputEvent) -> void:
