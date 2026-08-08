@@ -1,6 +1,12 @@
 class_name Game
 extends Screen
 
+var peer := ENetMultiplayerPeer.new()
+
+
+func _ready() -> void:
+	pass
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug_quit"):
@@ -8,8 +14,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func host_server(port: int) -> void:
-	pass
+	peer.create_server(port)
+	multiplayer.multiplayer_peer = peer
 
 
 func join_server(host: String, port: int) -> void:
-	pass
+	peer.create_client(host, port)
+	multiplayer.multiplayer_peer = peer
