@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://behcxl4o21rrt"]
+
+[ext_resource type="PackedScene" uid="uid://cud0fufuh0rol" path="res://src/platform.tscn" id="1_kc8ui"]
+[ext_resource type="PackedScene" uid="uid://dgfxlv2n2qtvd" path="res://src/player.tscn" id="2_bs6l1"]
+[ext_resource type="Script" uid="uid://b1ppimynnjxmx" path="res://src/falling_box_spawner.gd" id="3_pk08u"]
+[ext_resource type="PackedScene" uid="uid://b6hwok27qogib" path="res://src/falling_box.tscn" id="4_wqvko"]
+
+[node name="Game" type="Node2D" unique_id=457481078]
+
+[node name="Platform" parent="." unique_id=1814969820 instance=ExtResource("1_kc8ui")]
+size_in_cells = Vector2i(29, 1)
+
+[node name="Platform2" parent="." unique_id=28862830 instance=ExtResource("1_kc8ui")]
+position = Vector2(0, 50)
+size_in_cells = Vector2i(27, 1)
+
+[node name="Platform3" parent="." unique_id=1806798906 instance=ExtResource("1_kc8ui")]
+position = Vector2(0, 100)
+size_in_cells = Vector2i(25, 1)
+
+[node name="Player" parent="." unique_id=1988052361 node_paths=PackedStringArray("fallout_threshold", "respawn_left", "respawn_right") instance=ExtResource("2_bs6l1")]
+position = Vector2(0, -450)
+fallout_threshold = NodePath("../FalloutThreshold")
+respawn_left = NodePath("../RespawnLeft")
+respawn_right = NodePath("../RespawnRight")
+
+[node name="RespawnLeft" type="Marker2D" parent="." unique_id=2143609635]
+position = Vector2(-725, -375)
+
+[node name="RespawnRight" type="Marker2D" parent="." unique_id=1413309880]
+position = Vector2(725, -375)
+
+[node name="FalloutThreshold" type="Marker2D" parent="." unique_id=1665585315]
+position = Vector2(0, 500)
+gizmo_extents = 25.0
+
+[node name="BoxSpawnLeft" type="Marker2D" parent="." unique_id=329868303]
+position = Vector2(-725, -950)
+
+[node name="BoxSpawnRight" type="Marker2D" parent="." unique_id=1179888092]
+position = Vector2(725, -950)
+
+[node name="Boxes" type="Node2D" parent="." unique_id=524611355]
+
+[node name="BoxSpawner" type="Node" parent="." unique_id=701761549 node_paths=PackedStringArray("box_parent", "spawn_left", "spawn_right", "spawn_timer")]
+script = ExtResource("3_pk08u")
+box_scene = ExtResource("4_wqvko")
+box_parent = NodePath("../Boxes")
+spawn_left = NodePath("../BoxSpawnLeft")
+spawn_right = NodePath("../BoxSpawnRight")
+spawn_timer = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="BoxSpawner" unique_id=783537521]
+wait_time = 0.5
+autostart = true
+
+[node name="Interface" type="CanvasLayer" parent="." unique_id=1177752980]
+
+[node name="Margin" type="MarginContainer" parent="Interface" unique_id=196670206]
+offset_right = 1280.0
+offset_bottom = 720.0
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="Layout" type="VBoxContainer" parent="Interface/Margin" unique_id=59899918]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Interface/Margin/Layout" unique_id=1736395285]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.91, 0.93, 1)
+theme_override_font_sizes/font_size = 30
+text = "THAT FALLING BOX GAME"
+
+[node name="Status" type="Label" parent="Interface/Margin/Layout" unique_id=609718466]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.64, 0.67, 1)
+theme_override_font_sizes/font_size = 16
+text = "Move: Left & right arrows
+Jump: Up arrow or Space
+Grab & release: Z"
