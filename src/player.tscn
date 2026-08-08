@@ -22,7 +22,7 @@ camera = NodePath("Camera")
 mesh = SubResource("QuadMesh_player")
 
 [node name="Cursor" type="MeshInstance2D" parent="." unique_id=1793711821]
-position = Vector2(45, 0)
+position = Vector2(55, 0)
 mesh = SubResource("QuadMesh_cursor")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=206726635]

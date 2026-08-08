@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 signal respawned(at_position: Vector2)
 
-const CURSOR_DISTANCE := 35.0
+const CURSOR_OFFSET := 55.0
 const MAX_JUMPS := 2
 
 @export var cursor: MeshInstance2D
@@ -23,7 +23,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	cursor.position.x = facing * (GameConfig.PLAYER_SIZE.x * 0.5 + CURSOR_DISTANCE)
+	cursor.position.x = facing * CURSOR_OFFSET
 	cursor.reset_physics_interpolation()
 
 
