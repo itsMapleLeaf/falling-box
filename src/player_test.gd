@@ -86,6 +86,7 @@ func test_landing_restores_both_jumps() -> void:
 
 
 func test_falling_far_past_the_threshold_respawns_player_above_platform() -> void:
+	player.respawn_delay_seconds = 0.1
 	watch_signals(player)
 	var velocity_at_respawn := [Vector2.INF]
 	player.respawned.connect(
@@ -97,7 +98,17 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 	player.global_position = player.fallout_threshold.global_position + Vector2(0.0, 5000.0)
 	await wait_physics_frames(3)
 
-	assert_signal_emitted(player, "respawned", "Falling out should trigger a respawn")
+	assert_signal_emitted(player, "died", "Falling out should kill the player")
+	assert_signal_not_emitted(player, "respawned", "Fallout respawn should be delayed")
+	assert_true(player.is_dead, "Player should remain dead during the respawn delay")
+	assert_false(player.visible, "Dead player should be hidden during the respawn delay")
+
+	var did_respawn: bool = await wait_for_signal(
+		player.respawned,
+		0.5,
+		"Waiting for fallout respawn delay",
+	)
+	assert_true(did_respawn, "Falling out should respawn the player after the delay")
 	assert_true(
 		player.global_position.x >= player.respawn_left.global_position.x
 		and player.global_position.x <= player.respawn_right.global_position.x,
@@ -111,6 +122,26 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 	)
 	assert_eq(velocity_at_respawn[0], Vector2.ZERO, "Respawning should clear fall velocity")
 	assert_eq(player.jumps_remaining, 2, "Respawning should restore both jumps")
+	assert_false(player.is_dead, "Player should be alive after respawning")
+	assert_true(player.visible, "Player should be visible after respawning")
+
+
+func test_repeated_death_requests_do_not_restart_respawn_delay() -> void:
+	player.respawn_delay_seconds = 0.1
+	var death_count := [0]
+	player.died.connect(func() -> void: death_count[0] += 1)
+
+	player.die()
+	await wait_seconds(0.05)
+	player.die()
+	var did_respawn: bool = await wait_for_signal(
+		player.respawned,
+		0.1,
+		"Waiting for the original respawn delay",
+	)
+
+	assert_eq(death_count[0], 1, "A dead player should not die again")
+	assert_true(did_respawn, "A repeated death should not restart the respawn delay")
 
 
 func test_respawning_varies_the_horizontal_position() -> void:

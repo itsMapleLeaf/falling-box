@@ -13,14 +13,22 @@ const MAX_JUMPS := 2
 @export var respawn_right: Marker2D
 @export var camera: Camera2D
 @export var crush_detector: Area2D
+@export var respawn_timer: Timer
+@export var respawn_delay_seconds := GameConfig.RESPAWN_DELAY_SECONDS
 
 var facing := 1
 var jumps_remaining := MAX_JUMPS
 var respawn_rng := RandomNumberGenerator.new()
+var is_dead := false
+var active_collision_layer: int
+var active_collision_mask: int
 
 
 func _ready() -> void:
+	active_collision_layer = collision_layer
+	active_collision_mask = collision_mask
 	respawn_rng.randomize()
+	respawn_timer.timeout.connect(respawn)
 	respawn()
 
 
@@ -63,7 +71,7 @@ func _physics_process(delta: float) -> void:
 		fallout_threshold != null and respawn_left != null and respawn_right != null
 		and global_position.y > fallout_threshold.global_position.y
 	):
-		respawn()
+		die()
 
 
 func _is_squished_by_falling_box() -> bool:
@@ -83,11 +91,21 @@ func _is_squished_by_falling_box() -> bool:
 
 
 func die() -> void:
+	if is_dead:
+		return
+
+	is_dead = true
+	visible = false
+	velocity = Vector2.ZERO
+	collision_layer = 0
+	collision_mask = 0
+	set_physics_process(false)
+	respawn_timer.start(respawn_delay_seconds)
 	died.emit()
-	respawn()
 
 
 func respawn() -> void:
+	respawn_timer.stop()
 	var minimum_x := minf(respawn_left.global_position.x, respawn_right.global_position.x)
 	var maximum_x := maxf(respawn_left.global_position.x, respawn_right.global_position.x)
 	var at_position := Vector2(
@@ -97,5 +115,10 @@ func respawn() -> void:
 	global_position = at_position
 	velocity = Vector2.ZERO
 	jumps_remaining = MAX_JUMPS
+	collision_layer = active_collision_layer
+	collision_mask = active_collision_mask
+	visible = true
+	is_dead = false
+	set_physics_process(true)
 	reset_physics_interpolation()
 	respawned.emit(at_position)

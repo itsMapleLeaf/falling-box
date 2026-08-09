@@ -141,6 +141,7 @@ func test_falling_box_passes_through_player_without_reacting() -> void:
 
 
 func test_falling_box_squishes_player_against_floor() -> void:
+	player.respawn_delay_seconds = 0.1
 	player.global_position = Vector2(0.0, -45.0)
 	player.velocity = Vector2.ZERO
 	player.reset_physics_interpolation()
@@ -156,7 +157,14 @@ func test_falling_box_squishes_player_against_floor() -> void:
 	)
 
 	assert_true(did_die, "A falling box should kill a player pinned against a floor")
-	assert_signal_emitted(player, "respawned", "A squished player should respawn")
+	assert_signal_not_emitted(player, "respawned", "Squish respawn should be delayed")
+	assert_true(player.is_dead, "A squished player should remain dead during the delay")
+	var did_respawn: bool = await wait_for_signal(
+		player.respawned,
+		0.5,
+		"Waiting for squish respawn delay",
+	)
+	assert_true(did_respawn, "A squished player should respawn after the delay")
 	assert_eq(player.velocity, Vector2.ZERO, "Respawning should clear the player's velocity")
 
 
