@@ -4,10 +4,9 @@ extends CharacterBody2D
 signal respawned(at_position: Vector2)
 signal died
 
-const CURSOR_OFFSET := 55.0
 const MAX_JUMPS := 2
 
-@export var cursor: MeshInstance2D
+@export var cursor: Node2D
 @export var fallout_threshold: Marker2D
 @export var respawn_left: Marker2D
 @export var respawn_right: Marker2D
@@ -33,8 +32,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	cursor.position.x = facing * CURSOR_OFFSET
-	cursor.reset_physics_interpolation()
+	cursor.scale.x = facing
 
 
 func _physics_process(delta: float) -> void:

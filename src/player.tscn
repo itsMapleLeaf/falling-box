@@ -18,7 +18,7 @@ size = Vector2(25, 40)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_lowyb")
-cursor = NodePath("Cursor")
+cursor = NodePath("CursorRoot")
 camera = NodePath("Camera")
 crush_detector = NodePath("CrushDetector")
 respawn_timer = NodePath("RespawnTimer")
@@ -26,7 +26,9 @@ respawn_timer = NodePath("RespawnTimer")
 [node name="Body" type="MeshInstance2D" parent="." unique_id=857442156]
 mesh = SubResource("QuadMesh_player")
 
-[node name="Cursor" type="MeshInstance2D" parent="." unique_id=1793711821]
+[node name="CursorRoot" type="Node2D" parent="." unique_id=841290814]
+
+[node name="Cursor" type="MeshInstance2D" parent="CursorRoot" unique_id=1793711821]
 position = Vector2(55, 0)
 mesh = SubResource("QuadMesh_cursor")
 
