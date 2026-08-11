@@ -13,7 +13,6 @@ const MAX_JUMPS := 2
 @export var camera: Camera2D
 @export var crush_detector: Area2D
 @export var respawn_timer: Timer
-@export var respawn_delay_seconds := GameConfig.RESPAWN_DELAY_SECONDS
 
 var facing := 1
 var jumps_remaining := MAX_JUMPS
@@ -27,7 +26,6 @@ func _ready() -> void:
 	active_collision_layer = collision_layer
 	active_collision_mask = collision_mask
 	respawn_rng.randomize()
-	respawn_timer.timeout.connect(respawn)
 	respawn()
 
 
@@ -98,12 +96,11 @@ func die() -> void:
 	collision_layer = 0
 	collision_mask = 0
 	set_physics_process(false)
-	respawn_timer.start(respawn_delay_seconds)
+	respawn_timer.start()
 	died.emit()
 
 
 func respawn() -> void:
-	respawn_timer.stop()
 	var minimum_x := minf(respawn_left.global_position.x, respawn_right.global_position.x)
 	var maximum_x := maxf(respawn_left.global_position.x, respawn_right.global_position.x)
 	var at_position := Vector2(
@@ -120,3 +117,7 @@ func respawn() -> void:
 	set_physics_process(true)
 	reset_physics_interpolation()
 	respawned.emit(at_position)
+
+
+func _on_respawn_timer_timeout() -> void:
+	respawn()
