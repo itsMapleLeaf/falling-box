@@ -12,7 +12,7 @@ glow_enabled = true
 glow_intensity = 0.19
 
 [node name="Game" type="Node2D" unique_id=457481078]
-modulate = Color(2.3243644, 2.3243644, 2.3243644, 1)
+modulate = Color(1.4262614, 1.4262614, 1.4262614, 1)
 script = ExtResource("1_bs6l1")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1465794850]
