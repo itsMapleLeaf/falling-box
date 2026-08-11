@@ -98,6 +98,7 @@ func die() -> void:
 	set_physics_process(false)
 	respawn_timer.start()
 	died.emit()
+	Tremble.trigger(100)
 
 
 func respawn() -> void:

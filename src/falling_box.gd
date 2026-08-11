@@ -63,6 +63,7 @@ func _land() -> void:
 	global_position = global_position.snapped(Vector2.ONE * GameConfig.CELL_SIZE)
 	reset_physics_interpolation()
 	grounded.emit()
+	Tremble.trigger(5)
 
 
 func _update_grounded(delta: float) -> void:
