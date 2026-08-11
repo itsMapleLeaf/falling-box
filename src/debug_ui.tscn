@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bustgdabwnylt"]
+
+[ext_resource type="Script" uid="uid://baleutw581pvc" path="res://src/debug_ui.gd" id="1_kyoau"]
+
+[node name="DebugUI" type="CanvasLayer" unique_id=1170176412]
+script = ExtResource("1_kyoau")
+
+[node name="Label" type="Label" parent="." unique_id=329207381]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
