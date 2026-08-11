@@ -100,6 +100,11 @@ func die() -> void:
 	died.emit()
 	Tremble.trigger(100)
 
+	const EXPLOSION = preload("uid://b47038mcmvy10")
+	var exp: GPUParticles2D = EXPLOSION.instantiate()
+	add_sibling(exp)
+	exp.global_position = global_position
+
 
 func respawn() -> void:
 	var minimum_x := minf(respawn_left.global_position.x, respawn_right.global_position.x)

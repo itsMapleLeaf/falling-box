@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://b47038mcmvy10"]
+
+[ext_resource type="Script" uid="uid://dhetslxyinwr5" path="res://src/explosion.gd" id="1_bjurg"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_faelc"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_bjurg"]
+mesh = SubResource("QuadMesh_faelc")
+image_size = Vector2(8, 8)
+
+[sub_resource type="Gradient" id="Gradient_bjurg"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_u6xdu"]
+gradient = SubResource("Gradient_bjurg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u716c"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+spread = 180.0
+flatness = 1.0
+initial_velocity_max = 600.0
+gravity = Vector3(0, 350, 0)
+color_ramp = SubResource("GradientTexture1D_u6xdu")
+
+[node name="Explosion" type="GPUParticles2D" unique_id=133912295]
+emitting = false
+amount = 30
+texture = SubResource("MeshTexture_bjurg")
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_u716c")
+script = ExtResource("1_bjurg")
+
+[connection signal="finished" from="." to="." method="_on_finished"]
