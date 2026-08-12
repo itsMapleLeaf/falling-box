@@ -22,6 +22,10 @@ var spawn_fade_age := 0.0
 var despawn_fade_age := 0.0
 
 
+func _enter_tree() -> void:
+	set_physics_process(is_multiplayer_authority())
+
+
 func _ready() -> void:
 	visual.modulate.a = 0.0
 
