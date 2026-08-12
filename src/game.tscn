@@ -19,8 +19,6 @@ environment = SubResource("Environment_bs6l1")
 [node name="Level" parent="." unique_id=59989938 instance=ExtResource("2_kc8ui")]
 unique_name_in_owner = true
 
-[node name="FallingBoxLayer" type="Node2D" parent="." unique_id=524611355]
-
 [node name="FallingBoxSpawner" type="Node" parent="." unique_id=701761549 node_paths=PackedStringArray("level")]
 script = ExtResource("3_pk08u")
 level = NodePath("../Level")
@@ -30,5 +28,4 @@ wait_time = 0.5
 autostart = true
 
 [node name="PlayerMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1400115976]
-_spawnable_scenes = PackedStringArray("uid://dgfxlv2n2qtvd")
 spawn_path = NodePath("..")
