@@ -15,14 +15,15 @@ size = Vector2(40, 40)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lowyb"]
 size = Vector2(25, 42)
 
-[node name="Player" type="CharacterBody2D" unique_id=1988052361 node_paths=PackedStringArray("cursor", "camera", "crush_detector", "respawn_timer")]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gmfve"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Player" type="CharacterBody2D" unique_id=1988052361]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_lowyb")
-cursor = NodePath("CursorRoot")
-camera = NodePath("CameraTremble/Camera")
-crush_detector = NodePath("CrushDetector")
-respawn_timer = NodePath("RespawnTimer")
 
 [node name="Body" type="MeshInstance2D" parent="." unique_id=857442156]
 mesh = SubResource("QuadMesh_player")
@@ -30,6 +31,7 @@ mesh = SubResource("QuadMesh_player")
 [node name="CursorRoot" type="Node2D" parent="." unique_id=841290814]
 
 [node name="Cursor" type="MeshInstance2D" parent="CursorRoot" unique_id=1793711821]
+unique_name_in_owner = true
 position = Vector2(55, 0)
 mesh = SubResource("QuadMesh_cursor")
 
@@ -37,6 +39,7 @@ mesh = SubResource("QuadMesh_cursor")
 shape = SubResource("RectangleShape2D_player")
 
 [node name="CrushDetector" type="Area2D" parent="." unique_id=719728603]
+unique_name_in_owner = true
 collision_layer = 2
 collision_mask = 5
 
@@ -49,6 +52,7 @@ physics_interpolation_mode = 2
 script = ExtResource("2_gmfve")
 
 [node name="Camera" type="Camera2D" parent="CameraTremble" unique_id=1793847058]
+unique_name_in_owner = true
 offset = Vector2(0, -140)
 limit_enabled = false
 position_smoothing_enabled = true
@@ -56,6 +60,10 @@ position_smoothing_speed = 7.0
 metadata/_edit_lock_ = true
 
 [node name="RespawnTimer" type="Timer" parent="." unique_id=84011130]
+unique_name_in_owner = true
 one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2084790207]
+replication_config = SubResource("SceneReplicationConfig_gmfve")
 
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]

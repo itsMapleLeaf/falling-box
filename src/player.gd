@@ -6,13 +6,14 @@ signal died
 
 const MAX_JUMPS := 2
 
-@export var cursor: Node2D
 @export var fallout_threshold: Marker2D
 @export var respawn_left: Marker2D
 @export var respawn_right: Marker2D
-@export var camera: Camera2D
-@export var crush_detector: Area2D
-@export var respawn_timer: Timer
+
+@onready var cursor: MeshInstance2D = %Cursor
+@onready var crush_detector: Area2D = %CrushDetector
+@onready var camera: Camera2D = %Camera
+@onready var respawn_timer: Timer = %RespawnTimer
 
 var facing := 1
 var jumps_remaining := MAX_JUMPS
@@ -22,11 +23,16 @@ var active_collision_layer: int
 var active_collision_mask: int
 
 
+func _enter_tree() -> void:
+	set_multiplayer_authority(int(name))
+
+
 func _ready() -> void:
 	active_collision_layer = collision_layer
 	active_collision_mask = collision_mask
 	respawn_rng.randomize()
 	respawn()
+	camera.enabled = is_multiplayer_authority()
 
 
 func _process(_delta: float) -> void:

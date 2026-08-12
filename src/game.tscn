@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cxgv5kyvrs67i" path="res://src/game.gd" id="1_bs6l1"]
 [ext_resource type="PackedScene" uid="uid://cud0fufuh0rol" path="res://src/platform.tscn" id="1_kc8ui"]
-[ext_resource type="PackedScene" uid="uid://dgfxlv2n2qtvd" path="res://src/player.tscn" id="2_bs6l1"]
 [ext_resource type="Script" uid="uid://b1ppimynnjxmx" path="res://src/falling_box_spawner.gd" id="3_pk08u"]
 [ext_resource type="PackedScene" uid="uid://b6hwok27qogib" path="res://src/falling_box.tscn" id="4_wqvko"]
 
@@ -29,19 +28,16 @@ size_in_cells = Vector2i(27, 1)
 position = Vector2(0, 100)
 size_in_cells = Vector2i(25, 1)
 
-[node name="Player" parent="." unique_id=1988052361 node_paths=PackedStringArray("fallout_threshold", "respawn_left", "respawn_right") instance=ExtResource("2_bs6l1")]
-position = Vector2(0, -450)
-fallout_threshold = NodePath("../FalloutThreshold")
-respawn_left = NodePath("../RespawnLeft")
-respawn_right = NodePath("../RespawnRight")
-
 [node name="RespawnLeft" type="Marker2D" parent="." unique_id=2143609635]
+unique_name_in_owner = true
 position = Vector2(-725, -575)
 
 [node name="RespawnRight" type="Marker2D" parent="." unique_id=1413309880]
+unique_name_in_owner = true
 position = Vector2(725, -575)
 
 [node name="FalloutThreshold" type="Marker2D" parent="." unique_id=1665585315]
+unique_name_in_owner = true
 position = Vector2(0, 500)
 gizmo_extents = 25.0
 
@@ -64,3 +60,7 @@ spawn_timer = NodePath("Timer")
 [node name="Timer" type="Timer" parent="BoxSpawner" unique_id=783537521]
 wait_time = 0.5
 autostart = true
+
+[node name="PlayerMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1400115976]
+_spawnable_scenes = PackedStringArray("uid://dgfxlv2n2qtvd")
+spawn_path = NodePath("..")

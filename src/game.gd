@@ -1,11 +1,41 @@
 class_name Game
 extends Screen
 
+const PLAYER = preload("uid://dgfxlv2n2qtvd")
+
 var enet_peer := ENetMultiplayerPeer.new()
+var players_by_peer_id: Dictionary[int, Player] = { }
+
+@onready var player_multiplayer_spawner: MultiplayerSpawner = $PlayerMultiplayerSpawner
 
 
 func _ready() -> void:
-	pass
+	player_multiplayer_spawner.spawn_function = _spawn_player
+
+
+class PlayerSpawnData:
+	var peer_id: int
+
+
+	func with_peer_id(value: int) -> PlayerSpawnData:
+		peer_id = value
+		return self
+
+
+func _spawn_player(data_dict: Dictionary):
+	prints(data_dict)
+
+	var player: Player = PLAYER.instantiate()
+	var data: PlayerSpawnData = dict_to_inst(data_dict)
+
+	player.name = str(data.peer_id)
+	player.respawn_left = %RespawnLeft
+	player.respawn_right = %RespawnRight
+	player.fallout_threshold = %FalloutThreshold
+
+	players_by_peer_id[data.peer_id] = player
+
+	return player
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -17,7 +47,30 @@ func host_server(port: int) -> void:
 	enet_peer.create_server(port)
 	multiplayer.multiplayer_peer = enet_peer
 
+	enet_peer.peer_connected.connect(_on_peer_connected)
+	enet_peer.peer_disconnected.connect(_on_peer_disconnected)
+
+	player_multiplayer_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(1)))
+
 
 func join_server(host: String, port: int) -> void:
 	enet_peer.create_client(host, port)
 	multiplayer.multiplayer_peer = enet_peer
+
+
+func _on_peer_connected(peer_id: int) -> void:
+	prints("connected:", peer_id)
+
+	player_multiplayer_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(peer_id)))
+
+
+func _on_peer_disconnected(peer_id: int) -> void:
+	prints("disconnected:", peer_id)
+	remove_player(peer_id)
+
+
+func remove_player(peer_id: int) -> void:
+	var player := players_by_peer_id[peer_id]
+	if player:
+		player.queue_free()
+		players_by_peer_id.erase(peer_id)
