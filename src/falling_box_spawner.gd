@@ -19,8 +19,8 @@ func _ready() -> void:
 
 func spawn_box() -> FallingBox:
 	var box: FallingBox = FALLING_BOX.instantiate()
-	add_sibling(box)
 	box.global_position = level.get_random_box_spawn_position()
 	box.reset_physics_interpolation()
+	add_sibling(box)
 	box_spawned.emit(box)
 	return box
