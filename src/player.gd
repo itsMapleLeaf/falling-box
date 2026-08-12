@@ -19,6 +19,7 @@ var respawn_rng := RandomNumberGenerator.new()
 var is_dead := false
 var active_collision_layer: int
 var active_collision_mask: int
+var is_local := false
 
 
 func _enter_tree() -> void:
@@ -30,7 +31,7 @@ func _ready() -> void:
 	active_collision_mask = collision_mask
 	respawn_rng.randomize()
 	respawn()
-	camera.enabled = is_multiplayer_authority()
+	camera.enabled = is_multiplayer_authority() || is_local
 
 
 func _process(_delta: float) -> void:

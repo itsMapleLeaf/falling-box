@@ -14,6 +14,13 @@ func _ready() -> void:
 	player_multiplayer_spawner.spawn_function = _spawn_player
 
 
+func play_offline() -> void:
+	var player: Player = PLAYER.instantiate()
+	player.level = level
+	player.is_local = true
+	add_child(player)
+
+
 class PlayerSpawnData:
 	var peer_id: int
 
