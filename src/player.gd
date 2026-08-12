@@ -8,7 +8,7 @@ const MAX_JUMPS := 2
 
 @export var level: Level
 
-@onready var cursor: MeshInstance2D = %Cursor
+@onready var cursor_root: Node2D = %CursorRoot
 @onready var crush_detector: Area2D = %CrushDetector
 @onready var camera: Camera2D = %Camera
 @onready var respawn_timer: Timer = %RespawnTimer
@@ -35,7 +35,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	cursor.scale.x = facing
+	cursor_root.scale.x = facing
 
 
 func _physics_process(delta: float) -> void:

@@ -29,9 +29,9 @@ script = ExtResource("1_lowyb")
 mesh = SubResource("QuadMesh_player")
 
 [node name="CursorRoot" type="Node2D" parent="." unique_id=841290814]
+unique_name_in_owner = true
 
 [node name="Cursor" type="MeshInstance2D" parent="CursorRoot" unique_id=1793711821]
-unique_name_in_owner = true
 position = Vector2(55, 0)
 mesh = SubResource("QuadMesh_cursor")
 
