@@ -101,9 +101,9 @@ func die() -> void:
 	Tremble.trigger(100)
 
 	const EXPLOSION = preload("uid://b47038mcmvy10")
-	var exp: GPUParticles2D = EXPLOSION.instantiate()
-	add_sibling(exp)
-	exp.global_position = global_position
+	var explosion: GPUParticles2D = EXPLOSION.instantiate()
+	add_sibling(explosion)
+	explosion.global_position = global_position
 
 
 func respawn() -> void:
