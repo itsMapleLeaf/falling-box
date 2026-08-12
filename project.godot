@@ -18,18 +18,20 @@ config/features=PackedStringArray("4.7")
 
 Tremble="*uid://dgv0tiqeicp0v"
 DebugUI="*uid://bustgdabwnylt"
+TileRunInstancesGlobal="*uid://b6fg6pu2bfi14"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/size/always_on_top=true
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GDQuest_GDScript_formatter/plugin.cfg", "res://addons/gut/plugin.cfg")
+enabled=PackedStringArray("res://addons/GDQuest_GDScript_formatter/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/tile-run-instances/plugin.cfg")
 
 [input]
 

@@ -1,7 +1,7 @@
 class_name Game
 extends Screen
 
-var peer := ENetMultiplayerPeer.new()
+var enet_peer := ENetMultiplayerPeer.new()
 
 
 func _ready() -> void:
@@ -14,10 +14,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func host_server(port: int) -> void:
-	peer.create_server(port)
-	multiplayer.multiplayer_peer = peer
+	enet_peer.create_server(port)
+	multiplayer.multiplayer_peer = enet_peer
 
 
 func join_server(host: String, port: int) -> void:
-	peer.create_client(host, port)
-	multiplayer.multiplayer_peer = peer
+	enet_peer.create_client(host, port)
+	multiplayer.multiplayer_peer = enet_peer
