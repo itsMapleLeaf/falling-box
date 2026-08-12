@@ -26,15 +26,6 @@ requiring the game to run.
 - Keep shared tuning values in `src/game_config.gd` rather than scattering magic
   numbers through gameplay scripts.
 
-## Node references
-
-- Prefer typed exported node references, assigned in the scene inspector, over
-  `@onready` variables that depend on hard-coded node paths.
-- Exported references are more flexible when nodes move or are renamed and make
-  a script's scene dependencies visible in the editor.
-- Use `@onready` path lookups only when an exported reference would not be
-  practical, such as nodes created or discovered dynamically at runtime.
-
 ## Verification
 
 - Write automated gameplay tests with GUT. Keep test scripts in the flat `src/`
