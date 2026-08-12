@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bix8d1rou0bjf"]
+
+[ext_resource type="Script" uid="uid://beelmfxf1y32n" path="res://src/level.gd" id="1_4q7qo"]
+[ext_resource type="PackedScene" uid="uid://cud0fufuh0rol" path="res://src/platform.tscn" id="1_ybxv7"]
+
+[node name="Level" type="Node2D" unique_id=59989938]
+script = ExtResource("1_4q7qo")
+
+[node name="PlayerSpawnLeft" type="Marker2D" parent="." unique_id=1564861607]
+unique_name_in_owner = true
+position = Vector2(-725, -575)
+
+[node name="PlayerSpawnRight" type="Marker2D" parent="." unique_id=895194237]
+unique_name_in_owner = true
+position = Vector2(725, -575)
+
+[node name="PlayerFallout" type="Marker2D" parent="." unique_id=578716584]
+unique_name_in_owner = true
+position = Vector2(0, 500)
+gizmo_extents = 25.0
+
+[node name="BoxSpawnLeft" type="Marker2D" parent="." unique_id=872048373]
+unique_name_in_owner = true
+position = Vector2(-725, -950)
+
+[node name="BoxSpawnRight" type="Marker2D" parent="." unique_id=1178401429]
+unique_name_in_owner = true
+position = Vector2(725, -950)
+
+[node name="Platform" parent="." unique_id=1814969820 instance=ExtResource("1_ybxv7")]
+size_in_cells = Vector2i(29, 1)
+
+[node name="Platform2" parent="." unique_id=1416480252 instance=ExtResource("1_ybxv7")]
+position = Vector2(0, 50)
+size_in_cells = Vector2i(27, 1)
+
+[node name="Platform3" parent="." unique_id=1853291217 instance=ExtResource("1_ybxv7")]
+position = Vector2(0, 100)
+size_in_cells = Vector2i(25, 1)

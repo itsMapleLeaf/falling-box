@@ -6,9 +6,7 @@ signal died
 
 const MAX_JUMPS := 2
 
-@export var fallout_threshold: Marker2D
-@export var respawn_left: Marker2D
-@export var respawn_right: Marker2D
+@export var level: Level
 
 @onready var cursor: MeshInstance2D = %Cursor
 @onready var crush_detector: Area2D = %CrushDetector
@@ -69,10 +67,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		jumps_remaining = MAX_JUMPS
 
-	if (
-		fallout_threshold != null and respawn_left != null and respawn_right != null
-		and global_position.y > fallout_threshold.global_position.y
-	):
+	if (global_position.y > level.player_fallout.global_position.y):
 		die()
 
 
@@ -113,13 +108,7 @@ func die() -> void:
 
 
 func respawn() -> void:
-	var minimum_x := minf(respawn_left.global_position.x, respawn_right.global_position.x)
-	var maximum_x := maxf(respawn_left.global_position.x, respawn_right.global_position.x)
-	var at_position := Vector2(
-		respawn_rng.randf_range(minimum_x, maximum_x),
-		respawn_left.global_position.y,
-	)
-	global_position = at_position
+	global_position = level.get_random_player_spawn_position()
 	velocity = Vector2.ZERO
 	jumps_remaining = MAX_JUMPS
 	collision_layer = active_collision_layer
@@ -128,7 +117,7 @@ func respawn() -> void:
 	is_dead = false
 	set_physics_process(true)
 	reset_physics_interpolation()
-	respawned.emit(at_position)
+	respawned.emit(global_position)
 
 
 func _on_respawn_timer_timeout() -> void:

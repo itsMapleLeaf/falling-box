@@ -7,6 +7,7 @@ var enet_peer := ENetMultiplayerPeer.new()
 var players_by_peer_id: Dictionary[int, Player] = { }
 
 @onready var player_multiplayer_spawner: MultiplayerSpawner = $PlayerMultiplayerSpawner
+@onready var level: Level = %Level
 
 
 func _ready() -> void:
@@ -23,15 +24,11 @@ class PlayerSpawnData:
 
 
 func _spawn_player(data_dict: Dictionary):
-	prints(data_dict)
-
 	var player: Player = PLAYER.instantiate()
 	var data: PlayerSpawnData = dict_to_inst(data_dict)
 
 	player.name = str(data.peer_id)
-	player.respawn_left = %RespawnLeft
-	player.respawn_right = %RespawnRight
-	player.fallout_threshold = %FalloutThreshold
+	player.level = level
 
 	players_by_peer_id[data.peer_id] = player
 
