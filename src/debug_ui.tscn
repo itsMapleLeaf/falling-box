@@ -5,7 +5,8 @@
 [node name="DebugUI" type="CanvasLayer" unique_id=1170176412]
 script = ExtResource("1_kyoau")
 
-[node name="Label" type="Label" parent="." unique_id=329207381]
+[node name="DebugValues" type="Label" parent="." unique_id=329207381]
+unique_name_in_owner = true
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -13,3 +14,33 @@ offset_left = -40.0
 offset_bottom = 23.0
 grow_horizontal = 0
 horizontal_alignment = 2
+
+[node name="LogScrollContainer" type="ScrollContainer" parent="." unique_id=1811773757]
+unique_name_in_owner = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -176.0
+offset_right = 633.0
+offset_bottom = 1.0
+grow_vertical = 0
+horizontal_scroll_mode = 5
+vertical_scroll_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="LogScrollContainer" unique_id=1006947938]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="LogMessageList" type="VBoxContainer" parent="LogScrollContainer/MarginContainer" unique_id=1422653501]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LogMessageTemplate" type="Label" parent="LogScrollContainer/MarginContainer/LogMessageList" unique_id=1738008807]
+unique_name_in_owner = true
+layout_mode = 2
+text = "hello world, test"
