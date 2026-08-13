@@ -3,10 +3,12 @@ extends CharacterBody2D
 
 signal respawned(at_position: Vector2)
 signal died
+signal released(player_id: int, at_position: Vector2, facing: Facing.Facing)
 
 const MAX_JUMPS := 2
 const HELD_BLOCK_STIFFNESS := 17.0
 
+@export var player_id: int = randi()
 @export var level: Level
 @export var facing := Facing.Facing.RIGHT
 @export var holding := false
@@ -188,4 +190,4 @@ func release() -> void:
 
 	holding = false
 	_update_holding_display()
-	# TODO: create flying block
+	released.emit(player_id, held_block.global_position, facing)

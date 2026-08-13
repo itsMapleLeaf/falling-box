@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://c6xpnt13peisa"]
+
+[ext_resource type="Script" uid="uid://fhdsypr1wons" path="res://src/flying_box.gd" id="1_v4e6d"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_body"]
+size = Vector2(50, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_box"]
+size = Vector2(50, 50)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_box"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Body:modulate")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:collision_layer")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:collision_mask")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Hitbox:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+
+[node name="FlyingBox" type="Area2D" unique_id=629860071]
+collision_layer = 8
+collision_mask = 14
+script = ExtResource("1_v4e6d")
+
+[node name="Body" type="MeshInstance2D" parent="." unique_id=1464034138]
+mesh = SubResource("QuadMesh_body")
+
+[node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1674640445]
+editor_description = "The hitbox is set slightly smaller than the actual visual area to avoid corner-to-corner collision with other boxes, or \"staircase stacking\""
+shape = SubResource("RectangleShape2D_box")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1591819873]
+replication_config = SubResource("SceneReplicationConfig_box")
+
+[node name="DeathTimer" type="Timer" parent="." unique_id=1418886904]
+process_callback = 0
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

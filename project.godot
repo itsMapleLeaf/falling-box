@@ -78,6 +78,7 @@ joypads/ignore_joypad_on_unfocused_application=true
 2d_physics/layer_1="Platform"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Falling Block"
+2d_physics/layer_4="Flying Block"
 
 [physics]
 

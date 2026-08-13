@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dgfxlv2n2qtvd"]
 
-[ext_resource type="Script" uid="uid://di0e16vca8oa3" path="res://src/player.gd" id="1_lowyb"]
+[ext_resource type="Script" uid="uid://di0e16vca8oa3" path="res://src/player.gd" id="1_gmfve"]
 [ext_resource type="Script" uid="uid://c01qiw4u1k74r" path="res://src/tremble_node.gd" id="2_gmfve"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_player"]
@@ -22,6 +22,7 @@ size = Vector2(25, 21)
 size = Vector2(25, 21)
 
 [sub_resource type="SystemFont" id="SystemFont_ehvfd"]
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_h5w0j"]
 font = SubResource("SystemFont_ehvfd")
@@ -44,7 +45,9 @@ properties/3/replication_mode = 2
 [node name="Player" type="CharacterBody2D" unique_id=1988052361]
 collision_layer = 2
 collision_mask = 5
-script = ExtResource("1_lowyb")
+script = ExtResource("1_gmfve")
+facing = null
+holding = null
 
 [node name="Body" type="MeshInstance2D" parent="." unique_id=857442156]
 mesh = SubResource("QuadMesh_player")

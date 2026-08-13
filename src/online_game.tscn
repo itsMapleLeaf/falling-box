@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://br4ijkxjahnmr" path="res://src/online_game.gd" id="1_8b6qs"]
 [ext_resource type="PackedScene" uid="uid://behcxl4o21rrt" path="res://src/game.tscn" id="2_4o0je"]
+[ext_resource type="Script" uid="uid://b4mx0dtpbxc8k" path="res://src/flying_box_spawner.gd" id="3_4o0je"]
 
 [node name="OnlineGame" type="Node" unique_id=745118855]
 script = ExtResource("1_8b6qs")
@@ -16,3 +17,9 @@ spawn_path = NodePath("../Game")
 [node name="FallingBoxMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1920805324]
 unique_name_in_owner = true
 spawn_path = NodePath("../Game")
+
+[node name="FlyingBoxSpawner" type="MultiplayerSpawner" parent="." unique_id=682206372]
+unique_name_in_owner = true
+spawn_path = NodePath("../Game")
+script = ExtResource("3_4o0je")
+metadata/_custom_type_script = "uid://b4mx0dtpbxc8k"
