@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cxgv5kyvrs67i" path="res://src/game.gd" id="1_bs6l1"]
 [ext_resource type="PackedScene" uid="uid://bix8d1rou0bjf" path="res://src/level.tscn" id="2_kc8ui"]
-[ext_resource type="Script" uid="uid://b1ppimynnjxmx" path="res://src/falling_box_spawner.gd" id="3_pk08u"]
 
 [sub_resource type="Environment" id="Environment_bs6l1"]
 background_mode = 3
@@ -19,17 +18,7 @@ environment = SubResource("Environment_bs6l1")
 [node name="Level" parent="." unique_id=59989938 instance=ExtResource("2_kc8ui")]
 unique_name_in_owner = true
 
-[node name="FallingBoxSpawner" type="Node" parent="." unique_id=701761549 node_paths=PackedStringArray("level", "multiplayer_spawner")]
-script = ExtResource("3_pk08u")
-level = NodePath("../Level")
-multiplayer_spawner = NodePath("../FallingBoxMultiplayerSpawner")
-
-[node name="Timer" type="Timer" parent="FallingBoxSpawner" unique_id=783537521]
+[node name="FallingBoxSpawnTimer" type="Timer" parent="." unique_id=140402480]
+unique_name_in_owner = true
 wait_time = 0.5
 autostart = true
-
-[node name="PlayerMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1400115976]
-spawn_path = NodePath("..")
-
-[node name="FallingBoxMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1329170347]
-spawn_path = NodePath("..")
