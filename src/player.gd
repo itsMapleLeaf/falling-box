@@ -17,7 +17,8 @@ var active_collision_mask: int
 var is_local := false
 
 @onready var cursor_root: Node2D = %CursorRoot
-@onready var crush_detector: Area2D = %CrushDetector
+@onready var crush_detector_top: Area2D = %CrushDetectorTop
+@onready var crush_detector_bottom: Area2D = %CrushDetectorBottom
 @onready var camera: Camera2D = %Camera
 @onready var respawn_timer: Timer = %RespawnTimer
 
@@ -81,19 +82,10 @@ func _physics_process(delta: float) -> void:
 
 
 func _is_squished_by_falling_box() -> bool:
-	if not is_on_floor():
-		return false
-
-	var body_above := false
-	var body_below := false
-
-	for body in crush_detector.get_overlapping_bodies():
-		body_above = body_above or body.global_position.y < global_position.y
-		body_below = body_below or body.global_position.y > global_position.y
-		if body_above and body_below:
-			return true
-
-	return false
+	return (
+		crush_detector_top.has_overlapping_bodies()
+		and crush_detector_bottom.has_overlapping_bodies()
+	)
 
 
 func die() -> void:

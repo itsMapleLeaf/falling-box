@@ -12,8 +12,11 @@ size = Vector2(8, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(40, 40)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gmfve"]
+size = Vector2(25, 21)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lowyb"]
-size = Vector2(25, 42)
+size = Vector2(25, 21)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gmfve"]
 properties/0/path = NodePath(".:position")
@@ -41,12 +44,23 @@ mesh = SubResource("QuadMesh_cursor")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=206726635]
 shape = SubResource("RectangleShape2D_player")
 
-[node name="CrushDetector" type="Area2D" parent="." unique_id=719728603]
+[node name="CrushDetectorTop" type="Area2D" parent="." unique_id=719728603]
 unique_name_in_owner = true
 collision_layer = 2
 collision_mask = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CrushDetector" unique_id=1281780896]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CrushDetectorTop" unique_id=1281780896]
+position = Vector2(0, -10.5)
+shape = SubResource("RectangleShape2D_gmfve")
+debug_color = Color(0.9999998, 0.003031034, 0.14555445, 0.41960785)
+
+[node name="CrushDetectorBottom" type="Area2D" parent="." unique_id=531407147]
+unique_name_in_owner = true
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CrushDetectorBottom" unique_id=421944365]
+position = Vector2(0, 10.5)
 shape = SubResource("RectangleShape2D_lowyb")
 debug_color = Color(0.9999998, 0.003031034, 0.14555445, 0.41960785)
 
