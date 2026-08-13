@@ -2,8 +2,7 @@
 
 - intangibility period after respawn
 - escape menu (doesn't pause when online)
-
-- bug (moderate): flying blocks sometimes don't get all of their hits and explode prematurely, and an error with get_node appears in the console
+- falling blocks should momentarily freeze on hit
 
 ### polish
 

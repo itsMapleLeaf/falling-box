@@ -13,6 +13,8 @@ static func destroy(node: Node2D) -> void:
 	spawn(node)
 	if node.is_multiplayer_authority():
 		node.queue_free()
+	else:
+		node.visible = false
 
 
 func _ready() -> void:

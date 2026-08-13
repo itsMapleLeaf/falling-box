@@ -33,7 +33,7 @@ func _on_body_entered(body: Node2D) -> void:
 			hits -= 1
 			body.destroy.rpc()
 		else:
-			Explosion.destroy(self)
+			destroy.rpc()
 
 	if body is Player and body.player_id != owner_player_id:
 		body.die.rpc()

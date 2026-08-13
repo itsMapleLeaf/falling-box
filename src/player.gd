@@ -177,7 +177,8 @@ func grab() -> void:
 			held_block.reset_physics_interpolation()
 			holding = true
 			_update_holding_display()
-			box.remove_grabbed.rpc()
+			box.visible = false
+			box.remove_grabbed.rpc_id(1)
 			return
 
 
