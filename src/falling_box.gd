@@ -94,3 +94,9 @@ func _update_expiring(delta: float) -> void:
 
 	if visual.modulate.a <= 0.0:
 		queue_free()
+
+
+@rpc("any_peer", "call_local")
+func remove_grabbed() -> void:
+	if multiplayer.is_server():
+		queue_free()

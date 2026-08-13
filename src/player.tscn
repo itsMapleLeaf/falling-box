@@ -6,6 +6,9 @@
 [sub_resource type="QuadMesh" id="QuadMesh_player"]
 size = Vector2(40, 40)
 
+[sub_resource type="QuadMesh" id="QuadMesh_body"]
+size = Vector2(50, 50)
+
 [sub_resource type="QuadMesh" id="QuadMesh_cursor"]
 size = Vector2(8, 8)
 
@@ -18,22 +21,25 @@ size = Vector2(25, 21)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lowyb"]
 size = Vector2(25, 21)
 
+[sub_resource type="SystemFont" id="SystemFont_ehvfd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_h5w0j"]
+font = SubResource("SystemFont_ehvfd")
+font_size = 12
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gmfve"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 properties/1/path = NodePath(".:facing")
 properties/1/spawn = true
-properties/1/replication_mode = 1
+properties/1/replication_mode = 2
 properties/2/path = NodePath("NameTag:text")
 properties/2/spawn = true
-properties/2/replication_mode = 1
-
-[sub_resource type="SystemFont" id="SystemFont_ehvfd"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_h5w0j"]
-font = SubResource("SystemFont_ehvfd")
-font_size = 12
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:holding")
+properties/3/spawn = true
+properties/3/replication_mode = 2
 
 [node name="Player" type="CharacterBody2D" unique_id=1988052361]
 collision_layer = 2
@@ -43,10 +49,19 @@ script = ExtResource("1_lowyb")
 [node name="Body" type="MeshInstance2D" parent="." unique_id=857442156]
 mesh = SubResource("QuadMesh_player")
 
+[node name="TransformReset" type="Node" parent="." unique_id=1715643598]
+editor_description = "This node exists to disconnect the held block's transform from the player, so I can interpolate its motion independently"
+
+[node name="HeldBlock" type="MeshInstance2D" parent="TransformReset" unique_id=1690758157]
+unique_name_in_owner = true
+position = Vector2(57, 0)
+mesh = SubResource("QuadMesh_body")
+
 [node name="CursorRoot" type="Node2D" parent="." unique_id=841290814]
 unique_name_in_owner = true
 
 [node name="Cursor" type="MeshInstance2D" parent="CursorRoot" unique_id=1793711821]
+unique_name_in_owner = true
 position = Vector2(55, 0)
 mesh = SubResource("QuadMesh_cursor")
 
@@ -92,9 +107,6 @@ process_callback = 0
 wait_time = 0.8
 one_shot = true
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2084790207]
-replication_config = SubResource("SceneReplicationConfig_gmfve")
-
 [node name="NameTag" type="Label" parent="." unique_id=101886723]
 unique_name_in_owner = true
 anchors_preset = 7
@@ -112,5 +124,9 @@ text = "Sample Text"
 label_settings = SubResource("LabelSettings_h5w0j")
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2084790207]
+replication_config = SubResource("SceneReplicationConfig_gmfve")
+visibility_update_mode = 1
 
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]
