@@ -18,7 +18,7 @@ func _ready() -> void:
 	falling_box_spawner.spawn_function = _create_spawned_box
 
 
-func exit_screen() -> void:
+func _exit_tree() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 
 

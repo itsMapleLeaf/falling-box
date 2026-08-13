@@ -10,7 +10,6 @@ var initial_title: String
 
 func _set_screen(new_screen: Screen) -> void:
 	if screen:
-		screen.exit_screen()
 		screen.queue_free()
 
 	get_window().title = initial_title
