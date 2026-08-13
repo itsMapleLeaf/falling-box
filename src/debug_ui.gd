@@ -22,9 +22,7 @@ func set_debug_value(value_name: String, value: Variant) -> void:
 func log(msg: Variant) -> void:
 	var message_node := log_message_placeholder.create_instance()
 	message_node.text = str(msg)
-	message_node.show()
 
-	log_message_list.add_child(message_node)
 	log_scroll_container.get_v_scroll_bar().value = 1
 
 	if log_message_list.get_child_count() > MAX_LOG_COUNT:
