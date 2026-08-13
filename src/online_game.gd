@@ -28,6 +28,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func host_server(port: int) -> void:
+	get_window().title = "falling box [server]"
+
 	enet_peer.create_server(port)
 	multiplayer.multiplayer_peer = enet_peer
 
@@ -42,6 +44,8 @@ func host_server(port: int) -> void:
 
 
 func join_server(host: String, port: int) -> void:
+	get_window().title = "falling box [client]"
+
 	enet_peer.create_client(host, port)
 	multiplayer.multiplayer_peer = enet_peer
 
