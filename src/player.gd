@@ -104,14 +104,14 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 	if _is_squished_by_falling_box():
-		die()
+		die.rpc()
 		return
 
 	if is_on_floor():
 		jumps_remaining = MAX_JUMPS
 
 	if global_position.y > level.player_fallout.global_position.y:
-		die()
+		die.rpc()
 
 	held_block.global_position = held_block.global_position.lerp(
 		cursor.global_position,
@@ -126,6 +126,7 @@ func _is_squished_by_falling_box() -> bool:
 	)
 
 
+@rpc('any_peer', 'call_local')
 func die() -> void:
 	if is_dead:
 		return
