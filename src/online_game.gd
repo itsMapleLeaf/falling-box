@@ -16,8 +16,6 @@ func _ready() -> void:
 	player_spawner.spawn_function = _create_spawned_player
 	falling_box_spawner.spawn_function = _create_spawned_box
 
-	game.falling_box_spawn_timer.timeout.connect(_on_falling_box_spawn_timer_timeout)
-
 
 func exit_screen() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
@@ -37,6 +35,8 @@ func host_server(port: int) -> void:
 	enet_peer.peer_disconnected.connect(_on_peer_disconnected)
 
 	player_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(1)))
+
+	game.falling_box_spawn_timer.timeout.connect(_on_falling_box_spawn_timer_timeout)
 
 
 func _on_peer_connected(peer_id: int) -> void:
