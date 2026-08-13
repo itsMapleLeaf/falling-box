@@ -1,3 +1,4 @@
+class_name TrembleNode
 extends Node2D
 
 

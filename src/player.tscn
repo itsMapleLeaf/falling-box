@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dgfxlv2n2qtvd"]
 
 [ext_resource type="Script" uid="uid://di0e16vca8oa3" path="res://src/player.gd" id="1_lowyb"]
-[ext_resource type="Script" uid="uid://bm4ambv0errgt" path="res://src/camera_tremble.gd" id="2_gmfve"]
+[ext_resource type="Script" uid="uid://c01qiw4u1k74r" path="res://src/tremble_node.gd" id="2_gmfve"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_player"]
 size = Vector2(40, 40)
@@ -47,11 +47,12 @@ collision_mask = 5
 shape = SubResource("RectangleShape2D_lowyb")
 debug_color = Color(0.9999998, 0.003031034, 0.14555445, 0.41960785)
 
-[node name="CameraTremble" type="Node2D" parent="." unique_id=347180289]
+[node name="TrembleNode" type="Node2D" parent="." unique_id=1178962852]
 physics_interpolation_mode = 2
 script = ExtResource("2_gmfve")
+metadata/_custom_type_script = "uid://c01qiw4u1k74r"
 
-[node name="Camera" type="Camera2D" parent="CameraTremble" unique_id=1793847058]
+[node name="Camera" type="Camera2D" parent="TrembleNode" unique_id=1793847058]
 unique_name_in_owner = true
 offset = Vector2(0, -140)
 limit_enabled = false
