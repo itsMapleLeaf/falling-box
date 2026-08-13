@@ -97,7 +97,7 @@ func _identify() -> void:
 	var peer_id := multiplayer.get_unique_id()
 	var player := players_by_peer_id[peer_id]
 	if player:
-		player.set_name_tag_text("Sample Text " + str(randi() % 1000))
+		player.set_name_tag_text("Player " + str(randi() % 1000))
 
 
 class PlayerSpawnData:
