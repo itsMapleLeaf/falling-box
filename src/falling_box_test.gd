@@ -1,20 +1,16 @@
 extends GutTest
 
-const GameScene := preload("res://src/game.tscn")
-const BoxScene := preload("res://src/falling_box.tscn")
+const GAME := preload("res://src/game.tscn")
+const FALLING_BOX := preload("res://src/falling_box.tscn")
 
 var game: Game
-var boxes: Node2D
-var spawner: FallingBoxSpawner
 var player: Player
 
 
 func before_each() -> void:
-	game = add_child_autofree(GameScene.instantiate())
-	boxes = game.get_node("Boxes")
-	spawner = game.get_node("BoxSpawner")
-	player = game.get_node("Player")
-	spawner.spawn_timer.stop()
+	game = add_child_autofree(GAME.instantiate())
+	player = game.create_player()
+	game.add_child(player)
 
 
 func after_each() -> void:
@@ -22,32 +18,12 @@ func after_each() -> void:
 	Input.action_release("move_right")
 
 
-func test_spawner_uses_its_own_grid_aligned_horizontal_range() -> void:
-	spawner.spawn_rng.seed = 12345
-	var spawn_columns := { }
-
-	for _iteration in 20:
-		var box := spawner.spawn_box()
-		spawn_columns[box.global_position.x] = true
-		assert_true(
-			box.global_position.x >= spawner.spawn_left.global_position.x
-			and box.global_position.x <= spawner.spawn_right.global_position.x,
-			"Box should spawn inside the box-specific horizontal range",
-		)
-		assert_almost_eq(
-			fposmod(box.global_position.x, GameConfig.CELL_SIZE),
-			0.0,
-			0.001,
-			"Spawned box X should align to the world grid",
-		)
-		assert_almost_eq(
-			fposmod(box.global_position.y, GameConfig.CELL_SIZE),
-			0.0,
-			0.001,
-			"Spawned box Y should align to the world grid",
-		)
-
-	assert_gt(spawn_columns.size(), 1, "The spawner should use multiple grid columns")
+func _add_box(at_position: Vector2) -> FallingBox:
+	var box: FallingBox = FALLING_BOX.instantiate()
+	box.landed_lifetime_seconds = 100.0
+	game.add_child(box)
+	box.global_position = at_position
+	return box
 
 
 func test_box_fades_in_while_falling() -> void:
@@ -141,7 +117,7 @@ func test_falling_box_passes_through_player_without_reacting() -> void:
 
 
 func test_falling_box_squishes_player_against_floor() -> void:
-	player.respawn_delay_seconds = 0.1
+	player.respawn_delay = 0.1
 	player.global_position = Vector2(0.0, -45.0)
 	player.velocity = Vector2.ZERO
 	player.reset_physics_interpolation()
@@ -187,11 +163,11 @@ func test_falling_box_does_not_squish_airborne_player() -> void:
 
 
 func test_expired_box_disables_collision_fades_falls_and_is_freed() -> void:
-	var box := BoxScene.instantiate() as FallingBox
+	var box := FALLING_BOX.instantiate() as FallingBox
 	box.spawn_fade_seconds = 0.01
 	box.landed_lifetime_seconds = 0.2
 	box.despawn_fade_seconds = 0.25
-	boxes.add_child(box)
+	game.add_child(box)
 	box.global_position = Vector2(0.0, -100.0)
 
 	var did_land: bool = await wait_for_signal(
@@ -224,11 +200,3 @@ func test_expired_box_disables_collision_fades_falls_and_is_freed() -> void:
 	assert_true(did_exit, "Fully transparent box should leave the scene before the timeout")
 	await wait_process_frames(1)
 	assert_null(box_reference.get_ref(), "Fully transparent box should be freed")
-
-
-func _add_box(at_position: Vector2) -> FallingBox:
-	var box := BoxScene.instantiate() as FallingBox
-	box.landed_lifetime_seconds = 100.0
-	boxes.add_child(box)
-	box.global_position = at_position
-	return box

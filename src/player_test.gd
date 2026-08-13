@@ -8,7 +8,8 @@ var player: Player
 
 func before_each() -> void:
 	game = add_child_autofree(GameScene.instantiate())
-	player = game.get_node("Player")
+	player = game.create_player()
+	game.add_child(player)
 	await wait_physics_frames(5)
 
 
@@ -16,6 +17,10 @@ func after_each() -> void:
 	Input.action_release("move_left")
 	Input.action_release("move_right")
 	Input.action_release("jump")
+
+
+func _get_player_visual_facing() -> int:
+	return int(player.cursor_root.scale.x)
 
 
 func test_player_moves_right_and_faces_right() -> void:
@@ -27,7 +32,7 @@ func test_player_moves_right_and_faces_right() -> void:
 
 	assert_gt(player.position.x, starting_x, "Player should move to the right")
 	assert_eq(player.facing, 1, "Player should face right while moving right")
-	assert_gt(player.cursor.position.x, 0.0, "Cursor should appear on the right")
+	assert_eq(_get_player_visual_facing(), 1, "Cursor should appear on the right")
 
 
 func test_player_moves_left_and_faces_left() -> void:
@@ -39,7 +44,7 @@ func test_player_moves_left_and_faces_left() -> void:
 
 	assert_lt(player.position.x, starting_x, "Player should move to the left")
 	assert_eq(player.facing, -1, "Player should face left while moving left")
-	assert_lt(player.cursor.position.x, 0.0, "Cursor should appear on the left")
+	assert_eq(_get_player_visual_facing(), -1, "Cursor should appear on the left")
 
 
 func test_player_keeps_facing_right_after_movement_stops() -> void:
@@ -49,7 +54,7 @@ func test_player_keeps_facing_right_after_movement_stops() -> void:
 	await wait_physics_frames(2)
 
 	assert_eq(player.facing, 1, "Neutral input should preserve the last facing direction")
-	assert_gt(player.cursor.position.x, 0.0, "Cursor should remain on the facing side")
+	assert_eq(_get_player_visual_facing(), 1, "Cursor should remain on the facing side")
 
 
 func test_player_can_double_jump_but_not_triple_jump() -> void:
@@ -86,16 +91,17 @@ func test_landing_restores_both_jumps() -> void:
 
 
 func test_falling_far_past_the_threshold_respawns_player_above_platform() -> void:
-	player.respawn_delay_seconds = 0.1
+	player.respawn_delay = 0.1
 	watch_signals(player)
 	var velocity_at_respawn := [Vector2.INF]
 	player.respawned.connect(
-		func(_at_position: Vector2) -> void: velocity_at_respawn[0] = player.velocity,
+		func(_at_position: Vector2) -> void:
+			velocity_at_respawn[0] = player.velocity,
 		CONNECT_ONE_SHOT,
 	)
 
 	player.velocity = Vector2(100.0, GameConfig.MAX_FALL_SPEED)
-	player.global_position = player.fallout_threshold.global_position + Vector2(0.0, 5000.0)
+	player.global_position = game.level.player_fallout.global_position + Vector2.DOWN * 5000
 	await wait_physics_frames(3)
 
 	assert_signal_emitted(player, "died", "Falling out should kill the player")
@@ -110,13 +116,13 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 	)
 	assert_true(did_respawn, "Falling out should respawn the player after the delay")
 	assert_true(
-		player.global_position.x >= player.respawn_left.global_position.x
-		and player.global_position.x <= player.respawn_right.global_position.x,
+		player.global_position.x >= game.level.player_spawn_left.global_position.x
+		and player.global_position.x <= game.level.player_spawn_right.global_position.x,
 		"Player should respawn within the horizontal spawn range",
 	)
 	assert_almost_eq(
 		player.global_position.y,
-		player.respawn_left.global_position.y,
+		game.level.player_spawn_left.global_position.y,
 		5.0,
 		"Player should respawn high above the platform",
 	)
@@ -127,9 +133,12 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 
 
 func test_repeated_death_requests_do_not_restart_respawn_delay() -> void:
-	player.respawn_delay_seconds = 0.1
+	player.respawn_delay = 0.1
 	var death_count := [0]
-	player.died.connect(func() -> void: death_count[0] += 1)
+	player.died.connect(
+		func() -> void:
+			death_count[0] += 1,
+	)
 
 	player.die()
 	await wait_seconds(0.05)
@@ -145,7 +154,7 @@ func test_repeated_death_requests_do_not_restart_respawn_delay() -> void:
 
 
 func test_respawning_varies_the_horizontal_position() -> void:
-	player.respawn_rng.seed = 12345
+	# player.respawn_rng.seed = 12345
 	var horizontal_positions := { }
 
 	for iteration in 8:

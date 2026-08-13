@@ -21,6 +21,10 @@ var is_local := false
 @onready var camera: Camera2D = %Camera
 @onready var respawn_timer: Timer = %RespawnTimer
 
+var respawn_delay: float:
+	set(value):
+		respawn_timer.wait_time = value
+
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(name))
@@ -31,7 +35,11 @@ func _ready() -> void:
 	active_collision_mask = collision_mask
 	respawn_rng.randomize()
 	respawn()
-	camera.enabled = is_multiplayer_authority() || is_local
+
+	camera.enabled = (
+		is_local || is_multiplayer_authority()
+		|| multiplayer.multiplayer_peer is OfflineMultiplayerPeer
+	)
 
 
 func _process(_delta: float) -> void:
