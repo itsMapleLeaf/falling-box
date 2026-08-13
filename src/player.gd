@@ -7,7 +7,19 @@ signal released(player_id: int, at_position: Vector2, facing: Facing.Facing)
 
 const MAX_JUMPS := 2
 const HELD_BLOCK_STIFFNESS := 17.0
+const INTANGIBLE_TIME := 3.0
+const INTANGIBLE_BLINK_PERIOD := 0.5
 
+enum State {
+	## Player can move and jump around, but not die
+	INTANGIBLE,
+	## Player can move, jump, and die
+	ALIVE,
+	## Player is dead and cannot move or jump, and is invisible
+	DEAD,
+}
+
+@export var state := State.INTANGIBLE
 @export var player_id: int = randi()
 @export var level: Level
 @export var facing := Facing.Facing.RIGHT
@@ -17,10 +29,10 @@ var movement := 0.0
 var jumps_requested := 0
 var jumps_remaining := MAX_JUMPS
 var respawn_rng := RandomNumberGenerator.new()
-var is_dead := false
 var active_collision_layer: int
 var active_collision_mask: int
 var is_local := false
+var intangible_time := 0.0
 
 @onready var cursor_root: Node2D = %CursorRoot
 @onready var cursor: Node2D = %Cursor
@@ -30,10 +42,15 @@ var is_local := false
 @onready var respawn_timer: Timer = %RespawnTimer
 @onready var name_tag: Label = %NameTag
 @onready var held_block: Node2D = %HeldBlock
+@onready var body: MeshInstance2D = %Body
 
 var respawn_delay: float:
 	set(value):
 		respawn_timer.wait_time = value
+
+var is_killable: bool:
+	get ():
+		return state == State.ALIVE
 
 
 func _ready() -> void:
@@ -69,9 +86,22 @@ func set_name_tag_text(text: String) -> void:
 	name_tag.text = text
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	cursor_root.scale.x = facing
 	_update_holding_display()
+
+	if state == State.INTANGIBLE:
+		var alpha_normal := inverse_lerp(
+			-1,
+			1,
+			sin(Time.get_ticks_msec() / 100.0 / INTANGIBLE_BLINK_PERIOD),
+		)
+		body.modulate.a = lerpf(0.2, 1, alpha_normal)
+		intangible_time -= delta
+		if intangible_time <= 0.0:
+			state = State.ALIVE
+	else:
+		body.modulate.a = 1.0
 
 
 func _update_holding_display() -> void:
@@ -128,10 +158,7 @@ func _is_squished_by_falling_box() -> bool:
 
 @rpc('any_peer', 'call_local')
 func die() -> void:
-	if is_dead:
-		return
-
-	is_dead = true
+	state = State.DEAD
 	visible = false
 	velocity = Vector2.ZERO
 	collision_layer = 0
@@ -151,7 +178,8 @@ func respawn() -> void:
 	collision_layer = active_collision_layer
 	collision_mask = active_collision_mask
 	visible = true
-	is_dead = false
+	state = State.INTANGIBLE
+	intangible_time = INTANGIBLE_TIME
 	set_physics_process(true)
 	reset_physics_interpolation()
 	respawned.emit(global_position)

@@ -54,5 +54,5 @@ func _on_body_entered(body: Node2D) -> void:
 	if body is FallingBox:
 		hit_queue.append(body)
 
-	if body is Player and body.player_id != owner_player_id:
+	if body is Player and body.is_killable && body.player_id != owner_player_id:
 		body.die.rpc()

@@ -44,15 +44,17 @@ properties/3/replication_mode = 2
 properties/4/path = NodePath(".:player_id")
 properties/4/spawn = true
 properties/4/replication_mode = 2
+properties/5/path = NodePath(".:state")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D" unique_id=1988052361]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_gmfve")
-facing = null
-holding = null
 
 [node name="Body" type="MeshInstance2D" parent="." unique_id=857442156]
+unique_name_in_owner = true
 mesh = SubResource("QuadMesh_player")
 
 [node name="TransformReset" type="Node" parent="." unique_id=1715643598]
