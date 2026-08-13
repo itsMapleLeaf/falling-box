@@ -8,7 +8,7 @@ const MAX_JUMPS := 2
 const HELD_BLOCK_STIFFNESS := 17.0
 
 @export var level: Level
-@export var facing := 1
+@export var facing := Facing.Facing.RIGHT
 @export var holding := false
 
 var movement := 0.0
@@ -51,7 +51,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	movement = direction
 	if not is_zero_approx(direction):
-		facing = 1 if direction > 0.0 else -1
+		facing = Facing.Facing.RIGHT if direction > 0 else Facing.Facing.LEFT
 
 	if event.is_action_pressed("jump"):
 		jumps_requested += 1
