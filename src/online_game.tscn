@@ -8,7 +8,6 @@ script = ExtResource("1_8b6qs")
 
 [node name="Game" parent="." unique_id=457481078 instance=ExtResource("2_4o0je")]
 unique_name_in_owner = true
-position = Vector2(28, -2)
 
 [node name="PlayerMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1099491411]
 unique_name_in_owner = true
