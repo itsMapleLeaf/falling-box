@@ -33,7 +33,8 @@ var respawn_delay: float:
 
 
 func _enter_tree() -> void:
-	set_multiplayer_authority(int(name))
+	if name.is_valid_int():
+		set_multiplayer_authority(name.to_int())
 
 
 func _ready() -> void:
@@ -42,10 +43,7 @@ func _ready() -> void:
 	respawn_rng.randomize()
 	respawn()
 
-	camera.enabled = (
-		is_local || is_multiplayer_authority()
-		|| multiplayer.multiplayer_peer is OfflineMultiplayerPeer
-	)
+	camera.enabled = is_multiplayer_authority()
 
 
 func _unhandled_input(event: InputEvent) -> void:
