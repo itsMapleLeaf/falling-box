@@ -100,3 +100,8 @@ func _update_expiring(delta: float) -> void:
 func remove_grabbed() -> void:
 	if multiplayer.is_server():
 		queue_free()
+
+
+@rpc("any_peer")
+func destroy() -> void:
+	Explosion.explode(self)

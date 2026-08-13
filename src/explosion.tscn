@@ -19,7 +19,7 @@ lifetime_randomness = 0.5
 particle_flag_disable_z = true
 spread = 180.0
 flatness = 1.0
-initial_velocity_max = 600.0
+initial_velocity_max = 863.16
 gravity = Vector3(0, 350, 0)
 color_ramp = SubResource("GradientTexture1D_u6xdu")
 
@@ -27,7 +27,7 @@ color_ramp = SubResource("GradientTexture1D_u6xdu")
 emitting = false
 amount = 30
 texture = SubResource("MeshTexture_bjurg")
-lifetime = 2.0
+lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_u716c")
