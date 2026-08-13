@@ -30,7 +30,7 @@ vertical_scroll_mode = 4
 [node name="MarginContainer" type="MarginContainer" parent="LogScrollContainer" unique_id=1006947938]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 2
+size_flags_vertical = 3
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
@@ -39,8 +39,8 @@ theme_override_constants/margin_bottom = 8
 [node name="LogMessageList" type="VBoxContainer" parent="LogScrollContainer/MarginContainer" unique_id=1422653501]
 unique_name_in_owner = true
 layout_mode = 2
+alignment = 2
 
-[node name="LogMessageTemplate" type="Label" parent="LogScrollContainer/MarginContainer/LogMessageList" unique_id=1738008807]
+[node name="LogMessage" parent="LogScrollContainer/MarginContainer/LogMessageList" unique_id=1012566107 instance_placeholder="res://src/log_message.tscn"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "hello world, test"

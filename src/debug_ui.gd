@@ -6,13 +6,9 @@ var logs: Array[String]
 var debug_values: Dictionary[String, Variant] = { }
 
 @onready var log_message_list: VBoxContainer = %LogMessageList
-@onready var log_message_template: Label = %LogMessageTemplate
+@onready var log_message_placeholder: InstancePlaceholder = %LogMessage
 @onready var log_scroll_container: ScrollContainer = %LogScrollContainer
 @onready var debug_value_label: Label = %DebugValues
-
-
-func _ready() -> void:
-	log_message_template.hide()
 
 
 func set_debug_value(value_name: String, value: Variant) -> void:
@@ -24,7 +20,7 @@ func set_debug_value(value_name: String, value: Variant) -> void:
 
 
 func log(msg: Variant) -> void:
-	var message_node := log_message_template.duplicate()
+	var message_node := log_message_placeholder.create_instance()
 	message_node.text = str(msg)
 	message_node.show()
 

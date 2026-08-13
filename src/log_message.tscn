@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d1hnus8asdxxu"]
+
+[ext_resource type="Script" uid="uid://jenj7w618wp3" path="res://src/log_message.gd" id="1_sc5gj"]
+
+[node name="LogMessage" type="Label" unique_id=1012566107]
+text = "hello world, test"
+script = ExtResource("1_sc5gj")
+
+[node name="ExpirationTimer" type="Timer" parent="." unique_id=1586531605]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="ExpirationTimer" to="." method="_on_expiration_timer_timeout"]
