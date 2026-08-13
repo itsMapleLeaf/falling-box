@@ -24,7 +24,7 @@ func _on_death_timer_timeout() -> void:
 
 @rpc("any_peer", "call_local")
 func destroy() -> void:
-	Explosion.explode(self)
+	Explosion.destroy(self)
 
 
 func _on_body_entered(body: Node2D) -> void:
@@ -33,7 +33,7 @@ func _on_body_entered(body: Node2D) -> void:
 			hits -= 1
 			body.destroy.rpc()
 		else:
-			Explosion.explode(self)
+			Explosion.destroy(self)
 
 	if body is Player and body.player_id != owner_player_id:
 		body.die.rpc()

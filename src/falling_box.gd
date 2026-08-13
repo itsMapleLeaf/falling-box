@@ -104,4 +104,4 @@ func remove_grabbed() -> void:
 
 @rpc("any_peer")
 func destroy() -> void:
-	Explosion.explode(self)
+	Explosion.destroy(self)

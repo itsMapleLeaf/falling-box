@@ -138,14 +138,10 @@ func die() -> void:
 	collision_mask = 0
 	set_physics_process(false)
 	respawn_timer.start()
-	died.emit()
-	Tremble.trigger(100)
 	release()
-
-	const EXPLOSION = preload("uid://b47038mcmvy10")
-	var explosion: GPUParticles2D = EXPLOSION.instantiate()
-	add_sibling(explosion)
-	explosion.global_position = global_position
+	Tremble.trigger(100)
+	Explosion.spawn(self)
+	died.emit()
 
 
 func respawn() -> void:
