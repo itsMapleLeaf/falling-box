@@ -142,6 +142,8 @@ func test_falling_box_squishes_player_against_floor() -> void:
 	)
 	assert_true(did_respawn, "A squished player should respawn after the delay")
 	assert_eq(player.velocity, Vector2.ZERO, "Respawning should clear the player's velocity")
+	await wait_physics_frames(10)
+	assert_false(player.is_dead, "Should remain alive after respawning")
 
 
 func test_falling_box_does_not_squish_airborne_player() -> void:
