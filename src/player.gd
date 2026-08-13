@@ -21,6 +21,7 @@ var is_local := false
 @onready var crush_detector_bottom: Area2D = %CrushDetectorBottom
 @onready var camera: Camera2D = %Camera
 @onready var respawn_timer: Timer = %RespawnTimer
+@onready var name_tag: Label = %NameTag
 
 var respawn_delay: float:
 	set(value):
@@ -41,6 +42,10 @@ func _ready() -> void:
 		is_local || is_multiplayer_authority()
 		|| multiplayer.multiplayer_peer is OfflineMultiplayerPeer
 	)
+
+
+func set_name_tag_text(text: String) -> void:
+	name_tag.text = text
 
 
 func _process(_delta: float) -> void:

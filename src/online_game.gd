@@ -38,11 +38,26 @@ func host_server(port: int) -> void:
 
 	game.falling_box_spawn_timer.timeout.connect(_on_falling_box_spawn_timer_timeout)
 
+	_identify()
+
+
+func join_server(host: String, port: int) -> void:
+	enet_peer.create_client(host, port)
+	multiplayer.multiplayer_peer = enet_peer
+
+	enet_peer.peer_connected.connect(_on_peer_connected)
+	enet_peer.peer_disconnected.connect(_on_peer_disconnected)
+
+	multiplayer.connected_to_server.connect(_on_connected_to_server)
+	multiplayer.server_disconnected.connect(_on_server_disconnected)
+
 
 func _on_peer_connected(peer_id: int) -> void:
 	prints("connected:", peer_id)
 
-	player_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(peer_id)))
+	if multiplayer.is_server():
+		player_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(peer_id)))
+		_identify.rpc_id(peer_id)
 
 
 func _on_peer_disconnected(peer_id: int) -> void:
@@ -50,16 +65,23 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	remove_player(peer_id)
 
 
-func join_server(host: String, port: int) -> void:
-	enet_peer.create_client(host, port)
-	multiplayer.multiplayer_peer = enet_peer
-
-	multiplayer.server_disconnected.connect(_on_server_disconnected)
+func _on_connected_to_server() -> void:
+	pass
 
 
 func _on_server_disconnected() -> void:
 	_change_screen(load("res://src/main_menu.tscn").instantiate())
 	DebugUI.log("Disconnected from server")
+
+
+@rpc
+func _identify() -> void:
+	DebugUI.log("Joined game")
+
+	var peer_id := multiplayer.get_unique_id()
+	var player := players_by_peer_id[peer_id]
+	if player:
+		player.set_name_tag_text("Sample Text " + str(randi() % 1000))
 
 
 class PlayerSpawnData:
