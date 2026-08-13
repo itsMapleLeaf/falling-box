@@ -7,19 +7,19 @@ signal died
 const MAX_JUMPS := 2
 
 @export var level: Level
+@export var facing := 1
 
-@onready var cursor_root: Node2D = %CursorRoot
-@onready var crush_detector: Area2D = %CrushDetector
-@onready var camera: Camera2D = %Camera
-@onready var respawn_timer: Timer = %RespawnTimer
-
-var facing := 1
 var jumps_remaining := MAX_JUMPS
 var respawn_rng := RandomNumberGenerator.new()
 var is_dead := false
 var active_collision_layer: int
 var active_collision_mask: int
 var is_local := false
+
+@onready var cursor_root: Node2D = %CursorRoot
+@onready var crush_detector: Area2D = %CrushDetector
+@onready var camera: Camera2D = %Camera
+@onready var respawn_timer: Timer = %RespawnTimer
 
 
 func _enter_tree() -> void:
