@@ -11,6 +11,8 @@ const HELD_BLOCK_STIFFNESS := 17.0
 @export var facing := 1
 @export var holding := false
 
+var movement := 0.0
+var jumps_requested := 0
 var jumps_remaining := MAX_JUMPS
 var respawn_rng := RandomNumberGenerator.new()
 var is_dead := false
@@ -32,11 +34,6 @@ var respawn_delay: float:
 		respawn_timer.wait_time = value
 
 
-func _enter_tree() -> void:
-	if name.is_valid_int():
-		set_multiplayer_authority(name.to_int())
-
-
 func _ready() -> void:
 	active_collision_layer = collision_layer
 	active_collision_mask = collision_mask
@@ -49,6 +46,15 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
+
+	var direction := Input.get_axis("move_left", "move_right")
+
+	movement = direction
+	if not is_zero_approx(direction):
+		facing = 1 if direction > 0.0 else -1
+
+	if event.is_action_pressed("jump"):
+		jumps_requested += 1
 
 	if event.is_action_pressed("grab"):
 		grab()
@@ -76,14 +82,9 @@ func _update_holding_display() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var direction := Input.get_axis("move_left", "move_right")
-
-	if not is_zero_approx(direction):
-		facing = 1 if direction > 0.0 else -1
-
 	velocity.x = lerpf(
 		velocity.x,
-		direction * GameConfig.RUN_SPEED,
+		movement * GameConfig.RUN_SPEED,
 		GameConfig.MOVEMENT_STIFFNESS * delta,
 	)
 
@@ -92,9 +93,11 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = minf(velocity.y + GameConfig.PLAYER_GRAVITY * delta, GameConfig.MAX_FALL_SPEED)
 
-	if Input.is_action_just_pressed("jump") and jumps_remaining > 0:
-		velocity.y = GameConfig.JUMP_VELOCITY
-		jumps_remaining -= 1
+	while jumps_requested > 0:
+		jumps_requested -= 1
+		if jumps_remaining > 0:
+			velocity.y = GameConfig.JUMP_VELOCITY
+			jumps_remaining -= 1
 
 	move_and_slide()
 

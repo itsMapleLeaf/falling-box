@@ -100,7 +100,7 @@ class PlayerSpawnData:
 func _create_spawned_player(data_dict: Dictionary):
 	var player := game.create_player()
 	var data: PlayerSpawnData = dict_to_inst(data_dict)
-	player.name = str(data.peer_id)
+	player.set_multiplayer_authority(data.peer_id)
 	players_by_peer_id[data.peer_id] = player
 	return player
 
