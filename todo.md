@@ -2,6 +2,7 @@
 
 - intangibility period after respawn
 - escape menu (doesn't pause when online)
+- CPU players
 
 ### polish
 
