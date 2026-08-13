@@ -2,7 +2,6 @@
 
 - intangibility period after respawn
 - escape menu (doesn't pause when online)
-- falling blocks should momentarily freeze on hit
 
 ### polish
 

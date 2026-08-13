@@ -45,5 +45,11 @@ process_callback = 0
 one_shot = true
 autostart = true
 
+[node name="FreezeTimer" type="Timer" parent="." unique_id=553341059]
+unique_name_in_owner = true
+process_callback = 0
+wait_time = 0.2
+one_shot = true
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]
