@@ -1,6 +1,5 @@
 ## gameplay
 
-- escape menu (doesn't pause when online)
 - CPU players
 
 ### polish
