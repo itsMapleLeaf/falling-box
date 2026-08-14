@@ -1,18 +1,13 @@
 [gd_scene format=3 uid="uid://xww15h6ot34y"]
 
 [ext_resource type="Script" uid="uid://dusiewyn523t5" path="res://src/main.gd" id="1_main"]
-[ext_resource type="Script" uid="uid://d1ashyp8ughtd" path="res://src/screen_manager.gd" id="2_gh0ne"]
 
 [node name="Main" type="Node" unique_id=105768187]
 script = ExtResource("1_main")
 
-[node name="ScreenManager" type="Node" parent="." unique_id=1837770231]
-unique_name_in_owner = true
-script = ExtResource("2_gh0ne")
-metadata/_custom_type_script = "uid://d1ashyp8ughtd"
-
 [node name="Info" type="CanvasLayer" parent="." unique_id=765559183]
 unique_name_in_owner = true
+visible = false
 
 [node name="Margin" type="MarginContainer" parent="Info" unique_id=25013991]
 offset_right = 1280.0

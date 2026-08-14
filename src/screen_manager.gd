@@ -1,4 +1,3 @@
-class_name ScreenManager
 extends Node
 
 var screen: Screen
@@ -13,7 +12,7 @@ func set_screen(new_screen: Screen) -> void:
 
 	screen = new_screen
 	screen.screen_changed.connect(set_screen)
-	add_sibling(screen)
+	add_child(screen)
 
 
 func _ready() -> void:

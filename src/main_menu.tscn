@@ -25,11 +25,10 @@ size_flags_vertical = 4
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer" unique_id=1019030194]
 layout_mode = 2
 
-[node name="PlayLocalButton" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer" unique_id=682522014]
+[node name="PlayButton" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer" unique_id=682522014]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Play Local
-"
+text = "Play"
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/CenterContainer/VBoxContainer" unique_id=542809474]
 layout_mode = 2
@@ -93,6 +92,6 @@ custom_minimum_size = Vector2(77, 0)
 layout_mode = 2
 text = "Join"
 
-[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/PlayLocalButton" to="." method="_on_play_local_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/PlayButton" to="." method="_on_play_local_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer2/JoinButton" to="." method="_on_join_button_pressed"]

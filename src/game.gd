@@ -1,15 +1,23 @@
 class_name Game
 extends Screen
 
-@onready var level: Level = %Level
-@onready var falling_box_spawn_timer: Timer = %FallingBoxSpawnTimer
+const HOLD_QUIT = preload("uid://bywtb3vta1gm5")
 
+enum GameType {
+	ONLINE,
+	OFFLINE,
+}
+
+var game_type: GameType
 var enet_peer := ENetMultiplayerPeer.new()
 var players_by_peer_id: Dictionary[int, Player] = { }
 
+@onready var level: Level = %Level
+@onready var falling_box_spawn_timer: Timer = %FallingBoxSpawnTimer
 @onready var player_spawner: MultiplayerSpawner = %PlayerMultiplayerSpawner
 @onready var falling_box_spawner: MultiplayerSpawner = %FallingBoxMultiplayerSpawner
 @onready var flying_box_spawner: FlyingBoxSpawner = %FlyingBoxSpawner
+@onready var pause_menu: CanvasLayer = %PauseMenu
 
 
 func _ready() -> void:
@@ -22,14 +30,18 @@ func _exit_tree() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("debug_quit"):
-		var main_menu: MainMenu = load("uid://i4jvedvwx3en").instantiate()
-		_change_screen(main_menu)
+	if event.is_action_pressed("pause"):
+		if game_type == GameType.OFFLINE:
+			pause_menu.show()
+			get_tree().paused = true
 
 
 func host_server(port: int) -> void:
-	get_window().title = "falling box [server]"
+	game_type = GameType.ONLINE
 
+	add_child(HOLD_QUIT.instantiate())
+
+	get_window().title = "falling box [server]"
 	enet_peer.create_server(port)
 	multiplayer.multiplayer_peer = enet_peer
 
@@ -40,8 +52,11 @@ func host_server(port: int) -> void:
 
 
 func join_server(host: String, port: int) -> void:
-	get_window().title = "falling box [client]"
+	game_type = GameType.ONLINE
 
+	add_child(HOLD_QUIT.instantiate())
+
+	get_window().title = "falling box [client]"
 	enet_peer.create_client(host, port)
 	multiplayer.multiplayer_peer = enet_peer
 
@@ -53,6 +68,8 @@ func join_server(host: String, port: int) -> void:
 
 
 func play_offline() -> void:
+	game_type = GameType.OFFLINE
+
 	get_window().title = "falling box [offline]"
 
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
