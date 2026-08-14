@@ -66,11 +66,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
 
-	var direction := Input.get_axis("move_left", "move_right")
+	movement = Input.get_axis("move_left", "move_right")
 
-	movement = direction
-	if not is_zero_approx(direction):
-		facing = Facing.Facing.RIGHT if direction > 0 else Facing.Facing.LEFT
+	if not is_zero_approx(movement):
+		facing = int(signf(movement)) as Facing.Facing
 
 	if event.is_action_pressed("jump"):
 		jumps_requested += 1
