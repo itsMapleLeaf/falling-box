@@ -18,6 +18,7 @@ var players_by_peer_id: Dictionary[int, Player] = { }
 @onready var falling_box_spawner: MultiplayerSpawner = %FallingBoxMultiplayerSpawner
 @onready var flying_box_spawner: FlyingBoxSpawner = %FlyingBoxSpawner
 @onready var pause_menu: CanvasLayer = %PauseMenu
+@onready var server_camera: OverviewCamera
 
 
 func _ready() -> void:
@@ -48,7 +49,10 @@ func host_server(port: int) -> void:
 	enet_peer.peer_connected.connect(_on_peer_connected)
 	enet_peer.peer_disconnected.connect(_on_peer_disconnected)
 
-	_init_offline_server_shared()
+	falling_box_spawn_timer.timeout.connect(_on_falling_box_spawn_timer_timeout)
+
+	server_camera = OverviewCamera.new()
+	add_child(server_camera)
 
 
 func join_server(host: String, port: int) -> void:
@@ -74,10 +78,6 @@ func play_offline() -> void:
 
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 
-	_init_offline_server_shared()
-
-
-func _init_offline_server_shared() -> void:
 	player_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(1)))
 
 	falling_box_spawn_timer.timeout.connect(_on_falling_box_spawn_timer_timeout)
@@ -136,6 +136,9 @@ func _create_spawned_player(data_dict: Dictionary):
 	player.released.connect(_on_player_released)
 	players_by_peer_id[data.peer_id] = player
 
+	if server_camera:
+		server_camera.targets.append(player)
+
 	return player
 
 
@@ -159,6 +162,7 @@ func remove_player(peer_id: int) -> void:
 	if player:
 		player.queue_free()
 		players_by_peer_id.erase(peer_id)
+		server_camera.targets.erase(player)
 
 
 class BoxSpawnData:
