@@ -18,9 +18,7 @@ func _ready() -> void:
 			game.join_server(host, int(port))
 
 		['play']:
-			var game: Game = GAME.instantiate()
-			ScreenManager.set_screen(game)
-			game.play_offline()
+			ScreenManager.set_screen(load("res://src/local_game.tscn").instantiate())
 
 		[]:
 			ScreenManager.set_screen(NETWORK_MENU.instantiate())

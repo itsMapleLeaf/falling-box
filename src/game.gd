@@ -21,7 +21,6 @@ var players_by_peer_id: Dictionary[int, Player] = { }
 @onready var player_spawner: MultiplayerSpawner = %PlayerMultiplayerSpawner
 @onready var falling_box_spawner: MultiplayerSpawner = %FallingBoxMultiplayerSpawner
 @onready var flying_box_spawner: FlyingBoxSpawner = %FlyingBoxSpawner
-@onready var pause_menu: CanvasLayer = %PauseMenu
 @onready var server_camera: OverviewCamera
 
 
@@ -43,26 +42,6 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	nodetunnel.close()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause"):
-		if game_type == GameType.OFFLINE:
-			pause_menu.show()
-			get_tree().paused = true
-
-
-func play_offline() -> void:
-	game_type = GameType.OFFLINE
-
-	get_window().title = "falling box [offline]"
-
-	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-
-	player_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(1)))
-
-	falling_box_spawn_timer.timeout.connect(_on_falling_box_spawn_timer_timeout)
-	_identify()
 
 
 func host_server(port: int) -> void:
@@ -170,7 +149,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 
 func _on_connected_to_server() -> void:
-	pass
+	DebugUI.log("Connected to server")
 
 
 func _on_server_disconnected() -> void:
@@ -180,8 +159,6 @@ func _on_server_disconnected() -> void:
 
 @rpc
 func _identify() -> void:
-	DebugUI.log("Joined game")
-
 	var peer_id := multiplayer.get_unique_id()
 	var player := players_by_peer_id[peer_id]
 	if player:

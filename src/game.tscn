@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://cxgv5kyvrs67i" path="res://src/game.gd" id="1_bs6l1"]
 [ext_resource type="PackedScene" uid="uid://bix8d1rou0bjf" path="res://src/level.tscn" id="2_kc8ui"]
 [ext_resource type="Script" uid="uid://b4mx0dtpbxc8k" path="res://src/flying_box_spawner.gd" id="3_xq6wo"]
-[ext_resource type="PackedScene" uid="uid://butbqswvk1obk" path="res://src/pause_menu.tscn" id="4_kc8ui"]
 
 [sub_resource type="Environment" id="Environment_bs6l1"]
 background_mode = 3
@@ -37,7 +36,3 @@ unique_name_in_owner = true
 spawn_path = NodePath("..")
 script = ExtResource("3_xq6wo")
 metadata/_custom_type_script = "uid://b4mx0dtpbxc8k"
-
-[node name="PauseMenu" parent="." unique_id=870149951 instance=ExtResource("4_kc8ui")]
-unique_name_in_owner = true
-visible = false

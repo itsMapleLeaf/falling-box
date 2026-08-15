@@ -6,7 +6,6 @@
 font_size = 58
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=870149951]
-process_mode = 2
 script = ExtResource("1_rj4ec")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1094485191]

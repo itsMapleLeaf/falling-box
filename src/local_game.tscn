@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://d2ms6aaidbi2r"]
+
+[ext_resource type="Script" uid="uid://6sw1onfxufnd" path="res://src/local_game.gd" id="1_08rsu"]
+[ext_resource type="PackedScene" uid="uid://behcxl4o21rrt" path="res://src/game.tscn" id="1_u3ii0"]
+[ext_resource type="PackedScene" uid="uid://butbqswvk1obk" path="res://src/pause_menu.tscn" id="2_bfgf8"]
+
+[node name="LocalGame" type="Node" unique_id=1268444288]
+script = ExtResource("1_08rsu")
+
+[node name="Game" parent="." unique_id=1932238817 instance=ExtResource("1_u3ii0")]
+unique_name_in_owner = true
+
+[node name="PauseMenu" parent="." unique_id=870149951 node_paths=PackedStringArray("game") instance=ExtResource("2_bfgf8")]
+unique_name_in_owner = true
+visible = false
+game = NodePath("../Game")
