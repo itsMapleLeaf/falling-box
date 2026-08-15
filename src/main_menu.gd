@@ -1,11 +1,9 @@
 class_name MainMenu
 extends Screen
 
-@onready var play_button: Button = %PlayButton
-
 
 func _ready() -> void:
-	play_button.grab_focus()
+	%PlayButton.grab_focus()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -29,3 +27,15 @@ func _on_play_local_button_pressed() -> void:
 	var game: Game = load("res://src/game.tscn").instantiate()
 	_change_screen(game)
 	game.play_offline()
+
+
+func _on_host_room_button_pressed() -> void:
+	var game: Game = load("res://src/game.tscn").instantiate()
+	_change_screen(game)
+	game.host_nodetunnel()
+
+
+func _on_join_room_button_pressed() -> void:
+	var game: Game = load("res://src/game.tscn").instantiate()
+	_change_screen(game)
+	game.join_nodetunnel(%JoinRoomIdInput.text)
