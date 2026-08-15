@@ -1,15 +1,6 @@
 class_name Game
 extends Screen
 
-const HOLD_QUIT = preload("uid://bywtb3vta1gm5")
-
-enum GameType {
-	ONLINE,
-	OFFLINE,
-}
-
-var game_type: GameType
-var enet_peer := ENetMultiplayerPeer.new()
 var players_by_peer_id: Dictionary[int, Player] = { }
 
 @onready var level: Level = %Level
@@ -17,7 +8,6 @@ var players_by_peer_id: Dictionary[int, Player] = { }
 @onready var player_spawner: MultiplayerSpawner = %PlayerMultiplayerSpawner
 @onready var falling_box_spawner: MultiplayerSpawner = %FallingBoxMultiplayerSpawner
 @onready var flying_box_spawner: FlyingBoxSpawner = %FlyingBoxSpawner
-@onready var server_camera: OverviewCamera
 
 
 func _ready() -> void:
@@ -25,54 +15,20 @@ func _ready() -> void:
 	falling_box_spawner.spawn_function = _create_spawned_box
 
 
-func _exit_tree() -> void:
-	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-
-
-func host_server(port: int) -> void:
-	game_type = GameType.ONLINE
-
-	add_child(HOLD_QUIT.instantiate())
-
-	get_window().title = "falling box [server]"
-	enet_peer.create_server(port)
-	multiplayer.multiplayer_peer = enet_peer
-
-	enet_peer.peer_connected.connect(_on_peer_connected)
-	enet_peer.peer_disconnected.connect(_on_peer_disconnected)
-
-	falling_box_spawn_timer.timeout.connect(_on_falling_box_spawn_timer_timeout)
-
-	server_camera = OverviewCamera.new()
-	add_child(server_camera)
-
-
-func join_server(host: String, port: int) -> void:
-	game_type = GameType.ONLINE
-
-	add_child(HOLD_QUIT.instantiate())
-
-	get_window().title = "falling box [client]"
-	enet_peer.create_client(host, port)
-	multiplayer.multiplayer_peer = enet_peer
-
-	enet_peer.peer_connected.connect(_on_peer_connected)
-	enet_peer.peer_disconnected.connect(_on_peer_disconnected)
-
-	multiplayer.connected_to_server.connect(_on_connected_to_server)
-	multiplayer.server_disconnected.connect(_on_server_disconnected)
-
-
 func _on_peer_connected(peer_id: int) -> void:
-	prints("connected:", peer_id)
-
 	if multiplayer.is_server():
 		player_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(peer_id)))
-		_identify.rpc_id(peer_id)
+
+		var alias := "Player " + str(randi() % 1000)
+		_identify.rpc_id(peer_id, alias)
+
+		DebugUI.log("%s has joined the game" % alias)
 
 
 func _on_peer_disconnected(peer_id: int) -> void:
-	prints("disconnected:", peer_id)
+	var player: Player = players_by_peer_id.get(peer_id)
+
+	DebugUI.log("%s has left the game" % player.alias)
 	remove_player(peer_id)
 
 
@@ -86,11 +42,11 @@ func _on_server_disconnected() -> void:
 
 
 @rpc
-func _identify() -> void:
+func _identify(alias: String) -> void:
 	var peer_id := multiplayer.get_unique_id()
 	var player := players_by_peer_id[peer_id]
 	if player:
-		player.set_name_tag_text("Player " + str(randi() % 1000))
+		player.set_name_tag_text(alias)
 
 
 class PlayerSpawnData:
@@ -111,9 +67,6 @@ func _create_spawned_player(data_dict: Dictionary):
 	player.set_multiplayer_authority(data.peer_id)
 	player.released.connect(_on_player_released)
 	players_by_peer_id[data.peer_id] = player
-
-	if server_camera:
-		server_camera.targets.append(player)
 
 	return player
 
@@ -138,8 +91,6 @@ func remove_player(peer_id: int) -> void:
 	if player:
 		player.queue_free()
 		players_by_peer_id.erase(peer_id)
-		if server_camera:
-			server_camera.targets.erase(player)
 
 
 class BoxSpawnData:

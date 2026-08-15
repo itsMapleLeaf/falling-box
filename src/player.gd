@@ -52,6 +52,10 @@ var is_killable: bool:
 	get ():
 		return state == State.ALIVE
 
+var alias: String:
+	get ():
+		return name_tag.text
+
 
 func _ready() -> void:
 	active_collision_layer = collision_layer

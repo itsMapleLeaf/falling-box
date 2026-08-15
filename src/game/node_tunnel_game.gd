@@ -28,7 +28,6 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
-	nodetunnel.close()
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 
 
@@ -45,7 +44,7 @@ func host_room() -> void:
 	nodetunnel.room_connected.connect(
 		func():
 			game.player_spawner.spawn(inst_to_dict(Game.PlayerSpawnData.new().with_peer_id(1)))
-			game._identify(),
+			game._identify("Player " + str(randi() % 1000)),
 	)
 
 	multiplayer.multiplayer_peer = nodetunnel
