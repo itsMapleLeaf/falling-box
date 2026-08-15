@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://behcxl4o21rrt" path="res://src/game/game.tscn" id="2_x4l3c"]
 [ext_resource type="PackedScene" uid="uid://bywtb3vta1gm5" path="res://src/hold_quit.tscn" id="3_x4l3c"]
 [ext_resource type="PackedScene" uid="uid://bt46wklqyknjm" path="res://src/game/room_code_display.tscn" id="4_jx2kp"]
+[ext_resource type="PackedScene" uid="uid://c5p476r2uerbs" path="res://src/ui/prompt_dialog.tscn" id="5_cap2u"]
 
 [node name="NodeTunnelGame" type="Node" unique_id=1251434116]
 script = ExtResource("1_h3120")
@@ -15,3 +16,9 @@ unique_name_in_owner = true
 
 [node name="RoomCodeUI" parent="." unique_id=157745993 instance=ExtResource("4_jx2kp")]
 unique_name_in_owner = true
+
+[node name="PlayerNameDialog" parent="." unique_id=56895137 instance=ExtResource("5_cap2u")]
+unique_name_in_owner = true
+query = "Enter your username"
+placeholder = "Player 1"
+submit_text = "Join Game"

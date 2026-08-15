@@ -8,6 +8,7 @@ var nodetunnel := NodeTunnelPeer.new()
 
 @onready var game: Game = %Game
 @onready var room_code_ui: RoomCodeDisplay = %RoomCodeUI
+@onready var player_name_dialog: PromptDialog = %PlayerNameDialog
 
 
 func _ready() -> void:
@@ -45,14 +46,15 @@ func host_room() -> void:
 
 	await nodetunnel.room_connected
 
-	room_code_ui.show_room_code(nodetunnel.room_id)
-	room_code_ui.copy_code()
-
-	game.player_spawner.spawn(inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1)))
-
 	nodetunnel.peer_connected.connect(game._on_peer_connected)
 	nodetunnel.peer_disconnected.connect(game._on_peer_disconnected)
 	game.falling_box_spawn_timer.timeout.connect(game._on_falling_box_spawn_timer_timeout)
+
+	room_code_ui.show_room_code(nodetunnel.room_id)
+	room_code_ui.copy_code()
+
+	var data := await _onboard()
+	game.player_spawner.spawn_player(inst_to_dict(data))
 
 
 func join_room(room_id: String) -> void:
@@ -74,3 +76,20 @@ func join_room(room_id: String) -> void:
 
 	multiplayer.connected_to_server.connect(game._on_connected_to_server)
 	multiplayer.server_disconnected.connect(game._on_server_disconnected)
+
+	var data := await _onboard()
+	game.player_spawner.spawn_player.rpc_id(1, inst_to_dict(data))
+
+
+func _onboard() -> PlayerSpawner.PlayerSpawnData:
+	var fallback_name := "Player " + str(randi() % 1000)
+	player_name_dialog.placeholder = fallback_name
+
+	var result := await player_name_dialog.ask()
+	if result.cancelled:
+		ScreenManager.set_screen(Screens.main_menu())
+		return
+
+	var data := PlayerSpawner.PlayerSpawnData.new(multiplayer.get_unique_id())
+	data.alias = result.answer if not result.answer.is_empty() else fallback_name
+	return data

@@ -5,17 +5,13 @@ var players_by_peer_id: Dictionary[int, Player] = { }
 
 @onready var level: Level = %Level
 @onready var falling_box_spawn_timer: Timer = %FallingBoxSpawnTimer
-@onready var player_spawner: MultiplayerSpawner = %PlayerSpawner
+@onready var player_spawner: PlayerSpawner = %PlayerSpawner
 @onready var falling_box_spawner: MultiplayerSpawner = %FallingBoxSpawner
 @onready var flying_box_spawner: FlyingBoxSpawner = %FlyingBoxSpawner
 
 
-func _on_peer_connected(peer_id: int) -> void:
-	if multiplayer.is_server():
-		var player: Player = player_spawner.spawn(
-			inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(peer_id))
-		)
-		DebugUI.log("%s has joined the game" % player.alias)
+func _on_peer_connected(_peer_id: int) -> void:
+	DebugUI.log("New player connected")
 
 
 func _on_peer_disconnected(peer_id: int) -> void:

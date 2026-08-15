@@ -10,4 +10,6 @@ func _ready() -> void:
 
 	game.falling_box_spawn_timer.timeout.connect(game._on_falling_box_spawn_timer_timeout)
 
-	game.player_spawner.spawn(inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1)))
+	var data := PlayerSpawner.PlayerSpawnData.new(1)
+	data.alias = "You"
+	game.player_spawner.spawn(inst_to_dict(data))
