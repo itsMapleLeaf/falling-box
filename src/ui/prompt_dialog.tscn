@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://c5p476r2uerbs"]
+
+[ext_resource type="Script" uid="uid://dw0u5uy4lfdf3" path="res://src/ui/prompt_dialog.gd" id="1_kh3fx"]
+
+[node name="PromptDialog" type="CanvasLayer" unique_id=56895137]
+script = ExtResource("1_kh3fx")
+query = "On a scale of 1 to 10, what's your favorite color in the alphabet?"
+placeholder = "Yes"
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=603932278]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer" unique_id=1359139616]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CenterContainer" unique_id=1118410966]
+layout_mode = 2
+
+[node name="QueryLabel" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer" unique_id=2112130809]
+unique_name_in_owner = true
+layout_mode = 2
+text = "On a scale of 1 to 10, what's your favorite color in the alphabet?"
+horizontal_alignment = 1
+
+[node name="AnswerInput" type="LineEdit" parent="PanelContainer/CenterContainer/VBoxContainer" unique_id=145127642]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+placeholder_text = "Yes"
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/CenterContainer/VBoxContainer" unique_id=905470865]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 32
+
+[node name="CancelButton" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer" unique_id=1389246763]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Cancel"
+
+[node name="SubmitButton" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer" unique_id=220830870]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Submit"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="text_changed" from="PanelContainer/CenterContainer/VBoxContainer/AnswerInput" to="." method="_on_answer_input_text_changed"]
+[connection signal="text_submitted" from="PanelContainer/CenterContainer/VBoxContainer/AnswerInput" to="." method="_on_answer_input_text_submitted"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/SubmitButton" to="." method="_on_submit_button_pressed"]

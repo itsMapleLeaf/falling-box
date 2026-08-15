@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://i4jvedvwx3en"]
 
 [ext_resource type="Script" uid="uid://ca6yskxhiq10y" path="res://src/main_menu.gd" id="1_guuao"]
+[ext_resource type="PackedScene" uid="uid://c5p476r2uerbs" path="res://src/ui/prompt_dialog.tscn" id="2_bq8pk"]
 
 [node name="MainMenu" type="Node" unique_id=614113868]
 script = ExtResource("1_guuao")
@@ -51,38 +52,6 @@ theme_override_font_sizes/font_size = 28
 text = "Join Room"
 alignment = 0
 
-[node name="JoinRoomPrompt" type="CanvasLayer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton" unique_id=1075896722]
-unique_name_in_owner = true
-visible = false
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt" unique_id=576466095]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer" unique_id=1063156850]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer" unique_id=1125222718]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer" unique_id=531016588]
-layout_mode = 2
-text = "Enter Room ID"
-
-[node name="RoomIdInput" type="LineEdit" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer" unique_id=1729049423]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "ABCDE"
-alignment = 1
-
-[node name="JoinRoomPromptSubmitButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer" unique_id=1349702955]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Join"
-
 [node name="QuitButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1645284311]
 custom_minimum_size = Vector2(77, 0)
 layout_mode = 2
@@ -90,8 +59,14 @@ theme_override_font_sizes/font_size = 28
 text = "Quit"
 alignment = 0
 
+[node name="JoinRoomPrompt" parent="." unique_id=56895137 instance=ExtResource("2_bq8pk")]
+unique_name_in_owner = true
+visible = false
+query = "Enter your room code"
+placeholder = "ABCDE"
+submit_text = "Join"
+
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HostRoomButton" to="." method="_on_host_room_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton" to="." method="_on_join_room_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer/JoinRoomPromptSubmitButton" to="." method="_on_join_room_prompt_submit_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -22,13 +22,13 @@ func _on_host_room_button_pressed() -> void:
 
 
 func _on_join_room_button_pressed() -> void:
-	%JoinRoomPrompt.show()
+	var result: PromptDialog.Submission = await %JoinRoomPrompt.ask()
+	if result.cancelled:
+		return
 
-
-func _on_join_room_prompt_submit_button_pressed() -> void:
 	var game: NodeTunnelGame = Screens.node_tunnel_game()
 	ScreenManager.set_screen(game)
-	game.join_room(%RoomIdInput.text)
+	game.join_room(result.answer)
 
 
 func _on_quit_button_pressed() -> void:
