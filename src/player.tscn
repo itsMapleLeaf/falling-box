@@ -96,17 +96,19 @@ position = Vector2(0, 10.5)
 shape = SubResource("RectangleShape2D_lowyb")
 debug_color = Color(0.9999998, 0.003031034, 0.14555445, 0.41960785)
 
-[node name="TrembleNode" type="Node2D" parent="." unique_id=1178962852]
+[node name="TrembleNode" type="Node2D" parent="." unique_id=1178962852 node_paths=PackedStringArray("target")]
 physics_interpolation_mode = 2
 script = ExtResource("2_gmfve")
+target = NodePath("..")
+stiffness = 7.0
 metadata/_custom_type_script = "uid://c01qiw4u1k74r"
 
 [node name="Camera" type="Camera2D" parent="TrembleNode" unique_id=1793847058]
 unique_name_in_owner = true
+physics_interpolation_mode = 2
 offset = Vector2(0, -140)
+process_callback = 0
 limit_enabled = false
-position_smoothing_enabled = true
-position_smoothing_speed = 7.0
 metadata/_edit_lock_ = true
 
 [node name="RespawnTimer" type="Timer" parent="." unique_id=84011130]

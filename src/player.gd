@@ -171,7 +171,7 @@ func die() -> void:
 	set_physics_process(false)
 	respawn_timer.start()
 	release()
-	Tremble.trigger(100)
+	Tremble.trigger(Tremble.intensity_major)
 	Explosion.spawn(self)
 	died.emit()
 

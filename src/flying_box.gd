@@ -45,6 +45,7 @@ func _on_death_timer_timeout() -> void:
 @rpc("any_peer", "call_local")
 func destroy() -> void:
 	Explosion.destroy(self)
+	Tremble.trigger(Tremble.intensity_moderate)
 
 
 func _on_body_entered(body: Node2D) -> void:

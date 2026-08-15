@@ -55,7 +55,7 @@ func _land() -> void:
 	global_position = global_position.snapped(Vector2.ONE * GameConfig.CELL_SIZE)
 	reset_physics_interpolation()
 	grounded.emit()
-	Tremble.trigger(5)
+	Tremble.trigger(Tremble.intensity_tiny)
 
 
 func _on_expiration_timeout() -> void:
@@ -81,3 +81,4 @@ func remove_grabbed() -> void:
 @rpc("any_peer", "call_local")
 func destroy() -> void:
 	Explosion.destroy(self)
+	Tremble.trigger(Tremble.intensity_minor)
