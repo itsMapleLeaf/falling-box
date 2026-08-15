@@ -1,25 +1,16 @@
-## gameplay
+## milestone: prototype / playtest
 
-- CPU players
+- join prompt
+	- instead of dropping into the level immediately, when joining, the player should see a dialogue to enter a name, then a join button which will actually add them to the world with that name
+- upload and test web build on itch.io
 
-### polish
+## milestone: public release
 
-- client-side prediction
-
-  basically means syncing less and letting the client do more pre-simulation with occasional corrections, if necessary, _maybe_ with smoothing (which is probably separate)
-  - falling blocks
-  - flying blocks
-
-- sfx
-
-## online
-
-- hosting
-- join prompt - instead of dropping into the level immediately, when joining, the player should see a dialogue to enter a name, then a join button which will actually add them to the world with that name
-
-### leaderboard
-
+- timed round structure with ready lobby
 - leaderboard
+- CPU players
+- client-side prediction
+- sfx
 
 ## ideas
 
