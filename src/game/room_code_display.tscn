@@ -4,7 +4,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h5w0j"]
 
-[node name="RoomCodeDisplay" type="CanvasLayer" unique_id=157745993]
+[node name="RoomCodeUI" type="CanvasLayer" unique_id=157745993]
 script = ExtResource("1_f6jqf")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=580940028]
@@ -17,6 +17,7 @@ theme_override_constants/margin_bottom = 32
 
 [node name="RoomCodeConnectingDisplay" type="VBoxContainer" parent="MarginContainer" unique_id=1142324833]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 focus_mode = 2
 theme_override_constants/separation = -6
@@ -27,7 +28,6 @@ text = "Connecting..."
 
 [node name="RoomCodeConnectedDisplay" type="PanelContainer" parent="MarginContainer" unique_id=512522004]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 focus_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_h5w0j")

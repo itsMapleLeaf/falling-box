@@ -25,7 +25,7 @@ func _ready() -> void:
 	nodetunnel.room_connected.connect(
 		func():
 			prints("Connected to room:", nodetunnel.room_id)
-			DebugUI.log("Connected to room: %s" % nodetunnel.room_id),
+			DebugUI.log("Connected to room"),
 	)
 
 
@@ -46,6 +46,7 @@ func host_room() -> void:
 	await nodetunnel.room_connected
 
 	room_code_ui.show_room_code(nodetunnel.room_id)
+	room_code_ui.copy_code()
 
 	game.player_spawner.spawn(inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1)))
 
