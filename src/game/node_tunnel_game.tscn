@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bfb158cr7n47i" path="res://src/game/node_tunnel_game.gd" id="1_h3120"]
 [ext_resource type="PackedScene" uid="uid://behcxl4o21rrt" path="res://src/game/game.tscn" id="2_x4l3c"]
 [ext_resource type="PackedScene" uid="uid://bywtb3vta1gm5" path="res://src/hold_quit.tscn" id="3_x4l3c"]
+[ext_resource type="PackedScene" uid="uid://bt46wklqyknjm" path="res://src/game/room_code_display.tscn" id="4_jx2kp"]
 
 [node name="NodeTunnelGame" type="Node" unique_id=1251434116]
 script = ExtResource("1_h3120")
@@ -11,3 +12,6 @@ script = ExtResource("1_h3120")
 unique_name_in_owner = true
 
 [node name="HoldQuit" parent="." unique_id=857723855 instance=ExtResource("3_x4l3c")]
+
+[node name="RoomCodeUI" parent="." unique_id=157745993 instance=ExtResource("4_jx2kp")]
+unique_name_in_owner = true

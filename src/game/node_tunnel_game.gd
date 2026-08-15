@@ -7,6 +7,7 @@ const NODETUNNEL_TOKEN = "770yu76a0drqcx7"
 var nodetunnel := NodeTunnelPeer.new()
 
 @onready var game: Game = %Game
+@onready var room_code_ui: RoomCodeDisplay = %RoomCodeUI
 
 
 func _ready() -> void:
@@ -44,6 +45,8 @@ func host_room() -> void:
 
 	await nodetunnel.room_connected
 
+	room_code_ui.show_room_code(nodetunnel.room_id)
+
 	game.player_spawner.spawn(inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1)))
 
 	nodetunnel.peer_connected.connect(game._on_peer_connected)
@@ -62,6 +65,8 @@ func join_room(room_id: String) -> void:
 	nodetunnel.join_room(room_id)
 
 	await nodetunnel.room_connected
+
+	room_code_ui.show_room_code(nodetunnel.room_id)
 
 	nodetunnel.peer_connected.connect(game._on_peer_connected)
 	nodetunnel.peer_disconnected.connect(game._on_peer_disconnected)
