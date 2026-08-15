@@ -1,6 +1,6 @@
 extends GutTest
 
-const GameScene := preload("res://src/game.tscn")
+const GameScene := preload("res://src/game/game.tscn")
 
 var game: Game
 var player: Player

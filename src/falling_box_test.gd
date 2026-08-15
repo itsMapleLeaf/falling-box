@@ -1,6 +1,6 @@
 extends GutTest
 
-const GAME := preload("res://src/game.tscn")
+const GAME := preload("res://src/game/game.tscn")
 const FALLING_BOX := preload("res://src/falling_box.tscn")
 
 var game: Game
