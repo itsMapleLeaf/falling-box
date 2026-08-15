@@ -29,3 +29,7 @@ func _on_join_room_prompt_submit_button_pressed() -> void:
 	var game: NodeTunnelGame = Screens.node_tunnel_game()
 	ScreenManager.set_screen(game)
 	game.join_room(%RoomIdInput.text)
+
+
+func _on_quit_button_pressed() -> void:
+	get_tree().quit()

@@ -83,7 +83,15 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Join"
 
+[node name="QuitButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1645284311]
+custom_minimum_size = Vector2(77, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Quit"
+alignment = 0
+
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HostRoomButton" to="." method="_on_host_room_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton" to="." method="_on_join_room_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer/JoinRoomPromptSubmitButton" to="." method="_on_join_room_prompt_submit_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
