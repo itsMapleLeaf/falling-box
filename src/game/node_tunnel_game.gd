@@ -37,20 +37,15 @@ func host_room() -> void:
 	get_window().title = "falling box [nodetunnel host]"
 
 	nodetunnel.connect_to_relay(NODETUNNEL_RELAY, NODETUNNEL_TOKEN)
-
-	nodetunnel.authenticated.connect(
-		func():
-			nodetunnel.host_room(false, ""),
-	)
-
-	nodetunnel.room_connected.connect(
-		func():
-			game.player_spawner.spawn(
-				inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1))
-			),
-	)
-
 	multiplayer.multiplayer_peer = nodetunnel
+
+	await nodetunnel.authenticated
+
+	nodetunnel.host_room(false, "")
+
+	await nodetunnel.room_connected
+
+	game.player_spawner.spawn(inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1)))
 
 	nodetunnel.peer_connected.connect(game._on_peer_connected)
 	nodetunnel.peer_disconnected.connect(game._on_peer_disconnected)
@@ -61,13 +56,13 @@ func join_room(room_id: String) -> void:
 	get_window().title = "falling box [nodetunnel client]"
 
 	nodetunnel.connect_to_relay(NODETUNNEL_RELAY, NODETUNNEL_TOKEN)
-
-	nodetunnel.authenticated.connect(
-		func():
-			nodetunnel.join_room(room_id),
-	)
-
 	multiplayer.multiplayer_peer = nodetunnel
+
+	await nodetunnel.authenticated
+
+	nodetunnel.join_room(room_id)
+
+	await nodetunnel.room_connected
 
 	nodetunnel.peer_connected.connect(game._on_peer_connected)
 	nodetunnel.peer_disconnected.connect(game._on_peer_disconnected)
