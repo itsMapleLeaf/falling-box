@@ -24,6 +24,7 @@ enum State {
 @export var level: Level
 @export var facing := Facing.Facing.RIGHT
 @export var holding := false
+@export var alias: String = ""
 
 var movement := 0.0
 var jumps_requested := 0
@@ -48,24 +49,25 @@ var respawn_delay: float:
 	set(value):
 		respawn_timer.wait_time = value
 
+var is_alive: bool:
+	get ():
+		return state != State.DEAD
+
 var is_killable: bool:
 	get ():
 		return state == State.ALIVE
-
-var alias: String:
-	get ():
-		return name_tag.text
-	set(value):
-		name_tag.text = value
 
 
 func _ready() -> void:
 	active_collision_layer = collision_layer
 	active_collision_mask = collision_mask
-	respawn_rng.randomize()
-	respawn()
+
+	name_tag.text = alias
 
 	camera.enabled = is_multiplayer_authority()
+
+	respawn_rng.randomize()
+	respawn()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -163,7 +165,7 @@ func _is_squished_by_falling_box() -> bool:
 
 @rpc('any_peer', 'call_local')
 func die() -> void:
-	if state == State.DEAD:
+	if not is_alive:
 		return
 
 	state = State.DEAD
@@ -198,6 +200,9 @@ func _on_respawn_timer_timeout() -> void:
 
 
 func grab() -> void:
+	if not is_alive:
+		return
+
 	if holding:
 		return
 
