@@ -10,6 +10,7 @@
 - leaderboard
 - CPU players
 - sfx
+- a11y options, e.g. reduce/disable screen shake, glow
 
 ## ideas
 
