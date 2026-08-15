@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://behcxl4o21rrt"]
 
-[ext_resource type="Script" uid="uid://cxgv5kyvrs67i" path="res://src/game.gd" id="1_bs6l1"]
+[ext_resource type="Script" uid="uid://cxgv5kyvrs67i" path="res://src/game/game.gd" id="1_bs6l1"]
 [ext_resource type="PackedScene" uid="uid://bix8d1rou0bjf" path="res://src/level.tscn" id="2_kc8ui"]
 [ext_resource type="Script" uid="uid://b4mx0dtpbxc8k" path="res://src/flying_box_spawner.gd" id="3_xq6wo"]
 

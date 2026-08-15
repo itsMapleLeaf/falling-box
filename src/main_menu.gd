@@ -7,7 +7,7 @@ func _ready() -> void:
 
 
 func _on_play_local_button_pressed() -> void:
-	ScreenManager.set_screen(load("res://src/local_game.tscn").instantiate())
+	ScreenManager.set_screen(load("uid://d2ms6aaidbi2r").instantiate())
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -16,24 +16,24 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_host_button_pressed() -> void:
-	var game: Game = load("res://src/game.tscn").instantiate()
+	var game: Game = load("uid://behcxl4o21rrt").instantiate()
 	_change_screen(game)
 	game.host_server(7586)
 
 
 func _on_join_button_pressed() -> void:
-	var game: Game = load("res://src/game.tscn").instantiate()
+	var game: Game = load("uid://behcxl4o21rrt").instantiate()
 	_change_screen(game)
 	game.join_server("localhost", 7586)
 
 
 func _on_host_room_button_pressed() -> void:
-	var game: Game = load("res://src/game.tscn").instantiate()
+	var game: Game = load("uid://behcxl4o21rrt").instantiate()
 	_change_screen(game)
 	game.host_nodetunnel()
 
 
 func _on_join_room_button_pressed() -> void:
-	var game: Game = load("res://src/game.tscn").instantiate()
+	var game: Game = load("uid://behcxl4o21rrt").instantiate()
 	_change_screen(game)
 	game.join_nodetunnel(%JoinRoomIdInput.text)
