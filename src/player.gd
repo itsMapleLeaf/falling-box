@@ -55,6 +55,8 @@ var is_killable: bool:
 var alias: String:
 	get ():
 		return name_tag.text
+	set(value):
+		name_tag.text = value
 
 
 func _ready() -> void:

@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cxgv5kyvrs67i" path="res://src/game/game.gd" id="1_bs6l1"]
 [ext_resource type="PackedScene" uid="uid://bix8d1rou0bjf" path="res://src/level.tscn" id="2_kc8ui"]
+[ext_resource type="Script" uid="uid://bagt0oqdg3gkd" path="res://src/player_spawner.gd" id="3_xptat"]
 [ext_resource type="Script" uid="uid://b4mx0dtpbxc8k" path="res://src/flying_box_spawner.gd" id="3_xq6wo"]
+[ext_resource type="Script" uid="uid://bfd6ybq64ffh3" path="res://src/falling_box_spawner.gd" id="4_yarin"]
 
 [sub_resource type="Environment" id="Environment_bs6l1"]
 background_mode = 3
@@ -18,15 +20,20 @@ environment = SubResource("Environment_bs6l1")
 [node name="Level" parent="." unique_id=59989938 instance=ExtResource("2_kc8ui")]
 unique_name_in_owner = true
 
-[node name="PlayerMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=2139182964]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=2139182964 node_paths=PackedStringArray("game", "flying_box_spawner")]
 unique_name_in_owner = true
 spawn_path = NodePath("..")
+script = ExtResource("3_xptat")
+game = NodePath("..")
+flying_box_spawner = NodePath("../FlyingBoxSpawner")
 
-[node name="FallingBoxMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1783797738]
+[node name="FallingBoxSpawner" type="MultiplayerSpawner" parent="." unique_id=1783797738 node_paths=PackedStringArray("level")]
 unique_name_in_owner = true
 spawn_path = NodePath("..")
+script = ExtResource("4_yarin")
+level = NodePath("../Level")
 
-[node name="FallingBoxSpawnTimer" type="Timer" parent="FallingBoxMultiplayerSpawner" unique_id=140402480]
+[node name="FallingBoxSpawnTimer" type="Timer" parent="FallingBoxSpawner" unique_id=140402480]
 unique_name_in_owner = true
 wait_time = 0.5
 autostart = true

@@ -17,7 +17,9 @@ func _ready() -> void:
 
 	nodetunnel.forced_disconnect.connect(
 		func():
-			DebugUI.log("Disconnected from relay"),
+			DebugUI.log("Disconnected from relay")
+			var main_menu: Screen = load("uid://i4jvedvwx3en").instantiate()
+			ScreenManager.set_screen(main_menu),
 	)
 
 	nodetunnel.room_connected.connect(
@@ -43,8 +45,9 @@ func host_room() -> void:
 
 	nodetunnel.room_connected.connect(
 		func():
-			game.player_spawner.spawn(inst_to_dict(Game.PlayerSpawnData.new().with_peer_id(1)))
-			game._identify("Player " + str(randi() % 1000)),
+			game.player_spawner.spawn(
+				inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1))
+			),
 	)
 
 	multiplayer.multiplayer_peer = nodetunnel
