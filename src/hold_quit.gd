@@ -15,4 +15,4 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_hold_quit_timer_timeout() -> void:
-	ScreenManager.set_screen(load("res://src/main_menu.tscn").instantiate())
+	ScreenManager.set_screen(Screens.main_menu())

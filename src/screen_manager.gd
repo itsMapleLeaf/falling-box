@@ -1,18 +1,19 @@
 extends Node
 
-var screen: Screen
+var current_screen: Screen
 var initial_title: String
 
 
 func set_screen(new_screen: Screen) -> void:
-	if screen:
-		screen.queue_free()
-
 	get_window().title = initial_title
 
-	screen = new_screen
-	screen.screen_changed.connect(set_screen)
-	add_child(screen)
+	new_screen.screen_changed.connect(set_screen)
+	add_child(new_screen)
+
+	if current_screen:
+		current_screen.queue_free()
+
+	current_screen = new_screen
 
 
 func _ready() -> void:

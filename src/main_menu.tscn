@@ -5,134 +5,85 @@
 [node name="MainMenu" type="Node" unique_id=614113868]
 script = ExtResource("1_guuao")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1936546221]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=978816717]
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=542809474]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -213.0
-offset_top = -120.5
-offset_right = 213.0
-offset_bottom = 120.5
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=96121203]
+offset_right = 94.0
+offset_bottom = 101.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=1787113922]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=655681800]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="Title" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1268948256]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "That Falling Box Game"
+uppercase = true
+
+[node name="PlayButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=437939642]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Play"
+alignment = 0
+
+[node name="HostRoomButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1370129255]
+custom_minimum_size = Vector2(77, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Host Room"
+alignment = 0
+
+[node name="JoinRoomButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=296226259]
+custom_minimum_size = Vector2(77, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Join Room"
+alignment = 0
+
+[node name="JoinRoomPrompt" type="CanvasLayer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton" unique_id=1075896722]
+unique_name_in_owner = true
+visible = false
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt" unique_id=576466095]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer" unique_id=1019030194]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer" unique_id=1063156850]
 layout_mode = 2
 
-[node name="PlayButton" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=682522014]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer" unique_id=1125222718]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer" unique_id=531016588]
+layout_mode = 2
+text = "Enter Room ID"
+
+[node name="RoomIdInput" type="LineEdit" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer" unique_id=1729049423]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Play"
-
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=803867652]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=1499122830]
-layout_mode = 2
-text = "Online Multiplayer (Server)"
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=166040890]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer" unique_id=526382677]
-layout_mode = 2
-
-[node name="PortLabel" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=678650742]
-layout_mode = 2
-text = "Port:"
-
-[node name="HostPortInput" type="LineEdit" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=108424896]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "7586"
+placeholder_text = "ABCDE"
 alignment = 1
 
-[node name="HostServerButton" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=513216254]
+[node name="JoinRoomPromptSubmitButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer" unique_id=1349702955]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(77, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 8
-text = "Host"
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=204221656]
-layout_mode = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2" unique_id=96977713]
-layout_mode = 2
-
-[node name="Address" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer2" unique_id=685042562]
-layout_mode = 2
-text = "Address:"
-
-[node name="JoinAddressInput" type="LineEdit" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer2" unique_id=767196220]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "localhost"
-alignment = 1
-
-[node name="Port" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer2" unique_id=1584953006]
-layout_mode = 2
-text = "Port:"
-
-[node name="JoinPortInput2" type="LineEdit" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer2" unique_id=1303037237]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "7586"
-alignment = 1
-
-[node name="JoinServerButton" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer2" unique_id=2020605958]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(77, 0)
 layout_mode = 2
 text = "Join"
 
-[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=1227121573]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=1170908749]
-layout_mode = 2
-text = "Online Multiplayer (P2P)"
-
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=1844346909]
-layout_mode = 2
-
-[node name="HostRoomButton" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer3" unique_id=328005848]
-custom_minimum_size = Vector2(77, 0)
-layout_mode = 2
-text = "Host Room"
-
-[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=1759174379]
-layout_mode = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer4" unique_id=1271409325]
-layout_mode = 2
-
-[node name="Address" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer4/HBoxContainer2" unique_id=1558925722]
-layout_mode = 2
-text = "Room ID:"
-
-[node name="JoinRoomIdInput" type="LineEdit" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer4/HBoxContainer2" unique_id=1769372464]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "abcdef12345"
-alignment = 1
-
-[node name="JoinRoomButton" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer4/HBoxContainer2" unique_id=1094087449]
-custom_minimum_size = Vector2(77, 0)
-layout_mode = 2
-text = "Join Room"
-
-[connection signal="pressed" from="CanvasLayer/PanelContainer/VBoxContainer/PlayButton" to="." method="_on_play_local_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/HostServerButton" to="." method="_on_host_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer2/JoinServerButton" to="." method="_on_join_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer3/HostRoomButton" to="." method="_on_host_room_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer4/HBoxContainer2/JoinRoomButton" to="." method="_on_join_room_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HostRoomButton" to="." method="_on_host_room_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton" to="." method="_on_join_room_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton/JoinRoomPrompt/PanelContainer/CenterContainer/VBoxContainer/JoinRoomPromptSubmitButton" to="." method="_on_join_room_prompt_submit_button_pressed"]

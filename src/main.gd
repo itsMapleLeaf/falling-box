@@ -1,28 +1,25 @@
 extends Node
 
-const GAME = preload("uid://behcxl4o21rrt")
-const NETWORK_MENU = preload("uid://i4jvedvwx3en")
-
 
 func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
 	match Array(args):
 		['host', var port]:
-			var game: Game = GAME.instantiate()
+			var game: ServerGame = Screens.server_game()
 			ScreenManager.set_screen(game)
 			game.host_server(int(port))
 
 		['join', var host, var port]:
-			var game: Game = GAME.instantiate()
+			var game: ServerGame = Screens.server_game()
 			ScreenManager.set_screen(game)
 			game.join_server(host, int(port))
 
 		['play']:
-			ScreenManager.set_screen(load("res://src/local_game.tscn").instantiate())
+			ScreenManager.set_screen(Screens.local_game())
 
 		[]:
-			ScreenManager.set_screen(NETWORK_MENU.instantiate())
+			ScreenManager.set_screen(Screens.main_menu())
 
 		_:
 			printerr("unknown arguments:", args)
-			ScreenManager.set_screen(NETWORK_MENU.instantiate())
+			ScreenManager.set_screen(Screens.main_menu())

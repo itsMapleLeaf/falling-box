@@ -18,8 +18,7 @@ func _ready() -> void:
 	nodetunnel.forced_disconnect.connect(
 		func():
 			DebugUI.log("Disconnected from relay")
-			var main_menu: Screen = load("uid://i4jvedvwx3en").instantiate()
-			ScreenManager.set_screen(main_menu),
+			ScreenManager.set_screen(Screens.main_menu()),
 	)
 
 	nodetunnel.room_connected.connect(

@@ -31,5 +31,4 @@ func _on_visibility_changed() -> void:
 
 
 func _on_quit_button_pressed() -> void:
-	const NETWORK_MENU = preload("uid://i4jvedvwx3en")
-	ScreenManager.set_screen(NETWORK_MENU.instantiate())
+	ScreenManager.set_screen(Screens.main_menu())
