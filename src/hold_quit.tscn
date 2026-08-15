@@ -7,6 +7,7 @@ script = ExtResource("1_d8uox")
 
 [node name="HoldQuitTimer" type="Timer" parent="." unique_id=636896417]
 unique_name_in_owner = true
+wait_time = 0.6
 one_shot = true
 
 [node name="HoldQuitMessage" type="CanvasLayer" parent="." unique_id=2091392312]
