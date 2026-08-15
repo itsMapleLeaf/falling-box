@@ -1,5 +1,12 @@
 extends GutTest
 
+var _sender := GutInputSender.new()
+
+
+func after_each():
+	_sender.release_all()
+	_sender.clear()
+
 
 func test_play_starts_local_game():
 	var menu := Screens.main_menu()

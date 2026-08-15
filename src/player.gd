@@ -72,11 +72,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
 
-	movement = Input.get_axis("move_left", "move_right")
-
-	if not is_zero_approx(movement):
-		facing = int(signf(movement)) as Facing.Facing
-
 	if event.is_action_pressed("jump"):
 		jumps_requested += 1
 
@@ -119,6 +114,11 @@ func _update_holding_display() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_multiplayer_authority():
+		movement = Input.get_axis("move_left", "move_right")
+		if not is_zero_approx(movement):
+			facing = int(signf(movement)) as Facing.Facing
+
 	velocity.x = lerpf(
 		velocity.x,
 		movement * GameConfig.RUN_SPEED,
@@ -163,6 +163,9 @@ func _is_squished_by_falling_box() -> bool:
 
 @rpc('any_peer', 'call_local')
 func die() -> void:
+	if state == State.DEAD:
+		return
+
 	state = State.DEAD
 	visible = false
 	velocity = Vector2.ZERO

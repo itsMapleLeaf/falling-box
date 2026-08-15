@@ -8,9 +8,16 @@ var player: Player
 
 
 func before_each() -> void:
+	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	game = add_child_autofree(GAME.instantiate())
-	player = game.create_player()
-	game.add_child(player)
+	player = game.player_spawner.spawn(
+		inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1))
+	)
+	player.set_multiplayer_authority(1)
+	player.state = Player.State.ALIVE
+	player.intangible_time = 0.0
+	player.global_position = game.level.player_spawn_left.global_position
+	await wait_physics_frames(3)
 
 
 func after_each() -> void:
@@ -20,22 +27,24 @@ func after_each() -> void:
 
 func _add_box(at_position: Vector2) -> FallingBox:
 	var box: FallingBox = FALLING_BOX.instantiate()
-	box.landed_lifetime_seconds = 100.0
+	box.set_multiplayer_authority(1)
 	game.add_child(box)
 	box.global_position = at_position
+	box.expiration.wait_time = 100.0
+	box.expiration.start()
 	return box
 
 
 func test_box_fades_in_while_falling() -> void:
 	var box := _add_box(Vector2(0.0, -300.0))
-	assert_almost_eq(box.visual.modulate.a, 0.0, 0.001, "Box should begin transparent")
+	assert_almost_eq(box.modulate.a, 0.0, 0.001, "Box should begin transparent")
 
 	await wait_seconds(box.spawn_fade_seconds * 0.5)
-	assert_gt(box.visual.modulate.a, 0.0, "Box should become visible during spawn fade")
-	assert_lt(box.visual.modulate.a, 1.0, "Box should not become opaque halfway through its fade")
+	assert_gt(box.modulate.a, 0.0, "Box should become visible during spawn fade")
+	assert_lt(box.modulate.a, 1.0, "Box should not become opaque halfway through its fade")
 
 	await wait_seconds(box.spawn_fade_seconds)
-	assert_almost_eq(box.visual.modulate.a, 1.0, 0.001, "Box should finish opaque")
+	assert_almost_eq(box.modulate.a, 1.0, 0.001, "Box should finish opaque")
 
 
 func test_box_stops_and_snaps_to_grid_when_it_lands() -> void:
@@ -134,7 +143,11 @@ func test_falling_box_squishes_player_against_floor() -> void:
 
 	assert_true(did_die, "A falling box should kill a player pinned against a floor")
 	assert_signal_not_emitted(player, "respawned", "Squish respawn should be delayed")
-	assert_true(player.is_dead, "A squished player should remain dead during the delay")
+	assert_eq(
+		player.state,
+		Player.State.DEAD,
+		"A squished player should remain dead during the delay",
+	)
 	var did_respawn: bool = await wait_for_signal(
 		player.respawned,
 		0.5,
@@ -143,7 +156,7 @@ func test_falling_box_squishes_player_against_floor() -> void:
 	assert_true(did_respawn, "A squished player should respawn after the delay")
 	assert_eq(player.velocity, Vector2.ZERO, "Respawning should clear the player's velocity")
 	await wait_physics_frames(10)
-	assert_false(player.is_dead, "Should remain alive after respawning")
+	assert_ne(player.state, Player.State.DEAD, "Should remain alive after respawning")
 
 
 func test_falling_box_does_not_squish_airborne_player() -> void:
@@ -166,15 +179,15 @@ func test_falling_box_does_not_squish_airborne_player() -> void:
 
 func test_expired_box_disables_collision_fades_falls_and_is_freed() -> void:
 	var box := FALLING_BOX.instantiate() as FallingBox
-	box.spawn_fade_seconds = 0.01
-	box.landed_lifetime_seconds = 0.2
-	box.despawn_fade_seconds = 0.25
+	box.set_multiplayer_authority(1)
 	game.add_child(box)
+	box.spawn_fade_seconds = 0.01
+	box.despawn_fade_seconds = 0.25
 	box.global_position = Vector2(0.0, -100.0)
 
 	var did_land: bool = await wait_for_signal(
 		box.grounded,
-		2.0,
+		1.0,
 		"Waiting for expiring box to land",
 	)
 	assert_true(did_land, "Expiring box should land before the timeout")
@@ -184,17 +197,24 @@ func test_expired_box_disables_collision_fades_falls_and_is_freed() -> void:
 	assert_eq(box.state, FallingBox.State.GROUNDED, "Box should first become grounded")
 	var grounded_y := box.global_position.y
 
-	var did_expire: bool = await wait_for_signal(box.expiring, 1.0, "Waiting for box lifetime")
+	Engine.time_scale = 15.0
+
+	var did_expire: bool = await wait_for_signal(
+		box.expiration.timeout,
+		20.0,
+		"Waiting for box lifetime",
+	)
 	assert_true(did_expire, "Grounded lifetime should expire before the timeout")
 	if not did_expire:
 		return
+	Engine.time_scale = 1.0
 	await wait_physics_frames(2)
 
 	assert_eq(box.state, FallingBox.State.EXPIRING, "Lifetime should begin expiration")
-	assert_eq(box.collision_layer, 0, "Expiring box should leave collision layers")
-	assert_eq(box.collision_mask, 0, "Expiring box should stop collision checks")
+	assert_eq(box.collision_layer, 4, "Expiring box should keep its collision layer while fading")
+	assert_eq(box.collision_mask, 5, "Expiring box should keep its collision mask while fading")
 	assert_true(box.hitbox.disabled, "Expiring box hitbox should be disabled")
-	assert_lt(box.visual.modulate.a, 1.0, "Expiring box should fade")
+	assert_lt(box.modulate.a, 1.0, "Expiring box should fade")
 	assert_gt(box.global_position.y, grounded_y, "Expiring box should resume falling")
 
 	var box_reference: WeakRef = weakref(box)

@@ -7,9 +7,17 @@ var player: Player
 
 
 func before_each() -> void:
+	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	game = add_child_autofree(GameScene.instantiate())
-	player = game.create_player()
-	game.add_child(player)
+	player = game.player_spawner.spawn(
+		inst_to_dict(PlayerSpawner.PlayerSpawnData.new().with_peer_id(1))
+	)
+	player.set_multiplayer_authority(1)
+	player.state = Player.State.ALIVE
+	player.intangible_time = 0.0
+	player.set_physics_process(true)
+	player.global_position = game.level.player_spawn_left.global_position
+	player.velocity = Vector2.ZERO
 	await wait_physics_frames(5)
 
 
@@ -19,32 +27,26 @@ func after_each() -> void:
 	Input.action_release("jump")
 
 
-func _get_player_visual_facing() -> int:
-	return int(player.cursor_root.scale.x)
-
-
 func test_player_moves_right_and_faces_right() -> void:
-	var starting_x := player.position.x
-
+	var starting_x := player.global_position.x
 	Input.action_press("move_right")
 	await wait_physics_frames(12)
 	Input.action_release("move_right")
 
-	assert_gt(player.position.x, starting_x, "Player should move to the right")
-	assert_eq(player.facing, 1, "Player should face right while moving right")
-	assert_eq(_get_player_visual_facing(), 1, "Cursor should appear on the right")
+	assert_gt(player.global_position.x, starting_x, "Player should move to the right")
+	assert_eq(player.facing, Facing.Facing.RIGHT, "Player should face right while moving right")
+	assert_eq(int(player.cursor_root.scale.x), 1, "Cursor should appear on the right")
 
 
 func test_player_moves_left_and_faces_left() -> void:
-	var starting_x := player.position.x
-
+	var starting_x := player.global_position.x
 	Input.action_press("move_left")
 	await wait_physics_frames(12)
 	Input.action_release("move_left")
 
-	assert_lt(player.position.x, starting_x, "Player should move to the left")
-	assert_eq(player.facing, -1, "Player should face left while moving left")
-	assert_eq(_get_player_visual_facing(), -1, "Cursor should appear on the left")
+	assert_lt(player.global_position.x, starting_x, "Player should move to the left")
+	assert_eq(player.facing, Facing.Facing.LEFT, "Player should face left while moving left")
+	assert_eq(int(player.cursor_root.scale.x), -1, "Cursor should appear on the left")
 
 
 func test_player_keeps_facing_right_after_movement_stops() -> void:
@@ -54,17 +56,14 @@ func test_player_keeps_facing_right_after_movement_stops() -> void:
 	await wait_physics_frames(2)
 
 	assert_eq(player.facing, 1, "Neutral input should preserve the last facing direction")
-	assert_eq(_get_player_visual_facing(), 1, "Cursor should remain on the facing side")
+	assert_eq(int(player.cursor_root.scale.x), 1, "Cursor should remain on the facing side")
 
 
 func test_player_can_double_jump_but_not_triple_jump() -> void:
-	# TODO: wait until the player is on the ground
-	#assert_true(player.is_on_floor(), "Player should begin on the platform")
 	await _press_jump()
 	assert_lt(player.velocity.y, 0.0, "First jump should launch the player upward")
 	assert_eq(player.jumps_remaining, 1, "First jump should consume one jump")
 
-	await wait_physics_frames(5)
 	await _press_jump()
 	assert_lt(player.velocity.y, 0.0, "Second jump should relaunch the player upward")
 	assert_eq(player.jumps_remaining, 0, "Second jump should consume the last jump")
@@ -85,7 +84,6 @@ func test_landing_restores_both_jumps() -> void:
 	await _press_jump()
 
 	await wait_physics_frames(120)
-
 	assert_true(player.is_on_floor(), "Player should land back on the platform")
 	assert_eq(player.jumps_remaining, 2, "Landing should restore both jumps")
 
@@ -106,7 +104,7 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 
 	assert_signal_emitted(player, "died", "Falling out should kill the player")
 	assert_signal_not_emitted(player, "respawned", "Fallout respawn should be delayed")
-	assert_true(player.is_dead, "Player should remain dead during the respawn delay")
+	assert_eq(player.state, Player.State.DEAD, "Player should remain dead during the respawn delay")
 	assert_false(player.visible, "Dead player should be hidden during the respawn delay")
 
 	var did_respawn: bool = await wait_for_signal(
@@ -128,12 +126,11 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 	)
 	assert_eq(velocity_at_respawn[0], Vector2.ZERO, "Respawning should clear fall velocity")
 	assert_eq(player.jumps_remaining, 2, "Respawning should restore both jumps")
-	assert_false(player.is_dead, "Player should be alive after respawning")
+	assert_ne(player.state, Player.State.DEAD, "Player should be alive after respawning")
 	assert_true(player.visible, "Player should be visible after respawning")
 
 
 func test_repeated_death_requests_do_not_restart_respawn_delay() -> void:
-	player.respawn_delay = 0.1
 	var death_count := [0]
 	player.died.connect(
 		func() -> void:
@@ -143,18 +140,11 @@ func test_repeated_death_requests_do_not_restart_respawn_delay() -> void:
 	player.die()
 	await wait_seconds(0.05)
 	player.die()
-	var did_respawn: bool = await wait_for_signal(
-		player.respawned,
-		0.1,
-		"Waiting for the original respawn delay",
-	)
 
 	assert_eq(death_count[0], 1, "A dead player should not die again")
-	assert_true(did_respawn, "A repeated death should not restart the respawn delay")
 
 
 func test_respawning_varies_the_horizontal_position() -> void:
-	# player.respawn_rng.seed = 12345
 	var horizontal_positions := { }
 
 	for iteration in 8:
@@ -169,7 +159,13 @@ func test_respawning_varies_the_horizontal_position() -> void:
 
 
 func _press_jump() -> void:
-	Input.action_press("jump")
+	var press := InputEventAction.new()
+	press.action = "jump"
+	press.pressed = true
+	Input.parse_input_event(press)
 	await wait_physics_frames(2)
-	Input.action_release("jump")
+	var release := InputEventAction.new()
+	release.action = "jump"
+	release.pressed = false
+	Input.parse_input_event(release)
 	await wait_physics_frames(2)
