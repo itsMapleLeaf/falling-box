@@ -1,9 +1,6 @@
 class_name Game
 extends Screen
 
-const NODETUNNEL_RELAY = "us-east.nodetunnel.io:8080"
-const NODETUNNEL_TOKEN = "770yu76a0drqcx7"
-
 const HOLD_QUIT = preload("uid://bywtb3vta1gm5")
 
 enum GameType {
@@ -13,7 +10,6 @@ enum GameType {
 
 var game_type: GameType
 var enet_peer := ENetMultiplayerPeer.new()
-var nodetunnel := NodeTunnelPeer.new()
 var players_by_peer_id: Dictionary[int, Player] = { }
 
 @onready var level: Level = %Level
@@ -28,20 +24,9 @@ func _ready() -> void:
 	player_spawner.spawn_function = _create_spawned_player
 	falling_box_spawner.spawn_function = _create_spawned_box
 
-	nodetunnel.error.connect(
-		func(msg):
-			print("Relay sent error: " + msg),
-	)
-
-	nodetunnel.forced_disconnect.connect(
-		func():
-			print("Disconnected from relay"),
-	)
-
 
 func _exit_tree() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-	nodetunnel.close()
 
 
 func host_server(port: int) -> void:
@@ -76,63 +61,6 @@ func join_server(host: String, port: int) -> void:
 
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
-
-
-func host_nodetunnel() -> void:
-	get_window().title = "falling box [nodetunnel host]"
-
-	game_type = GameType.ONLINE
-
-	nodetunnel.connect_to_relay(NODETUNNEL_RELAY, NODETUNNEL_TOKEN)
-
-	nodetunnel.authenticated.connect(
-		func():
-			nodetunnel.host_room(false, ""),
-	)
-
-	nodetunnel.room_connected.connect(
-		func():
-			prints("Connected to room:", nodetunnel.room_id)
-
-			player_spawner.spawn(inst_to_dict(PlayerSpawnData.new().with_peer_id(1)))
-			_identify(),
-	)
-
-	multiplayer.multiplayer_peer = nodetunnel
-
-	nodetunnel.peer_connected.connect(_on_peer_connected)
-	nodetunnel.peer_disconnected.connect(_on_peer_disconnected)
-	falling_box_spawn_timer.timeout.connect(_on_falling_box_spawn_timer_timeout)
-
-	add_child(HOLD_QUIT.instantiate())
-
-
-func join_nodetunnel(room_id: String) -> void:
-	get_window().title = "falling box [nodetunnel client]"
-
-	game_type = GameType.ONLINE
-
-	nodetunnel.connect_to_relay(NODETUNNEL_RELAY, NODETUNNEL_TOKEN)
-
-	nodetunnel.authenticated.connect(
-		func():
-			nodetunnel.join_room(room_id),
-	)
-
-	nodetunnel.room_connected.connect(
-		func():
-			prints("Connected to room:", nodetunnel.room_id),
-	)
-
-	multiplayer.multiplayer_peer = nodetunnel
-
-	nodetunnel.peer_connected.connect(_on_peer_connected)
-	nodetunnel.peer_disconnected.connect(_on_peer_disconnected)
-
-	multiplayer.connected_to_server.connect(_on_connected_to_server)
-	multiplayer.server_disconnected.connect(_on_server_disconnected)
-
-	add_child(HOLD_QUIT.instantiate())
 
 
 func _on_peer_connected(peer_id: int) -> void:

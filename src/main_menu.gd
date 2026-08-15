@@ -28,12 +28,12 @@ func _on_join_button_pressed() -> void:
 
 
 func _on_host_room_button_pressed() -> void:
-	var game: Game = load("uid://behcxl4o21rrt").instantiate()
+	var game: NodeTunnelGame = load("uid://b7seloxwrkdli").instantiate()
 	_change_screen(game)
-	game.host_nodetunnel()
+	game.host_room()
 
 
 func _on_join_room_button_pressed() -> void:
-	var game: Game = load("uid://behcxl4o21rrt").instantiate()
+	var game: NodeTunnelGame = load("uid://b7seloxwrkdli").instantiate()
 	_change_screen(game)
-	game.join_nodetunnel(%JoinRoomIdInput.text)
+	game.join_room(%JoinRoomIdInput.text)
