@@ -187,6 +187,7 @@ func respawn() -> void:
 	collision_layer = active_collision_layer
 	collision_mask = active_collision_mask
 	visible = true
+	is_dead = false
 	intangible_time = INTANGIBLE_TIME
 	set_physics_process(true)
 	reset_physics_interpolation()
