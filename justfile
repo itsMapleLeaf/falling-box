@@ -23,7 +23,6 @@ build-web:
     rm -rf .export/falling-box-web.zip
     mkdir -p .export/falling-box-web
     godot_console --headless --path . --export-release "Web"
-    cd .export/falling-box-web; zip -r ../falling-box-web.zip .
 
 publish: build publish-only
 
