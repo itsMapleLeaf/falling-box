@@ -11,13 +11,21 @@ var hits := 2
 var freeze_time := 0.0
 var hit_queue: Array[FallingBox] = []
 
+@onready var death_timer: Timer = %DeathTimer
+
+var frozen: bool:
+	get ():
+		return freeze_time > 0
+
 
 func _ready() -> void:
 	set_physics_process(is_multiplayer_authority())
 
 
 func _physics_process(delta: float) -> void:
-	if freeze_time > 0:
+	death_timer.paused = frozen
+
+	if frozen:
 		freeze_time -= delta
 		return
 

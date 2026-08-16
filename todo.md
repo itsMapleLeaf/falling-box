@@ -1,7 +1,5 @@
 ## milestone: prototype / playtest
 
-- bug (severity: tiny, effort: minor): pause the expiry timer on flying blocks while frozen
-
 - use websockets on web
 
 - performance (severity: moderate, effort: high): game freezes on on first block break
