@@ -6,15 +6,19 @@ extends MultiplayerSpawner
 
 
 class PlayerSpawnData:
-	var peer_id: int
-	var alias: String
+	var peer_id: int = 1
+	var alias: String = "You"
 
 
-	@warning_ignore("shadowed_variable")
-	func _init(
-		peer_id: int
-	) -> void:
-		self.peer_id = peer_id
+	func pack() -> Dictionary:
+		return { "peer_id": peer_id, "alias": alias }
+
+
+	static func unpack(data: Dictionary) -> PlayerSpawnData:
+		var result := PlayerSpawnData.new()
+		result.peer_id = data.get("peer_id", 1)
+		result.alias = data.get("alias", "You")
+		return result
 
 
 func _ready() -> void:
@@ -33,12 +37,6 @@ func _create_spawned_player(data_dict: Dictionary):
 	game.players_by_peer_id[data.peer_id] = player
 
 	return player
-
-
-@rpc("any_peer")
-func spawn_player(data_dict: Dictionary) -> void:
-	var player: Player = spawn(data_dict)
-	DebugUI.log("%s has joined the game" % player.alias)
 
 
 # there's probably a better way to do this

@@ -36,7 +36,6 @@ level = NodePath("../Level")
 [node name="FallingBoxSpawnTimer" type="Timer" parent="FallingBoxSpawner" unique_id=140402480]
 unique_name_in_owner = true
 wait_time = 0.5
-autostart = true
 
 [node name="FlyingBoxSpawner" type="MultiplayerSpawner" parent="." unique_id=1221883821]
 unique_name_in_owner = true

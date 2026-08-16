@@ -8,8 +8,8 @@ func _ready() -> void:
 
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 
-	game.falling_box_spawn_timer.timeout.connect(game._on_falling_box_spawn_timer_timeout)
+	game.spawn_falling_blocks()
 
-	var data := PlayerSpawner.PlayerSpawnData.new(1)
+	var data := PlayerSpawner.PlayerSpawnData.new()
 	data.alias = "You"
-	game.player_spawner.spawn(inst_to_dict(data))
+	game.add_player(data)

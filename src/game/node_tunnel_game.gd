@@ -12,6 +12,8 @@ var nodetunnel := NodeTunnelPeer.new()
 
 
 func _ready() -> void:
+	game.spawn_falling_blocks()
+
 	nodetunnel.error.connect(
 		func(msg):
 			DebugUI.log("Relay sent error: " + msg),
@@ -38,7 +40,10 @@ func host_room() -> void:
 	get_window().title = "falling box [nodetunnel host]"
 
 	nodetunnel.connect_to_relay(NODETUNNEL_RELAY, NODETUNNEL_TOKEN)
+
 	multiplayer.multiplayer_peer = nodetunnel
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 	await nodetunnel.authenticated
 
@@ -46,15 +51,20 @@ func host_room() -> void:
 
 	await nodetunnel.room_connected
 
-	nodetunnel.peer_connected.connect(game._on_peer_connected)
-	nodetunnel.peer_disconnected.connect(game._on_peer_disconnected)
-	game.falling_box_spawn_timer.timeout.connect(game._on_falling_box_spawn_timer_timeout)
-
 	room_code_ui.show_room_code(nodetunnel.room_id)
 	room_code_ui.copy_code()
 
 	var data := await _onboard()
-	game.player_spawner.spawn_player(inst_to_dict(data))
+	game.add_player(data)
+
+
+func _on_peer_connected(_peer_id: int) -> void:
+	# game.add_player(PlayerSpawner.PlayerSpawnData.new(peer_id))
+	pass
+
+
+func _on_peer_disconnected(peer_id: int) -> void:
+	game.remove_player(peer_id)
 
 
 func join_room(room_id: String) -> void:
@@ -71,14 +81,8 @@ func join_room(room_id: String) -> void:
 
 	room_code_ui.show_room_code(nodetunnel.room_id)
 
-	nodetunnel.peer_connected.connect(game._on_peer_connected)
-	nodetunnel.peer_disconnected.connect(game._on_peer_disconnected)
-
-	multiplayer.connected_to_server.connect(game._on_connected_to_server)
-	multiplayer.server_disconnected.connect(game._on_server_disconnected)
-
 	var data := await _onboard()
-	game.player_spawner.spawn_player.rpc_id(1, inst_to_dict(data))
+	game.enter_game.rpc_id(1, data.pack())
 
 
 func _onboard() -> PlayerSpawner.PlayerSpawnData:
@@ -90,6 +94,7 @@ func _onboard() -> PlayerSpawner.PlayerSpawnData:
 		ScreenManager.set_screen(Screens.main_menu())
 		return
 
-	var data := PlayerSpawner.PlayerSpawnData.new(multiplayer.get_unique_id())
+	var data := PlayerSpawner.PlayerSpawnData.new()
+	data.peer_id = multiplayer.get_unique_id()
 	data.alias = result.answer if not result.answer.is_empty() else fallback_name
 	return data

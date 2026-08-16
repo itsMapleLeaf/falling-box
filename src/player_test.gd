@@ -9,7 +9,7 @@ var player: Player
 func before_each() -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	game = add_child_autofree(GameScene.instantiate())
-	player = game.player_spawner.spawn(inst_to_dict(PlayerSpawner.PlayerSpawnData.new(1)))
+	player = game.add_player(PlayerSpawner.PlayerSpawnData.new())
 	player.set_multiplayer_authority(1)
 	await wait_physics_frames(5)
 
