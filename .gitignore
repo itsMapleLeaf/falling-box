@@ -3,9 +3,11 @@
 
 # Exported builds
 builds/
+/.export
 
 # Local editor settings
 .vscode/
 .idea/
 
-/.export
+# Temporary files
+*.tmp
