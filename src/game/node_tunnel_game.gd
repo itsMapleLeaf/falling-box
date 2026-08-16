@@ -15,18 +15,18 @@ func _ready() -> void:
 	game.spawn_falling_blocks()
 
 	nodetunnel.error.connect(
-		func(msg):
-			DebugUI.log("Relay sent error: " + msg),
+		func(msg: String) -> void:
+			DebugUI.log("Server error: " + msg),
 	)
 
 	nodetunnel.forced_disconnect.connect(
-		func():
-			DebugUI.log("Disconnected from relay")
+		func() -> void:
+			DebugUI.log("Disconnected from server")
 			ScreenManager.set_screen(Screens.main_menu()),
 	)
 
 	nodetunnel.room_connected.connect(
-		func():
+		func() -> void:
 			prints("Connected to room:", nodetunnel.room_id)
 			DebugUI.log("Connected to room"),
 	)
