@@ -7,8 +7,6 @@ func _ready() -> void:
 
 	if OS.has_feature("web"):
 		%QuitButton.hide()
-		%HostRoomButton.hide()
-		%JoinRoomButton.hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -21,7 +19,7 @@ func _on_play_button_pressed() -> void:
 
 
 func _on_host_room_button_pressed() -> void:
-	var game: NodeTunnelGame = Screens.node_tunnel_game()
+	var game: OnlineGame = Screens.node_tunnel_game()
 	ScreenManager.set_screen(game)
 	game.host_room()
 
@@ -31,7 +29,7 @@ func _on_join_room_button_pressed() -> void:
 	if result.cancelled:
 		return
 
-	var game: NodeTunnelGame = Screens.node_tunnel_game()
+	var game: OnlineGame = Screens.node_tunnel_game()
 	ScreenManager.set_screen(game)
 	game.join_room(result.answer)
 

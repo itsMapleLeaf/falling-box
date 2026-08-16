@@ -1,57 +1,38 @@
-class_name NodeTunnelGame
+class_name OnlineGame
 extends Screen
-
-const NODETUNNEL_RELAY = "us-east.nodetunnel.io:8080"
-const NODETUNNEL_TOKEN = "770yu76a0drqcx7"
-
-var nodetunnel := NodeTunnelPeer.new()
 
 @onready var game: Game = %Game
 @onready var room_code_ui: RoomCodeDisplay = %RoomCodeUI
 @onready var player_name_dialog: PromptDialog = %PlayerNameDialog
+@onready var tube_client: TubeClient = %TubeClient
 
 
 func _ready() -> void:
 	game.spawn_falling_blocks()
 
-	nodetunnel.error.connect(
-		func(msg: String) -> void:
-			DebugUI.log("Server error: " + msg),
-	)
-
-	nodetunnel.forced_disconnect.connect(
-		func() -> void:
-			DebugUI.log("Disconnected from server")
-			ScreenManager.set_screen(Screens.main_menu()),
-	)
-
-	nodetunnel.room_connected.connect(
-		func() -> void:
-			prints("Connected to room:", nodetunnel.room_id)
-			DebugUI.log("Connected to room"),
+	tube_client.error_raised.connect(
+		func(code: TubeClient.SessionError, message: String) -> void:
+			DebugUI.log("Network error %d: %s" % [code, message]),
 	)
 
 
 func _exit_tree() -> void:
+	tube_client.leave_session()
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 
 
 func host_room() -> void:
-	get_window().title = "falling box [nodetunnel host]"
+	get_window().title = "falling box [host]"
 
-	nodetunnel.connect_to_relay(NODETUNNEL_RELAY, NODETUNNEL_TOKEN)
+	tube_client.create_session()
 
-	multiplayer.multiplayer_peer = nodetunnel
+	multiplayer.multiplayer_peer = tube_client.multiplayer_peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
-	await nodetunnel.authenticated
+	await tube_client.session_created
 
-	nodetunnel.host_room(false, "")
-
-	await nodetunnel.room_connected
-
-	room_code_ui.show_room_code(nodetunnel.room_id)
+	room_code_ui.show_room_code(tube_client.session_id)
 	room_code_ui.copy_code()
 
 	var data := await _onboard()
@@ -59,7 +40,6 @@ func host_room() -> void:
 
 
 func _on_peer_connected(_peer_id: int) -> void:
-	# game.add_player(PlayerSpawner.PlayerSpawnData.new(peer_id))
 	pass
 
 
@@ -68,20 +48,18 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 
 func join_room(room_id: String) -> void:
-	get_window().title = "falling box [nodetunnel client]"
+	get_window().title = "falling box [client]"
 
-	nodetunnel.connect_to_relay(NODETUNNEL_RELAY, NODETUNNEL_TOKEN)
-	multiplayer.multiplayer_peer = nodetunnel
+	tube_client.join_session(room_id)
 
-	await nodetunnel.authenticated
+	await tube_client.session_joined
 
-	nodetunnel.join_room(room_id)
-
-	await nodetunnel.room_connected
-
-	room_code_ui.show_room_code(nodetunnel.room_id)
+	room_code_ui.show_room_code(tube_client.session_id)
 
 	var data := await _onboard()
+	if not data:
+		return
+
 	game.enter_game.rpc_id(1, data.pack())
 
 

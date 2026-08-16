@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://b7seloxwrkdli"]
+
+[ext_resource type="Script" uid="uid://bfb158cr7n47i" path="res://src/game/online_game.gd" id="1_srd6u"]
+[ext_resource type="PackedScene" uid="uid://behcxl4o21rrt" path="res://src/game/game.tscn" id="2_iba1j"]
+[ext_resource type="PackedScene" uid="uid://bywtb3vta1gm5" path="res://src/hold_quit.tscn" id="3_tq0l6"]
+[ext_resource type="PackedScene" uid="uid://bt46wklqyknjm" path="res://src/game/room_code_display.tscn" id="4_w188f"]
+[ext_resource type="PackedScene" uid="uid://c5p476r2uerbs" path="res://src/ui/prompt_dialog.tscn" id="5_72vyi"]
+[ext_resource type="Script" uid="uid://cy006uvidc4y" path="res://addons/tube/tube_client.gd" id="6_s47ag"]
+[ext_resource type="Resource" uid="uid://dj6kea3bn4ymr" path="res://src/tube_context.tres" id="7_iba1j"]
+
+[node name="OnlineGame" type="Node" unique_id=1251434116]
+script = ExtResource("1_srd6u")
+
+[node name="Game" parent="." unique_id=1932238817 instance=ExtResource("2_iba1j")]
+unique_name_in_owner = true
+
+[node name="HoldQuit" parent="." unique_id=857723855 instance=ExtResource("3_tq0l6")]
+
+[node name="RoomCodeUI" parent="." unique_id=157745993 instance=ExtResource("4_w188f")]
+unique_name_in_owner = true
+
+[node name="PlayerNameDialog" parent="." unique_id=56895137 instance=ExtResource("5_72vyi")]
+unique_name_in_owner = true
+query = "Enter your username"
+placeholder = "Player 1"
+submit_text = "Join Game"
+
+[node name="TubeClient" type="Node" parent="." unique_id=1353168876]
+unique_name_in_owner = true
+script = ExtResource("6_s47ag")
+context = ExtResource("7_iba1j")
+metadata/_custom_type_script = "uid://cy006uvidc4y"

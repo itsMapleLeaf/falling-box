@@ -9,7 +9,7 @@ static func local_game() -> Screen:
 	return load("uid://d2ms6aaidbi2r").instantiate()
 
 
-static func node_tunnel_game() -> NodeTunnelGame:
+static func node_tunnel_game() -> OnlineGame:
 	return load("uid://b7seloxwrkdli").instantiate()
 
 
