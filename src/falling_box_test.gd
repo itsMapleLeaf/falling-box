@@ -12,9 +12,6 @@ func before_each() -> void:
 	game = add_child_autofree(GAME.instantiate())
 	player = game.player_spawner.spawn(inst_to_dict(PlayerSpawner.PlayerSpawnData.new(1)))
 	player.set_multiplayer_authority(1)
-	player.state = Player.State.ALIVE
-	player.intangible_time = 0.0
-	player.global_position = game.level.player_spawn_left.global_position
 	await wait_physics_frames(3)
 
 
@@ -141,11 +138,7 @@ func test_falling_box_squishes_player_against_floor() -> void:
 
 	assert_true(did_die, "A falling box should kill a player pinned against a floor")
 	assert_signal_not_emitted(player, "respawned", "Squish respawn should be delayed")
-	assert_eq(
-		player.state,
-		Player.State.DEAD,
-		"A squished player should remain dead during the delay",
-	)
+	assert_true(player.is_dead, "A squished player should remain dead during the delay")
 	var did_respawn: bool = await wait_for_signal(
 		player.respawned,
 		0.5,
@@ -154,7 +147,7 @@ func test_falling_box_squishes_player_against_floor() -> void:
 	assert_true(did_respawn, "A squished player should respawn after the delay")
 	assert_eq(player.velocity, Vector2.ZERO, "Respawning should clear the player's velocity")
 	await wait_physics_frames(10)
-	assert_ne(player.state, Player.State.DEAD, "Should remain alive after respawning")
+	assert_true(player.is_dead, "Should remain alive after respawning")
 
 
 func test_falling_box_does_not_squish_airborne_player() -> void:

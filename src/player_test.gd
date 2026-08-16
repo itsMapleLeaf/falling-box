@@ -11,11 +11,6 @@ func before_each() -> void:
 	game = add_child_autofree(GameScene.instantiate())
 	player = game.player_spawner.spawn(inst_to_dict(PlayerSpawner.PlayerSpawnData.new(1)))
 	player.set_multiplayer_authority(1)
-	player.state = Player.State.ALIVE
-	player.intangible_time = 0.0
-	player.set_physics_process(true)
-	player.global_position = game.level.player_spawn_left.global_position
-	player.velocity = Vector2.ZERO
 	await wait_physics_frames(5)
 
 
@@ -102,7 +97,7 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 
 	assert_signal_emitted(player, "died", "Falling out should kill the player")
 	assert_signal_not_emitted(player, "respawned", "Fallout respawn should be delayed")
-	assert_eq(player.state, Player.State.DEAD, "Player should remain dead during the respawn delay")
+	assert_true(player.is_dead, "Player should remain dead during the respawn delay")
 	assert_false(player.visible, "Dead player should be hidden during the respawn delay")
 
 	var did_respawn: bool = await wait_for_signal(
@@ -124,7 +119,7 @@ func test_falling_far_past_the_threshold_respawns_player_above_platform() -> voi
 	)
 	assert_eq(velocity_at_respawn[0], Vector2.ZERO, "Respawning should clear fall velocity")
 	assert_eq(player.jumps_remaining, 2, "Respawning should restore both jumps")
-	assert_ne(player.state, Player.State.DEAD, "Player should be alive after respawning")
+	assert_true(player.is_dead, "Player should be alive after respawning")
 	assert_true(player.visible, "Player should be visible after respawning")
 
 

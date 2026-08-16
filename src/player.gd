@@ -10,16 +10,7 @@ const HELD_BLOCK_STIFFNESS := 17.0
 const INTANGIBLE_TIME := 3.0
 const INTANGIBLE_BLINK_PERIOD := 0.5
 
-enum State {
-	## Player can move and jump around, but not die
-	INTANGIBLE,
-	## Player can move, jump, and die
-	ALIVE,
-	## Player is dead and cannot move or jump, and is invisible
-	DEAD,
-}
-
-@export var state := State.INTANGIBLE
+@export var is_dead := false
 @export var player_id: int = randi()
 @export var level: Level
 @export var facing := Facing.Facing.RIGHT
@@ -49,13 +40,21 @@ var respawn_delay: float:
 	set(value):
 		respawn_timer.wait_time = value
 
+## True if the player can move around and interact with the world
 var is_alive: bool:
 	get ():
-		return state != State.DEAD
+		return !is_dead
 
+## True if the player is currently intangible and cannot be hit by boxes
+## (but can still be crushed and fall out of the level)
+var is_intangible: bool:
+	get ():
+		return intangible_time > 0
+
+## True if the player can be killed by flying boxes
 var is_killable: bool:
 	get ():
-		return state == State.ALIVE
+		return is_alive and not is_intangible
 
 
 func _ready() -> void:
@@ -92,7 +91,7 @@ func _process(delta: float) -> void:
 	cursor_root.scale.x = facing
 	_update_holding_display()
 
-	if state == State.INTANGIBLE:
+	if is_intangible:
 		var alpha_normal := inverse_lerp(
 			-1,
 			1,
@@ -101,7 +100,7 @@ func _process(delta: float) -> void:
 		body.modulate.a = lerpf(0.2, 1, alpha_normal)
 		intangible_time -= delta
 		if intangible_time <= 0.0:
-			state = State.ALIVE
+			intangible_time = 0.0
 	else:
 		body.modulate.a = 1.0
 
@@ -165,10 +164,10 @@ func _is_squished_by_falling_box() -> bool:
 
 @rpc('any_peer', 'call_local')
 func die() -> void:
-	if not is_alive:
+	if is_dead:
 		return
 
-	state = State.DEAD
+	is_dead = true
 	visible = false
 	velocity = Vector2.ZERO
 	collision_layer = 0
@@ -188,7 +187,6 @@ func respawn() -> void:
 	collision_layer = active_collision_layer
 	collision_mask = active_collision_mask
 	visible = true
-	state = State.INTANGIBLE
 	intangible_time = INTANGIBLE_TIME
 	set_physics_process(true)
 	reset_physics_interpolation()
