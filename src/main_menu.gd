@@ -5,6 +5,11 @@ extends Screen
 func _ready() -> void:
 	%PlayButton.grab_focus()
 
+	if OS.has_feature("web"):
+		%QuitButton.hide()
+		%HostRoomButton.hide()
+		%JoinRoomButton.hide()
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug_quit"):

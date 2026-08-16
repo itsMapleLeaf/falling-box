@@ -39,6 +39,7 @@ text = "Play"
 alignment = 0
 
 [node name="HostRoomButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1370129255]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(77, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
@@ -46,6 +47,7 @@ text = "Host Room"
 alignment = 0
 
 [node name="JoinRoomButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=296226259]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(77, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
@@ -53,6 +55,7 @@ text = "Join Room"
 alignment = 0
 
 [node name="QuitButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1645284311]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(77, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
