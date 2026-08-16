@@ -42,7 +42,7 @@ func add_player(data: PlayerSpawner.PlayerSpawnData) -> Player:
 
 
 func remove_player(peer_id: int) -> void:
-	var player := players_by_peer_id[peer_id] if peer_id in players_by_peer_id else null
+	var player: Player = players_by_peer_id.get(peer_id)
 	if player:
 		player.queue_free()
 		players_by_peer_id.erase(peer_id)
