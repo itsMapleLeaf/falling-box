@@ -1,14 +1,11 @@
 ## milestone: prototype / playtest
 
-- player can no longer interact with the world after dying once
-	- this includes picking up blocks, getting squished, and getting killed by flying blocks, but for some reason, they can always get crushed
-	- some guesses:
-		- a regression from the intangibility refactor
-		- something related to collision masks
-
 - cannot paste from clipboard on web (severity: minor, effort: high)
 
 ### polish
+
+- gameplay edge cases:
+  - squish detection: it doesn't require that the top and bottom overlaps are two separate bodies, ergo, you could spawn inside of a block and die immediately
 
 - performance (severity: moderate, effort: high): game freezes on on first block break
   - at first I assumed this was because I forgot to preload the explosion scene, but that's not the case. now it looks like some kind of shader cache problem, and i only found weird hacky-looking fixes for it, so I'm deferring this for now
@@ -23,5 +20,6 @@
 
 ## ideas
 
-- block grab cooldown?
+- interactive tutorial or somethin
 - player colors
+- block grab cooldown?
