@@ -1,6 +1,8 @@
 ## milestone: prototype / playtest
 
-- upload and test web build on itch.io
+- performance (moderate): game freezes on on first block break - preload explosion
+- use websockets on web
+- bug (minor): pause the expiry timer on flying blocks while frozen
 
 ### polish
 
