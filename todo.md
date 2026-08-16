@@ -1,8 +1,11 @@
 ## milestone: prototype / playtest
 
-- performance (moderate): game freezes on on first block break - preload explosion
+- bug (severity: tiny, effort: minor): pause the expiry timer on flying blocks while frozen
+
 - use websockets on web
-- bug (minor): pause the expiry timer on flying blocks while frozen
+
+- performance (severity: moderate, effort: high): game freezes on on first block break
+  - at first I assumed this was because I forgot to preload the explosion scene, but that's not the case. now it looks like some kind of shader cache problem, and i only found weird hacky-looking fixes for it, so I'm deferring this for now
 
 ### polish
 
