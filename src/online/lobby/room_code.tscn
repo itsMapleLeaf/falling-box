@@ -4,33 +4,41 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h5w0j"]
 
-[node name="Control" type="PanelContainer" unique_id=2070222624]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gx3s6"]
+properties/0/path = NodePath(".:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="RoomCode" type="PanelContainer" unique_id=2070222624]
 offset_right = 219.0
 offset_bottom = 97.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_h5w0j")
 script = ExtResource("1_5vq7j")
 
-[node name="RoomCode" type="BoxContainer" parent="." unique_id=211492364]
+[node name="BoxContainer" type="BoxContainer" parent="." unique_id=211492364]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = -8
 vertical = true
 
-[node name="Label" type="Label" parent="RoomCode" unique_id=1746920798]
+[node name="Label" type="Label" parent="BoxContainer" unique_id=1746920798]
 modulate = Color(0.7784455, 0.7784455, 0.7784455, 1)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 18
 text = "Room Code"
 
-[node name="Code" type="Label" parent="RoomCode" unique_id=1692862736]
+[node name="Code" type="Label" parent="BoxContainer" unique_id=1692862736]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 44
 text = "ABCDE"
 
-[node name="CopyTip" type="Label" parent="RoomCode" unique_id=1695346994]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="BoxContainer/Code" unique_id=228503153]
+replication_config = SubResource("SceneReplicationConfig_gx3s6")
+
+[node name="CopyTip" type="Label" parent="BoxContainer" unique_id=1695346994]
 unique_name_in_owner = true
 modulate = Color(0.7784455, 0.7784455, 0.7784455, 1)
 layout_mode = 2

@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://s8h7naiehk1q" path="res://src/ui/pulse.gd" id="5_fy34c"]
 [ext_resource type="Script" uid="uid://cy006uvidc4y" path="res://addons/tube/tube_client.gd" id="6_s47ag"]
 [ext_resource type="Resource" uid="uid://dj6kea3bn4ymr" path="res://src/tube_context.tres" id="7_iba1j"]
+[ext_resource type="PackedScene" uid="uid://bywtb3vta1gm5" path="res://src/ui/hold_quit.tscn" id="8_b5put"]
 
 [node name="OnlineGame" type="Node" unique_id=1251434116]
 script = ExtResource("1_srd6u")
@@ -19,7 +20,7 @@ metadata/_custom_type_script = "uid://cy006uvidc4y"
 
 [node name="ConnectingStatus" type="Control" parent="." unique_id=1912252942]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.278979)
+modulate = Color(1, 1, 1, 0.22185838)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,13 +49,17 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Connecting..."
 
-[node name="Lobby" parent="." unique_id=1396597213 instance=ExtResource("4_w5i26")]
-unique_name_in_owner = true
-visible = false
-
 [node name="PlayerNameDialog" parent="." unique_id=56895137 instance=ExtResource("5_72vyi")]
 unique_name_in_owner = true
 visible = false
 query = "Enter your player name"
 placeholder = "Player 1"
 submit_text = "Join Game"
+
+[node name="Lobby" parent="." unique_id=1396597213 instance=ExtResource("4_w5i26")]
+unique_name_in_owner = true
+visible = false
+
+[node name="HoldQuit" parent="." unique_id=857723855 instance=ExtResource("8_b5put")]
+
+[connection signal="leave_requested" from="Lobby" to="." method="_on_lobby_leave_requested"]

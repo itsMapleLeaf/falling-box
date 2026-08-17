@@ -53,33 +53,44 @@ size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
 [node name="PlayerList" type="VBoxContainer" parent="MarginContainer/VBoxContainer2/ScrollContainer" unique_id=977588164]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PlayerInfo" parent="MarginContainer/VBoxContainer2/ScrollContainer/PlayerList" unique_id=1036486914 instance_placeholder="res://src/lobby/player_info.tscn"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
+[node name="PlayerStatusSpawner" type="MultiplayerSpawner" parent="MarginContainer/VBoxContainer2/ScrollContainer/PlayerList" unique_id=474410561]
+_spawnable_scenes = PackedStringArray("uid://2n1e1fu55j36")
+spawn_path = NodePath("..")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=236978153]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=532764451]
+[node name="LeaveButton" type="Button" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=929500342]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 30
-text = "Ready"
+text = "Leave"
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=78463514]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=437422098]
+[node name="ReadyButton" type="CheckBox" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1342636827]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Ready"
+alignment = 1
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=437422098]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 30
+disabled = true
 text = "Start"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer2/HBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]

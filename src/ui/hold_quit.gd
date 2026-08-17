@@ -1,17 +1,20 @@
-extends Node
+extends CanvasLayer
 
-@onready var hold_quit_message: CanvasLayer = %HoldQuitMessage
-@onready var hold_quit_timer: Timer = %HoldQuitTimer
+@onready var hold_quit_timer: Timer = %Timer
+
+
+func _ready() -> void:
+	hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		hold_quit_timer.start()
-		hold_quit_message.show()
+		show()
 
 	if event.is_action_released("pause"):
 		hold_quit_timer.stop()
-		hold_quit_message.hide()
+		hide()
 
 
 func _on_hold_quit_timer_timeout() -> void:

@@ -10,15 +10,25 @@ const GAME = preload("uid://behcxl4o21rrt")
 
 
 func _ready() -> void:
+	lobby.leave_requested.connect(_leave)
+
 	tube_client.error_raised.connect(
 		func(code: TubeClient.SessionError, message: String) -> void:
 			DebugUI.log("Network error %d: %s" % [code, message]),
 	)
 
+	tube_client.session_left.connect(
+		func() -> void:
+			ScreenManager.set_screen(Screens.main_menu()),
+	)
 
-func _exit_tree() -> void:
+
+func _on_lobby_leave_requested() -> void:
+	_leave()
+
+
+func _leave() -> void:
 	tube_client.leave_session()
-	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 
 
 func host_room() -> void:
@@ -32,21 +42,25 @@ func host_room() -> void:
 
 	await tube_client.session_created
 
-	#connecting_status.hide()
-	var data := await _onboard()
-	if not data:
+	connecting_status.hide()
+
+	var response := await _prompt_for_alias()
+	if response.cancelled:
+		_leave()
 		return
 
 	lobby.show()
+	lobby.set_leave_button_text("End Game")
+	lobby.set_room_code(tube_client.session_id)
+	lobby.add_player(multiplayer.get_unique_id(), response.answer, true)
 
 
-func _on_peer_connected(_peer_id: int) -> void:
+func _on_peer_connected(peer_id: int) -> void:
 	pass
 
 
 func _on_peer_disconnected(peer_id: int) -> void:
-	#game.remove_player(peer_id)
-	pass
+	lobby.remove_player(peer_id)
 
 
 func join_room(room_id: String) -> void:
@@ -58,23 +72,29 @@ func join_room(room_id: String) -> void:
 
 	connecting_status.hide()
 
-	var data := await _onboard()
-	if not data:
+	var response := await _prompt_for_alias()
+	if response.cancelled:
+		_leave()
 		return
 
+	submit_entry.rpc_id(1, response.answer)
+
 	lobby.show()
+	lobby.set_room_code(tube_client.session_id)
+	lobby.set_leave_button_text("Leave")
 
 
-func _onboard() -> PlayerSpawner.PlayerSpawnData:
+@rpc("any_peer")
+func submit_entry(alias: String) -> void:
+	lobby.add_player(multiplayer.get_remote_sender_id(), alias, false)
+
+
+func _prompt_for_alias() -> PromptDialog.Submission:
 	var fallback_name := "Player " + str(randi() % 1000)
 	player_name_dialog.placeholder = fallback_name
 
-	var result := await player_name_dialog.ask()
-	if result.cancelled:
-		ScreenManager.set_screen(Screens.main_menu())
-		return
+	var response := await player_name_dialog.ask()
+	if not response.cancelled and response.answer.is_empty():
+		response.answer = fallback_name
 
-	var data := PlayerSpawner.PlayerSpawnData.new()
-	data.peer_id = multiplayer.get_unique_id()
-	data.alias = result.answer if not result.answer.is_empty() else fallback_name
-	return data
+	return response

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b24yqpijdvfvo" path="res://src/game/server_game.gd" id="1_vr2ry"]
 [ext_resource type="PackedScene" uid="uid://behcxl4o21rrt" path="res://src/game/game.tscn" id="2_i2oyp"]
-[ext_resource type="PackedScene" uid="uid://bywtb3vta1gm5" path="res://src/hold_quit.tscn" id="3_td3uv"]
+[ext_resource type="PackedScene" uid="uid://bywtb3vta1gm5" path="res://src/ui/hold_quit.tscn" id="3_td3uv"]
 [ext_resource type="Script" uid="uid://cr6weairveutb" path="res://src/overview_camera.gd" id="4_i2oyp"]
 
 [node name="ServerGame" type="Node" unique_id=1251434116]

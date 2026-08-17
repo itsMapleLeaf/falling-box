@@ -1,4 +1,4 @@
-class_name LobbyPlayerDisplay
+class_name LobbyPlayerStatus
 extends HBoxContainer
 
 @onready var name_label: Label = %Name

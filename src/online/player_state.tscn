@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://duaepad1jjde7"]
+
+[ext_resource type="Script" uid="uid://cdfc118giogg0" path="res://src/online/player_state.gd" id="1_aep48"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_b54ql"]
+properties/0/path = NodePath(".:player_id")
+properties/0/spawn = true
+properties/0/replication_mode = 0
+properties/1/path = NodePath(".:alias")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:is_ready")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+
+[node name="PlayerState" type="Node" unique_id=884829765]
+script = ExtResource("1_aep48")
+metadata/_custom_type_script = "uid://cdfc118giogg0"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1804777519]
+replication_config = SubResource("SceneReplicationConfig_b54ql")
