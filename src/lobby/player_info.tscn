@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://2n1e1fu55j36"]
+
+[ext_resource type="Script" uid="uid://xxlr61ow6y3y" path="res://src/lobby/player_info.gd" id="1_kj53q"]
+
+[sub_resource type="SystemFont" id="SystemFont_dsokl"]
+font_italic = true
+subpixel_positioning = 0
+
+[node name="PlayerInfo" type="HBoxContainer" unique_id=1036486914]
+theme_override_constants/separation = 17
+script = ExtResource("1_kj53q")
+
+[node name="Name" type="Label" parent="." unique_id=530064469]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Player 420"
+
+[node name="SelfLabel" type="Label" parent="." unique_id=1642318703]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.34117648)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_dsokl")
+theme_override_font_sizes/font_size = 24
+text = "(you)"
+
+[node name="Ready" type="Label" parent="." unique_id=900225923]
+unique_name_in_owner = true
+modulate = Color(0.32496962, 0.7110419, 0.80547166, 1)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_dsokl")
+theme_override_font_sizes/font_size = 24
+text = "(ready)"
+
+[node name="NotReady" type="Label" parent="." unique_id=2093190417]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.34117648)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_dsokl")
+theme_override_font_sizes/font_size = 24
+text = "(not ready)"
