@@ -2,11 +2,18 @@
 
 [ext_resource type="Script" uid="uid://baleutw581pvc" path="res://src/debug_ui.gd" id="1_kyoau"]
 
-[node name="DebugUI" type="CanvasLayer" unique_id=1170176412]
+[node name="DebugUI" type="Control" unique_id=1117900936]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+mouse_filter = 2
 script = ExtResource("1_kyoau")
 
 [node name="DebugValues" type="Label" parent="." unique_id=329207381]
 unique_name_in_owner = true
+layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -17,6 +24,7 @@ horizontal_alignment = 2
 
 [node name="LogScrollContainer" type="ScrollContainer" parent="." unique_id=1811773757]
 unique_name_in_owner = true
+layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
