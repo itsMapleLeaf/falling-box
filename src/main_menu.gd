@@ -1,12 +1,18 @@
 class_name MainMenu
 extends Screen
 
+@onready var play_button: Button = %PlayButton
+@onready var host_room_button: Button = %HostRoomButton
+@onready var join_room_button: Button = %JoinRoomButton
+@onready var join_room_prompt: PromptDialog = %JoinRoomPrompt
+@onready var quit_button: Button = %QuitButton
+
 
 func _ready() -> void:
-	%PlayButton.grab_focus()
+	play_button.grab_focus()
 
 	if OS.has_feature("web"):
-		%QuitButton.hide()
+		quit_button.hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -25,7 +31,7 @@ func _on_host_room_button_pressed() -> void:
 
 
 func _on_join_room_button_pressed() -> void:
-	var result: PromptDialog.Submission = await %JoinRoomPrompt.ask()
+	var result: PromptDialog.Submission = await join_room_prompt.ask()
 	if result.cancelled:
 		return
 

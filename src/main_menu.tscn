@@ -8,68 +8,77 @@ script = ExtResource("1_guuao")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=978816717]
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=96121203]
-offset_right = 94.0
-offset_bottom = 101.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=1787113922]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1787113922]
+offset_right = 1280.0
+offset_bottom = 720.0
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=655681800]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer" unique_id=655681800]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_constants/separation = 7
 
-[node name="Title" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1268948256]
+[node name="Title" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1268948256]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "That Falling Box Game"
 uppercase = true
 
-[node name="PlayButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=437939642]
+[node name="PlayButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=437939642]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 28
 text = "Play"
+flat = true
 alignment = 0
 
-[node name="HostRoomButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1370129255]
+[node name="HostRoomButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1370129255]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(77, 0)
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 28
 text = "Host Room"
+flat = true
 alignment = 0
 
-[node name="JoinRoomButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=296226259]
+[node name="JoinRoomButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=296226259]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(77, 0)
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 28
 text = "Join Room"
+flat = true
 alignment = 0
 
-[node name="QuitButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1645284311]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(77, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "Quit"
-alignment = 0
-
-[node name="JoinRoomPrompt" parent="." unique_id=56895137 instance=ExtResource("2_bq8pk")]
+[node name="JoinRoomPrompt" parent="CanvasLayer/MarginContainer/VBoxContainer/JoinRoomButton" unique_id=56895137 instance=ExtResource("2_bq8pk")]
 unique_name_in_owner = true
 visible = false
 query = "Enter your room code"
 placeholder = "ABCDE"
 submit_text = "Join"
 
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HostRoomButton" to="." method="_on_host_room_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/JoinRoomButton" to="." method="_on_join_room_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[node name="QuitButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1645284311]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(77, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 28
+text = "Quit"
+flat = true
+alignment = 0
+
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/HostRoomButton" to="." method="_on_host_room_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/JoinRoomButton" to="." method="_on_join_room_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
