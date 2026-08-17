@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://b7seloxwrkdli"]
+
+[ext_resource type="Script" uid="uid://bfb158cr7n47i" path="res://src/online/online_game.gd" id="1_srd6u"]
+[ext_resource type="Script" uid="uid://7u65fuj3iym3" path="res://src/online/connecting_status.gd" id="4_mm7ys"]
+[ext_resource type="PackedScene" uid="uid://bc8sij5fb8oda" path="res://src/online/lobby/lobby.tscn" id="4_w5i26"]
+[ext_resource type="PackedScene" uid="uid://c5p476r2uerbs" path="res://src/ui/prompt_dialog.tscn" id="5_72vyi"]
+[ext_resource type="Script" uid="uid://s8h7naiehk1q" path="res://src/ui/pulse.gd" id="5_fy34c"]
+[ext_resource type="Script" uid="uid://cy006uvidc4y" path="res://addons/tube/tube_client.gd" id="6_s47ag"]
+[ext_resource type="Resource" uid="uid://dj6kea3bn4ymr" path="res://src/tube_context.tres" id="7_iba1j"]
+
+[node name="OnlineGame" type="Node" unique_id=1251434116]
+script = ExtResource("1_srd6u")
+
+[node name="TubeClient" type="Node" parent="." unique_id=1353168876]
+unique_name_in_owner = true
+script = ExtResource("6_s47ag")
+context = ExtResource("7_iba1j")
+metadata/_custom_type_script = "uid://cy006uvidc4y"
+
+[node name="ConnectingStatus" type="Control" parent="." unique_id=1912252942]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.278979)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_mm7ys")
+
+[node name="Pulse" type="Node" parent="ConnectingStatus" unique_id=900861156 node_paths=PackedStringArray("target")]
+script = ExtResource("5_fy34c")
+speed = 0.5
+max_alpha = 0.5
+target = NodePath("..")
+metadata/_custom_type_script = "uid://s8h7naiehk1q"
+
+[node name="CenterContainer" type="CenterContainer" parent="ConnectingStatus" unique_id=1836071643]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ConnectingStatus/CenterContainer" unique_id=626712876]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Connecting..."
+
+[node name="Lobby" parent="." unique_id=1396597213 instance=ExtResource("4_w5i26")]
+unique_name_in_owner = true
+visible = false
+
+[node name="PlayerNameDialog" parent="." unique_id=56895137 instance=ExtResource("5_72vyi")]
+unique_name_in_owner = true
+visible = false
+query = "Enter your player name"
+placeholder = "Player 1"
+submit_text = "Join Game"

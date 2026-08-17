@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bc8sij5fb8oda"]
 
-[ext_resource type="Script" uid="uid://d0n2d1taad1u5" path="res://src/lobby/lobby.gd" id="1_0cqgb"]
-[ext_resource type="PackedScene" uid="uid://doyu7n4j2dq05" path="res://src/lobby/room_code.tscn" id="2_3ss0e"]
+[ext_resource type="Script" uid="uid://d0n2d1taad1u5" path="res://src/online/lobby/lobby.gd" id="1_0cqgb"]
+[ext_resource type="PackedScene" uid="uid://doyu7n4j2dq05" path="res://src/online/lobby/room_code.tscn" id="2_3ss0e"]
 
 [node name="Lobby" type="Control" unique_id=1396597213]
 layout_mode = 3

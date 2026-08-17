@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://2n1e1fu55j36"]
 
-[ext_resource type="Script" uid="uid://xxlr61ow6y3y" path="res://src/lobby/player_info.gd" id="1_kj53q"]
+[ext_resource type="Script" uid="uid://xxlr61ow6y3y" path="res://src/online/lobby/player_info.gd" id="1_kj53q"]
 
 [sub_resource type="SystemFont" id="SystemFont_dsokl"]
 font_italic = true

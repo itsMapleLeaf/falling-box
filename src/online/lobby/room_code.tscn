@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://doyu7n4j2dq05"]
 
-[ext_resource type="Script" uid="uid://dw6vqh68qem66" path="res://src/lobby/room_code.gd" id="1_5vq7j"]
+[ext_resource type="Script" uid="uid://dw6vqh68qem66" path="res://src/online/lobby/room_code.gd" id="1_5vq7j"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h5w0j"]
 

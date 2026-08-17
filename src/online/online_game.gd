@@ -1,15 +1,15 @@
 class_name OnlineGame
 extends Screen
 
-@onready var game: Game = %Game
-@onready var room_code_ui: RoomCodeDisplay = %RoomCodeUI
-@onready var player_name_dialog: PromptDialog = %PlayerNameDialog
+const GAME = preload("uid://behcxl4o21rrt")
+
 @onready var tube_client: TubeClient = %TubeClient
+@onready var connecting_status: Control = %ConnectingStatus
+@onready var lobby: LobbyUI = %Lobby
+@onready var player_name_dialog: PromptDialog = %PlayerNameDialog
 
 
 func _ready() -> void:
-	game.spawn_falling_blocks()
-
 	tube_client.error_raised.connect(
 		func(code: TubeClient.SessionError, message: String) -> void:
 			DebugUI.log("Network error %d: %s" % [code, message]),
@@ -32,11 +32,12 @@ func host_room() -> void:
 
 	await tube_client.session_created
 
-	room_code_ui.show_room_code(tube_client.session_id)
-	room_code_ui.copy_code()
-
+	#connecting_status.hide()
 	var data := await _onboard()
-	game.add_player(data)
+	if not data:
+		return
+
+	lobby.show()
 
 
 func _on_peer_connected(_peer_id: int) -> void:
@@ -44,7 +45,8 @@ func _on_peer_connected(_peer_id: int) -> void:
 
 
 func _on_peer_disconnected(peer_id: int) -> void:
-	game.remove_player(peer_id)
+	#game.remove_player(peer_id)
+	pass
 
 
 func join_room(room_id: String) -> void:
@@ -54,13 +56,13 @@ func join_room(room_id: String) -> void:
 
 	await tube_client.session_joined
 
-	room_code_ui.show_room_code(tube_client.session_id)
+	connecting_status.hide()
 
 	var data := await _onboard()
 	if not data:
 		return
 
-	game.enter_game.rpc_id(1, data.pack())
+	lobby.show()
 
 
 func _onboard() -> PlayerSpawner.PlayerSpawnData:
