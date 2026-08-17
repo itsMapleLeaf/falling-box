@@ -7,12 +7,10 @@ var initial_title: String
 func set_screen(new_screen: Screen) -> void:
 	get_window().title = initial_title
 
-	new_screen.screen_changed.connect(set_screen)
-	add_child(new_screen)
-
 	if current_screen:
 		current_screen.queue_free()
 
+	add_child(new_screen)
 	current_screen = new_screen
 
 
