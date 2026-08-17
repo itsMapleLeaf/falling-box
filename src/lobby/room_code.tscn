@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://doyu7n4j2dq05"]
+
+[ext_resource type="Script" uid="uid://dw6vqh68qem66" path="res://src/lobby/room_code.gd" id="1_5vq7j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h5w0j"]
+
+[node name="Control" type="PanelContainer" unique_id=2070222624]
+offset_right = 219.0
+offset_bottom = 97.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_h5w0j")
+script = ExtResource("1_5vq7j")
+
+[node name="RoomCode" type="BoxContainer" parent="." unique_id=211492364]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = -8
+vertical = true
+
+[node name="Label" type="Label" parent="RoomCode" unique_id=1746920798]
+modulate = Color(0.7784455, 0.7784455, 0.7784455, 1)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 18
+text = "Room Code"
+
+[node name="Code" type="Label" parent="RoomCode" unique_id=1692862736]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 44
+text = "ABCDE"
+
+[node name="CopyTip" type="Label" parent="RoomCode" unique_id=1695346994]
+unique_name_in_owner = true
+modulate = Color(0.7784455, 0.7784455, 0.7784455, 1)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 18
+text = "Click to copy to clipboard"
+
+[node name="CopyButton" type="TextureButton" parent="." unique_id=1416739241]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="pressed" from="CopyButton" to="." method="_on_copy_button_pressed"]

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bc8sij5fb8oda"]
 
 [ext_resource type="Script" uid="uid://d0n2d1taad1u5" path="res://src/lobby/lobby.gd" id="1_0cqgb"]
+[ext_resource type="PackedScene" uid="uid://doyu7n4j2dq05" path="res://src/lobby/room_code.tscn" id="2_3ss0e"]
 
 [node name="Lobby" type="Control" unique_id=1396597213]
 layout_mode = 3
@@ -30,43 +31,21 @@ theme_override_constants/separation = 24
 [node name="BoxContainer2" type="BoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=1471590264]
 layout_mode = 2
 size_flags_horizontal = 3
-vertical = true
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer2/BoxContainer2" unique_id=309258614]
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 51
 text = "Lobby"
 uppercase = true
 
-[node name="RoomCodeDisplay" type="BoxContainer" parent="MarginContainer/VBoxContainer2/BoxContainer2/Title" unique_id=734723851]
-layout_mode = 0
-offset_left = 950.0
-offset_right = 1216.0
-offset_bottom = 63.0
-size_flags_vertical = 0
-theme_override_constants/separation = -8
-vertical = true
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2/BoxContainer2/Title/RoomCodeDisplay" unique_id=1669557924]
-modulate = Color(0.7784455, 0.7784455, 0.7784455, 1)
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer2/BoxContainer2" unique_id=1560423315]
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_font_sizes/font_size = 18
-text = "Room Code"
+size_flags_horizontal = 3
 
-[node name="RoomCode" type="Label" parent="MarginContainer/VBoxContainer2/BoxContainer2/Title/RoomCodeDisplay" unique_id=306119085]
+[node name="RoomCode" parent="MarginContainer/VBoxContainer2/BoxContainer2" unique_id=211492364 instance=ExtResource("2_3ss0e")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_font_sizes/font_size = 44
-text = "ABCDE"
-
-[node name="CopyTip" type="Label" parent="MarginContainer/VBoxContainer2/BoxContainer2/Title/RoomCodeDisplay" unique_id=1887200950]
-modulate = Color(0.7784455, 0.7784455, 0.7784455, 1)
-layout_mode = 2
-size_flags_horizontal = 8
-theme_override_font_sizes/font_size = 18
-text = "Click to copy to clipboard"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer2" unique_id=147403952]
 layout_mode = 2
