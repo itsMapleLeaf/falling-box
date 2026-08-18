@@ -16,11 +16,11 @@ func set_leave_button_text(text: String) -> void:
 	leave_button.text = text
 
 
-func add_player(peer_id: int, player_name: String, is_self: bool) -> void:
+func add_player(peer_id: int, player_name: String) -> void:
 	var player_status: LobbyPlayerStatus = PLAYER_STATUS.instantiate()
+	player_status.peer_id = peer_id
 	player_list.add_child(player_status, true)
 	player_status.set_player_name(player_name)
-	player_status.set_player_is_self(is_self)
 	players_by_peer_id[peer_id] = player_status
 
 

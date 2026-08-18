@@ -52,7 +52,7 @@ func host_room() -> void:
 	lobby.show()
 	lobby.set_leave_button_text("End Game")
 	lobby.set_room_code(tube_client.session_id)
-	lobby.add_player(multiplayer.get_unique_id(), response.answer, true)
+	lobby.add_player(multiplayer.get_unique_id(), response.answer)
 
 
 func _on_peer_connected(peer_id: int) -> void:
@@ -86,7 +86,7 @@ func join_room(room_id: String) -> void:
 
 @rpc("any_peer")
 func submit_entry(alias: String) -> void:
-	lobby.add_player(multiplayer.get_remote_sender_id(), alias, false)
+	lobby.add_player(multiplayer.get_remote_sender_id(), alias)
 
 
 func _prompt_for_alias() -> PromptDialog.Submission:

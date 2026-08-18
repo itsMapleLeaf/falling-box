@@ -10,15 +10,9 @@ subpixel_positioning = 0
 properties/0/path = NodePath("Name:text")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("SelfLabel:visible")
+properties/1/path = NodePath(".:peer_id")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("Ready:visible")
-properties/2/spawn = true
-properties/2/replication_mode = 1
-properties/3/path = NodePath("NotReady:visible")
-properties/3/spawn = true
-properties/3/replication_mode = 1
 
 [node name="PlayerInfo" type="HBoxContainer" unique_id=1036486914]
 theme_override_constants/separation = 17
@@ -32,29 +26,11 @@ text = "Player 420"
 
 [node name="SelfLabel" type="Label" parent="." unique_id=1642318703]
 unique_name_in_owner = true
-visible = false
 modulate = Color(1, 1, 1, 0.34117648)
 layout_mode = 2
 theme_override_fonts/font = SubResource("SystemFont_dsokl")
 theme_override_font_sizes/font_size = 24
 text = "(you)"
-
-[node name="Ready" type="Label" parent="." unique_id=900225923]
-unique_name_in_owner = true
-visible = false
-modulate = Color(0.32496962, 0.7110419, 0.80547166, 1)
-layout_mode = 2
-theme_override_fonts/font = SubResource("SystemFont_dsokl")
-theme_override_font_sizes/font_size = 24
-text = "(ready)"
-
-[node name="NotReady" type="Label" parent="." unique_id=2093190417]
-unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.34117648)
-layout_mode = 2
-theme_override_fonts/font = SubResource("SystemFont_dsokl")
-theme_override_font_sizes/font_size = 24
-text = "(not ready)"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1985317219]
 replication_config = SubResource("SceneReplicationConfig_hprvp")
