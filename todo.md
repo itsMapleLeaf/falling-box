@@ -1,9 +1,11 @@
-## milestone: prototype / playtest
+## milestone: lobby
 
-- cannot paste from clipboard on web (severity: minor, effort: high)
+- timed round structure
+- leaderboard
 
 ### polish
 
+- bug: cannot paste from clipboard on web (severity: minor, effort: high)
 - gameplay edge cases:
   - squish detection: it doesn't require that the top and bottom overlaps are two separate bodies, ergo, you could spawn inside of a block and die immediately
 
@@ -12,8 +14,6 @@
 
 - use overview camera before join
 - client-side prediction
-- timed round structure with ready lobby
-- leaderboard
 - CPU players
 - sfx
 - a11y options, e.g. reduce/disable screen shake, glow
@@ -22,4 +22,5 @@
 
 - interactive tutorial or somethin
 - player colors
+- different kinds of blocks, e.g. hyperspeed blocks, invulnerable blocks, exploding blocks
 - block grab cooldown?
