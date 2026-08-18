@@ -61,3 +61,13 @@ func _on_leave_button_pressed() -> void:
 
 func _on_start_button_pressed() -> void:
 	started.emit()
+
+
+func _on_player_status_spawner_spawned(node: LobbyPlayerStatus) -> void:
+	players_by_peer_id[node.peer_id] = node
+	_update_start()
+
+
+func _on_player_status_spawner_despawned(node: LobbyPlayerStatus) -> void:
+	players_by_peer_id.erase(node.peer_id)
+	_update_start()
