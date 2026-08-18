@@ -5,8 +5,8 @@ const GAME = preload("uid://behcxl4o21rrt")
 
 @onready var tube_client: TubeClient = %TubeClient
 @onready var connecting_status: Control = %ConnectingStatus
-@onready var lobby: LobbyUI = %Lobby
 @onready var player_name_dialog: PromptDialog = %PlayerNameDialog
+@onready var lobby: LobbyUI = %Lobby
 
 
 func _ready() -> void:
@@ -21,10 +21,6 @@ func _ready() -> void:
 		func() -> void:
 			ScreenManager.set_screen(Screens.main_menu()),
 	)
-
-
-func _on_lobby_leave_requested() -> void:
-	_leave()
 
 
 func _leave() -> void:
@@ -55,12 +51,12 @@ func host_room() -> void:
 	lobby.add_player(multiplayer.get_unique_id(), response.answer)
 
 
-func _on_peer_connected(peer_id: int) -> void:
+func _on_peer_connected(_peer_id: int) -> void:
 	pass
 
 
-func _on_peer_disconnected(peer_id: int) -> void:
-	lobby.remove_player(peer_id)
+func _on_peer_disconnected(_peer_id: int) -> void:
+	pass
 
 
 func join_room(room_id: String) -> void:
@@ -77,11 +73,11 @@ func join_room(room_id: String) -> void:
 		_leave()
 		return
 
-	submit_entry.rpc_id(1, response.answer)
-
 	lobby.show()
-	lobby.set_room_code(tube_client.session_id)
 	lobby.set_leave_button_text("Leave")
+	lobby.set_room_code(tube_client.session_id)
+
+	submit_entry.rpc_id(1, response.answer)
 
 
 @rpc("any_peer")

@@ -79,18 +79,28 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ReadyButton" type="CheckBox" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1342636827]
+visible = false
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Ready"
 alignment = 1
 
+[node name="StartInfo" type="Label" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=156806482]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+text = "You need 2 or more players to start."
+
 [node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer2/HBoxContainer" unique_id=437422098]
+unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 30
-disabled = true
 text = "Start"
 
+[connection signal="despawned" from="MarginContainer/VBoxContainer2/ScrollContainer/PlayerList/PlayerStatusSpawner" to="." method="_on_player_status_spawner_despawned"]
+[connection signal="spawned" from="MarginContainer/VBoxContainer2/ScrollContainer/PlayerList/PlayerStatusSpawner" to="." method="_on_player_status_spawner_spawned"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer2/HBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]

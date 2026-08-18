@@ -20,7 +20,7 @@ metadata/_custom_type_script = "uid://cy006uvidc4y"
 
 [node name="ConnectingStatus" type="Control" parent="." unique_id=1912252942]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.22185838)
+modulate = Color(1, 1, 1, 0.45095187)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,6 +49,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Connecting..."
 
+[node name="Lobby" parent="." unique_id=1396597213 instance=ExtResource("4_w5i26")]
+unique_name_in_owner = true
+visible = false
+
 [node name="PlayerNameDialog" parent="." unique_id=56895137 instance=ExtResource("5_72vyi")]
 unique_name_in_owner = true
 visible = false
@@ -56,10 +60,5 @@ query = "Enter your player name"
 placeholder = "Player 1"
 submit_text = "Join Game"
 
-[node name="Lobby" parent="." unique_id=1396597213 instance=ExtResource("4_w5i26")]
-unique_name_in_owner = true
-visible = false
-
 [node name="HoldQuit" parent="." unique_id=857723855 instance=ExtResource("8_b5put")]
-
-[connection signal="leave_requested" from="Lobby" to="." method="_on_lobby_leave_requested"]
+visible = false
