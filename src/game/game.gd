@@ -1,5 +1,5 @@
 class_name Game
-extends Screen
+extends Node2D
 
 var players_by_peer_id: Dictionary[int, Player] = { }
 

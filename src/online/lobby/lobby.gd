@@ -2,6 +2,7 @@ class_name LobbyUI
 extends Control
 
 signal leave_requested
+signal started
 
 const PLAYER_STATUS = preload("uid://2n1e1fu55j36")
 
@@ -56,3 +57,7 @@ func _update_start() -> void:
 
 func _on_leave_button_pressed() -> void:
 	leave_requested.emit()
+
+
+func _on_start_button_pressed() -> void:
+	started.emit()

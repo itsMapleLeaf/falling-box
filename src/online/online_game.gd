@@ -1,12 +1,11 @@
 class_name OnlineGame
 extends Screen
 
-const GAME = preload("uid://behcxl4o21rrt")
-
 @onready var tube_client: TubeClient = %TubeClient
 @onready var connecting_status: Control = %ConnectingStatus
 @onready var player_name_dialog: PromptDialog = %PlayerNameDialog
 @onready var lobby: LobbyUI = %Lobby
+@onready var game: Game = %Game
 
 
 func _ready() -> void:
@@ -94,3 +93,13 @@ func _prompt_for_alias() -> PromptDialog.Submission:
 		response.answer = fallback_name
 
 	return response
+
+
+func _on_lobby_started() -> void:
+	start_game.rpc()
+
+
+@rpc("call_local")
+func start_game() -> void:
+	lobby.hide()
+	game.show()

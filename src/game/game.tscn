@@ -11,7 +11,7 @@ background_mode = 3
 glow_enabled = true
 glow_intensity = 0.19
 
-[node name="Game" type="Node" unique_id=1932238817]
+[node name="Game" type="Node2D" unique_id=1267641546]
 script = ExtResource("1_bs6l1")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1465794850]
@@ -24,7 +24,7 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 spawn_path = NodePath("..")
 script = ExtResource("3_xptat")
-game = NodePath("..")
+game = NodePath("")
 flying_box_spawner = NodePath("../FlyingBoxSpawner")
 
 [node name="FallingBoxSpawner" type="MultiplayerSpawner" parent="." unique_id=1783797738 node_paths=PackedStringArray("level")]

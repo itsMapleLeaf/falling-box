@@ -104,3 +104,4 @@ text = "Start"
 [connection signal="despawned" from="MarginContainer/VBoxContainer2/ScrollContainer/PlayerList/PlayerStatusSpawner" to="." method="_on_player_status_spawner_despawned"]
 [connection signal="spawned" from="MarginContainer/VBoxContainer2/ScrollContainer/PlayerList/PlayerStatusSpawner" to="." method="_on_player_status_spawner_spawned"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer2/HBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer2/HBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
