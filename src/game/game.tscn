@@ -24,7 +24,7 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 spawn_path = NodePath("..")
 script = ExtResource("3_xptat")
-game = NodePath("")
+game = NodePath("..")
 flying_box_spawner = NodePath("../FlyingBoxSpawner")
 
 [node name="FallingBoxSpawner" type="MultiplayerSpawner" parent="." unique_id=1783797738 node_paths=PackedStringArray("level")]
