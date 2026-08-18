@@ -25,7 +25,7 @@ func _ready() -> void:
 	spawn_function = _create_spawned_player
 
 
-func _create_spawned_player(data_dict: Dictionary):
+func _create_spawned_player(data_dict: Dictionary) -> Player:
 	var data: PlayerSpawnData = dict_to_inst(data_dict)
 
 	const PLAYER = preload("uid://dgfxlv2n2qtvd")

@@ -210,8 +210,8 @@ func grab() -> void:
 
 	var results := get_world_2d().direct_space_state.intersect_point(params)
 	for result in results:
-		var box := result['collider'] as FallingBox
-		if box:
+		if result['collider'] is FallingBox:
+			var box: FallingBox = result['collider']
 			#resolve_grab.rpc(box.global_position)
 			held_block.global_position = box.global_position
 			held_block.reset_physics_interpolation()
